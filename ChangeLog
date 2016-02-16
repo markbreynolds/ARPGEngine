@@ -1,0 +1,39 @@
+Change Log
+
+Version: 0.1.0
+
+- GUI Changes:
+	- Armor Tab Changes
+		- Display Gold
+		- Show Current Equipment
+		- Show Stats with equipment bonuses
+	- Party Tab Changes
+		- Make Icon
+		- Added Character Sheet
+	- View Stat Info
+	- View Character Status Effects
+	- Switch Characters
+	- Added Battle HUD
+	- Migrate Character Creation
+	- Inventory Tab changes
+- Battle Changes:
+	- Animations
+		- Added Unarmed Animations
+		- Added Sword Animations
+	- Player
+		- Dynamically Draw Weapons
+	- Enemies
+		- Added Slimes
+		- Added Feeble AI
+	- General
+		- Attacks do damage
+		- Attacks do knockback
+	- End Game
+		- Monsters Die
+		- After all monsters are gone end battle
+- Trigger Changes
+	- Added Battle Trigger
+- Documentation
+	- package documentation for Triggers
+	- package documentation for Graphics
+	- package documentation for Battle

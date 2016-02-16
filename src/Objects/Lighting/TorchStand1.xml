@@ -1,0 +1,16 @@
+<Animation OffN>
+	<delay>.5</delay>
+	<Frame>
+		<image>Objects/Lighting/TorchStand1.png</image>
+	</Frame>
+</Animation>
+
+<Animation OnN>
+	<delay>.1</delay>
+	<Frame>
+		<image>Objects/Lighting/TorchStand1Fire1.png</image>
+	</Frame>
+	<Frame>
+		<image>Objects/Lighting/TorchStand1Fire2.png</image>
+	</Frame>
+</Animation>

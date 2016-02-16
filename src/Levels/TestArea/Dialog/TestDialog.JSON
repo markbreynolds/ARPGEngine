@@ -1,0 +1,25 @@
+{
+"Text": ["Hello there, $PNAME!"],
+"Options": ["Hello!","Goodbye!"],
+"Links": [
+	{
+		"Text":["NACHO!"],
+		"Options": ["CHEESE!","Um..."],
+		"Links": [
+		{
+		"Text": ["1......","<b>2</b>......","3......","4......","5......","6......","7......"],
+		"Options": ["8!","Wow... You can count...","Well then..."],
+		"Links": [
+		{
+			"Text":["Decend into the <b>well</b>, $PNAME, to meet your fate..."],
+			"Options": ["Alright!", "The well?", "Who are you again?"],
+			"Links": [null,null,null]
+		},
+		null,null]
+		},
+		null
+		]
+	},
+	null
+]
+}

@@ -1,0 +1,6 @@
+<Animation IdleN>
+	<delay>.5</delay>
+	<Frame>
+		<image>Objects/Buildings/BlueShopStall.png</image>
+	</Frame>
+</Animation>

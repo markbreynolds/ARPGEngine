@@ -1,0 +1,17 @@
+<GameObject TorchStand>
+	<Mask>
+		<State Off>"Objects/Lighting/TorchStand1Mask.png"</State>
+		<State On>"Objects/Lighting/TorchStand1Mask.png"</State>
+	</Mask>
+	<Spd>0</Spd>
+	<State>"Off"</State>
+	<GraphicObject>
+		<State Off>
+			<Direction 0>Objects/Lighting/TorchStand1.xml</Direction>
+		</State>
+		<State On>
+			<Direction 0>Objects/Lighting/TorchStand1.xml</Direction>
+		</State>
+		<state>"Off"</state>
+	</GraphicObject>
+</GameObject>

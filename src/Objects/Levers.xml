@@ -1,0 +1,48 @@
+<GameObject Lever1>
+	<Mask>
+		<State Up>null</State>
+		<State Down>null</State>
+	</Mask>
+	<Spd>0</Spd>
+	<State>"Up"</State>
+	<GraphicObject>
+		<State Up>
+			<Direction 1>Objects/Levers/Lever1.xml</Direction>
+			<Direction 2>Objects/Levers/Lever1.xml</Direction>
+		</State>
+		<State Ups>
+			<Direction 1>Objects/Levers/Lever1.xml</Direction>
+			<Direction 2>Objects/Levers/Lever1.xml</Direction>
+		</State>
+		<State Down>
+			<Direction 1>Objects/Levers/Lever1.xml</Direction>
+			<Direction 2>Objects/Levers/Lever1.xml</Direction>
+		</State>
+		<State Downs>
+			<Direction 1>Objects/Levers/Lever1.xml</Direction>
+			<Direction 2>Objects/Levers/Lever1.xml</Direction>
+		</State>
+		<flipX>true</flipX>
+		<direction>2</direction>
+		<state>"Ups"</state>
+	</GraphicObject>
+</GameObject>
+
+<GameObject FloorSwitch1>
+	<Mask>
+		<State Up>null</State>
+		<State Down>null</State>
+	</Mask>
+	<Spd>0</Spd>
+	<State>"Up"</State>
+	<GraphicObject>
+		<State Up>
+			<Direction 0>Objects/Levers/FloorSwitch1.xml</Direction>
+		</State>
+		<State Down>
+			<Direction 0>Objects/Levers/FloorSwitch1.xml</Direction>
+		</State>
+		<state>"Up"</state>
+		<layer>-1</layer>
+	</GraphicObject>
+</GameObject>

@@ -1,0 +1,47 @@
+<GameObject Crate1>
+	<Mask>
+		<State Idle>"Objects/Scenery/Crate1Mask.png"</State>
+	</Mask>
+	<Spd>0</Spd>
+	<GraphicObject>
+		<State Idle>
+			<Direction 0>Objects/Scenery/Crate.xml</Direction>
+		</State>
+	</GraphicObject>
+</GameObject>
+
+<GameObject Counter>
+	<Mask>
+		<State Idle>"Objects/Scenery/CounterMask.png"</State>
+	</Mask>
+	<Spd>0</Spd>
+	<GraphicObject>
+		<State Idle>
+			<Direction 0>Objects/Scenery/Counter.xml</Direction>
+		</State>
+	</GraphicObject>
+</GameObject>
+
+<GameObject Well>
+	<Mask>
+		<State Idle>"Objects/Scenery/WellMask.png"</State>
+	</Mask>
+	<Spd>0</Spd>
+	<GraphicObject>
+		<State Idle>
+			<Direction 0>Objects/Scenery/Well.xml</Direction>
+		</State>
+	</GraphicObject>
+</GameObject>
+
+<GameObject Rope>
+	<Mask>
+		<State Idle>null</State>
+	</Mask>
+	<Spd>0</Spd>
+	<GraphicObject>
+		<State Idle>
+			<Direction 0>Objects/Scenery/Rope.xml</Direction>
+		</State>
+	</GraphicObject>
+</GameObject>

@@ -1,0 +1,341 @@
+<Level Test1>
+	<LevelName>Test Chamber 1</LevelName>
+	<Background>Backgrounds/Overworld/TestArea/Test1.png</Background>
+	<Mask>Backgrounds/Overworld/TestArea/Masks/Test1.png</Mask>
+	<Enemies>["GreenSlime"]</Enemies>
+	<GameObject Objects/Levers.xml Lever1>
+		<Pos>[58,14]</Pos>
+		<Id>"Lever"</Id>
+	</GameObject>
+	<GameObject Objects/Levers.xml Lever1>
+		<Pos>[158,14]</Pos>
+		<Id>"Lever 2"</Id>
+	</GameObject>
+	<GameObject Objects/Doors.xml IronGate>
+		<Pos>[109,1]</Pos>
+		<Id>"Gate"</Id>
+	</GameObject>
+	<GameObject Objects/Scenery.xml Rope>
+		<Pos>[270,135]</Pos>
+		<Id>"Rope"<Id>
+	</GameObject>
+	<Trigger>
+		<Type>"Action"</Type>
+		<Area>[150,10,20,20]</Area>
+		<Effect>"State Toggle"</Effect>
+			<Target>"Lever 2"</Target>
+			<PrimaryState>"Up"</PrimaryState>
+			<SecondaryState>"Down"</SecondaryState>
+	</Trigger>
+	<Trigger>
+		<Type>"Action"</Type>
+		<Area>[150,10,20,20]</Area>
+		<Effect>"Battle"</Effect>
+			<Enemies>["GreenSlime","GreenSlime"]</Enemies>
+			<BG>"Test"</BG>
+			<AutoReset>true</AutoReset>
+	</Trigger>
+	<Trigger>
+		<Type>"Action"</Type>
+		<Area>[50,10,20,20]</Area>
+		<Effect>"State Toggle"</Effect>
+			<Target>"Lever"</Target>
+			<PrimaryState>"Up"</PrimaryState>
+			<SecondaryState>"Down"</SecondaryState>
+	</Trigger>
+	<Trigger>
+		<Type>"Action"</Type>
+		<Area>[50,10,20,20]</Area>
+		<Effect>"State Toggle"</Effect>
+			<Target>"Gate"</Target>
+			<PrimaryState>"Close"</PrimaryState>
+			<SecondaryState>"Open"</SecondaryState>
+	</Trigger>
+	<Trigger>
+		<Type>"Position"</Type>
+		<Area>[109,8,34,8]</Area>
+		<Effect>"Area Change"</Effect>
+			<NewArea>"Test2"</NewArea>
+			<NewAreaXML>"Levels/TestArea/Test.xml"</NewAreaXML>
+			<PlayerPos>[119,215]</PlayerPos>
+	</Trigger>
+	<Trigger>
+		<Type>"Action"</Type>
+		<Area>[255,180,25,15]</Area>
+		<Effect>"Area Change"</Effect>
+			<NewArea>"VillageMain"</NewArea>
+			<NewAreaXML>"Levels/TestArea/TestVillage.xml"</NewAreaXML>
+			<PlayerPos>[670,345]</PlayerPos>
+	</Trigger>
+</Level>
+
+<Level Test2>
+	<LevelName>Test Chamber 2</LevelName>
+	<Background>Backgrounds/Overworld/TestArea/Test2.png</Background>
+	<Mask>Backgrounds/Overworld/TestArea/Masks/Test2.png</Mask>
+	<GameObject Objects/Doors.xml IronGate>
+		<Pos>[177,1]</Pos>
+		<Id>"Gate"</Id>
+	</GameObject>
+	<GameObject Objects/Lighting.xml TorchStand>
+		<Pos>[53,100]</Pos>
+		<Id>"leftTorch"</Id>
+	</GameObject>
+	<GameObject Objects/Lighting.xml TorchStand>
+		<Pos>[267,100]</Pos>
+		<Id>"rightTorch"</Id>
+	</GameObject>
+	<GameObject Objects/Levers.xml Lever1>
+		<Pos>[6,110]</Pos>
+		<Id>"leftLever"</Id>
+		<GraphicObject>
+			<direction>1</direction>
+		</GraphicObject>
+	</GameObject>
+	<GameObject Objects/Levers.xml Lever1>
+		<Pos>[308,110]</Pos>
+		<Id>"rightLever"</Id>
+		<GraphicObject>
+			<direction>3</direction>
+		</GraphicObject>
+	</GameObject>
+	<Trigger>
+		<Type>"Action"</Type>
+		<Area>[0,100,20,20]</Area>
+		<Effect>"State Toggle"</Effect>
+			<Target>"leftTorch"</Target>
+			<PrimaryState>"Off"</PrimaryState>
+			<SecondaryState>"On"</SecondaryState>
+	</Trigger>
+	<Trigger>
+		<Type>"Action"</Type>
+		<Area>[300,100,20,20]</Area>
+		<Effect>"State Toggle"</Effect>
+			<Target>"rightTorch"</Target>
+			<PrimaryState>"Off"</PrimaryState>
+			<SecondaryState>"On"</SecondaryState>
+	</Trigger>
+	<Trigger>
+		<Type>"Action"</Type>
+		<Area>[300,100,20,20]</Area>
+		<Effect>"State Toggle"</Effect>
+			<Target>"rightLever"</Target>
+			<PrimaryState>"Up"</PrimaryState>
+			<SecondaryState>"Down"</SecondaryState>
+	</Trigger>
+	<Trigger>
+		<Type>"Action"</Type>
+		<Area>[0,100,20,20]</Area>
+		<Effect>"State Toggle"</Effect>
+			<Target>"leftLever"</Target>
+			<PrimaryState>"Up"</PrimaryState>
+			<SecondaryState>"Down"</SecondaryState>
+	</Trigger>
+	<Trigger>
+		<Type>"Position"</Type>
+		<Area>[109,228,32,12]</Area>
+		<Effect>"Area Change"</Effect>
+			<NewArea>"Test1"</NewArea>
+			<NewAreaXML>"Levels/TestArea/Test.xml"</NewAreaXML>
+			<PlayerPos>[119,14]</PlayerPos>
+	</Trigger>
+	<Trigger>
+		<Effect>"SBSC"</Effect>
+		<NeededStates>["leftTorch","rightTorch"]</NeededStates>
+		<State>"On"</State>
+		<Target>"Gate"</Target>
+		<NewState>"Open"</NewState>
+	</Trigger>
+	<Trigger>
+		<Type>"Position"</Type>
+		<Area>[177,8,32,8]</Area>
+		<Effect>"Area Change"</Effect>
+			<NewArea>"Test3"</NewArea>
+			<NewAreaXML>"Levels/TestArea/Test.xml"</NewAreaXML>
+			<PlayerPos>[503,215]</PlayerPos>
+	</Trigger>
+</Level>
+
+<Level Test3>
+	<LevelName>Test Chamber 3</LevelName>
+	<Background>Backgrounds/Overworld/TestArea/Test3.png</Background>
+	<Mask>Backgrounds/Overworld/TestArea/Masks/Test3.png</Mask>
+	<GameObject Objects/Levers.xml FloorSwitch1>
+		<Pos>[200,195]</Pos>
+		<Id>"GateSwitch"</Id>
+		<RememberState>false</RememberState>
+	</GameObject>
+	<GameObject Objects/Levers.xml FloorSwitch1>
+		<Pos>[250,195]</Pos>
+		<Id>"LightSwitch"</Id>
+		<RememberState>false</RememberState>
+	</GameObject>
+	<GameObject Objects/Doors.xml IronGate>
+		<Pos>[461,1]</Pos>
+		<Id>"Gate"</Id>
+		<RememberState>false</RememberState>
+	</GameObject>
+	<GameObject>
+		<Pos>[0,0]</Pos>
+		<Id>"LightPath"</Id>
+		<Mask>
+			<State Dark>null</State>
+			<State Light>null</State>
+		</Mask>
+		<RememberState>false</RememberState>
+		<Spd>0</Spd>
+		<State>"Dark"</State>
+		<GraphicObject>
+			<State Dark>
+				<Direction 0>Levels/TestArea/Test.xml</Direction>
+			</State>
+			<State Light>
+				<Direction 0>Levels/TestArea/Test.xml</Direction>
+			</State>
+			<state>"Dark"</state>
+			<layer>-1</layer>
+		</GraphicObject>
+	</GameObject>
+	<Trigger>
+		<Type>"Position"</Type>
+		<Area>[250,183,11,14]</Area>
+		<Effect>"State Set"</Effect>
+			<Target>"LightSwitch"</Target>
+			<NewState>"Down"</NewState>
+	</Trigger>
+	<Trigger>
+		<Type>"Position"</Type>
+		<Area>[250,183,11,14]</Area>
+		<Effect>"TBSC"</Effect>
+			<Time>12</Time>
+			<Target>"LightSwitch"</Target>
+			<NewState>"Up"</NewState>
+	</Trigger>
+	<Trigger>
+		<Type>"Position"</Type>
+		<Area>[250,183,11,14]</Area>
+		<Effect>"State Set"</Effect>
+			<Target>"LightPath"</Target>
+			<NewState>"Light"</NewState>
+	</Trigger>
+	<Trigger>
+		<Type>"Position"</Type>
+		<Area>[250,183,11,14]</Area>
+		<Effect>"TBSC"</Effect>
+			<Time>12</Time>
+			<Target>"LightPath"</Target>
+			<NewState>"Dark"</NewState>
+	</Trigger>
+	
+	<Trigger>
+		<Type>"Position"</Type>
+		<Area>[200,183,11,14]</Area>
+		<Effect>"State Set"</Effect>
+			<Target>"GateSwitch"</Target>
+			<NewState>"Down"</NewState>
+	</Trigger>
+	<Trigger>
+		<Type>"Position"</Type>
+		<Area>[200,183,11,14]</Area>
+		<Effect>"TBSC"</Effect>
+			<Time>12</Time>
+			<Target>"GateSwitch"</Target>
+			<NewState>"Up"</NewState>
+	</Trigger>
+	<Trigger>
+		<Type>"Position"</Type>
+		<Area>[200,183,11,14]</Area>
+		<Effect>"State Set"</Effect>
+			<Target>"Gate"</Target>
+			<NewState>"Open"</NewState>
+	</Trigger>
+	<Trigger>
+		<Type>"Position"</Type>
+		<Area>[200,183,11,14]</Area>
+		<Effect>"TBSC"</Effect>
+			<Time>12</Time>
+			<Target>"Gate"</Target>
+			<NewState>"Close"</NewState>
+	</Trigger>
+	
+	<Trigger>
+		<Type>"Position"</Type>
+		<Area>[495,228,32,12]</Area>
+		<Effect>"Area Change"</Effect>
+			<NewArea>"Test2"</NewArea>
+			<NewAreaXML>"Levels/TestArea/Test.xml"</NewAreaXML>
+			<PlayerPos>[185,14]</PlayerPos>
+	</Trigger>
+	<Trigger>
+		<Type>"Position"</Type>
+		<Area>[461,8,32,8]</Area>
+		<Effect>"Area Change"</Effect>
+			<NewArea>"Test4"</NewArea>
+			<NewAreaXML>"Levels/TestArea/Test.xml"</NewAreaXML>
+			<PlayerPos>[119,215]</PlayerPos>
+	</Trigger>
+</Level>
+
+<Animation DarkN>
+	<delay>.5</delay>
+	<Frame>
+		<image>Objects/Black.png</image>
+	</Frame>
+</Animation>
+
+<Animation LightN>
+	<Frame>
+		<image>Levels/TestArea/Custom/Lighting/LightPathWay1.png</image>
+		<delay>.25</delay>
+	</Frame>
+	<Frame>
+		<image>Levels/TestArea/Custom/Lighting/LightPathWay2.png</image>
+		<delay>1</delay>
+	</Frame>
+</Animation>
+
+<Level Test4>
+	<LevelName>Test Chamber 4</LevelName>
+	<Background>Backgrounds/Overworld/TestArea/Test4.png</Background>
+	<Mask>Backgrounds/Overworld/TestArea/Masks/Test4.png</Mask>
+	<GameObject Objects/Scenery.xml Crate1>
+		<Pos>[51,51]</Pos>
+		<Id>"Crate"</Id>
+		<Pushable>true</Pushable>
+		<Area>[50,40,114,132]</Area>
+	</GameObject>
+	<GameObject Objects/Scenery.xml Crate1>
+		<Pos>[121,51]</Pos>
+		<Id>"Crate2"</Id>
+		<Pushable>true</Pushable>
+		<Area>[50,40,114,132]</Area>
+	</GameObject>
+	<GameObject Objects/Doors.xml IronGate>
+		<Pos>[177,1]</Pos>
+		<Id>"Gate"</Id>
+	</GameObject>
+	<Trigger>
+		<Type>"Object Position"</Type>
+		<Area>[129,142,10,10]</Area>
+		<AutoReset>false</AutoReset>
+		<Effect>"State Set"</Effect>
+			<Target>"Gate"</Target>
+			<NewState>"Open"</NewState>
+	</Trigger>
+	<Trigger>
+		<Type>"Position"</Type>
+		<Area>[109,228,32,12]</Area>
+		<Effect>"Area Change"</Effect>
+			<NewArea>"Test3"</NewArea>
+			<NewAreaXML>"Levels/TestArea/Test.xml"</NewAreaXML>
+			<PlayerPos>[473,14]</PlayerPos>
+	</Trigger>
+	<Trigger>
+		<Type>"Position"</Type>
+		<Area>[177,8,34,8]</Area>
+		<Effect>"Area Change"</Effect>
+			<NewArea>"Test1"</NewArea>
+			<NewAreaXML>"Levels/TestArea/Test.xml"</NewAreaXML>
+			<PlayerPos>[119,215]</PlayerPos>
+	</Trigger>
+</Level>

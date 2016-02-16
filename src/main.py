@@ -1,0 +1,457 @@
+## @package main
+#  Documentation for the Core Module.
+#
+#  This module contains the code related to the core and other module integration.
+#
+## Goals: V 0.1.0
+#
+#    -# GUI - Done
+#      - Inventory Tab - Done
+#      - Party Tab - Done
+#      - Migrate Character Creation - Done
+#    -# Battle - Done
+#      - Dynamic Weapons - Done
+#      - HUD - Done
+#    -# Triggers - Done
+#      - Battle Trigger - Done
+#    -# Documentation - Done
+#      - package documentation for Triggers - Done
+#      - package documentation for Graphics - Done
+#      - package documentation for Battle - Done
+#      - All new code must be documented as it is written.
+#
+##<b>Goals: V 0.2.0</b>
+#    -# Player - Done
+#      - Class Objects - Done
+#    -# GUI - Done
+#      - Pause/Main %Menu - Done
+#      - Shops - Done
+#    -# Make A Town - Done
+#      - Shop - Done
+#      - Inn - Done
+#    -# <b>Overworld</b>
+#      - Fix Pushables (Press button for push) - Done
+#      - <b>Random Monster Encounters</b>
+#    -# Battle - Done
+#      - Battle Transistion - Done
+#      - Abilities - Done
+#    -# <b>Documentation</b>
+#      - <b>package documentation for Game</b>
+#      - package documentation for Player - Done
+#      - <b>package documentation for Items</b>
+#      - All new code must be documented as it is written.
+#
+##Goals: V 0.3.0
+#    -# <b>Documentation</b>
+#      - <b>package documentation for GUI</b>
+#      - <b>package documentation for NPC</b>
+#      - All new code must be documented as it is written.
+#
+##Goals: Future
+#    -# <b>Battle</b>
+#      - <b>Physics</b>
+#    -# <b>Compositor</b>
+#      - <b>VFX</b>
+#      - <b>Filter</b>
+#    -# <b>Cutscenes</b>
+#      - <b>Actions</b>
+#      - <b>Dialog</b>
+#      - <b>Actions/Dialog Sync</b>
+#    -# <b>Triggers</b>
+#      - <b>Cutscene Trigger</b>
+#    -# <b>A Dungeon</b>
+#      - <b>Chests</b>
+#      - <b>Puzzles</b>
+#      - <b>Cutscene</b>
+#      - <b>Boss</b>
+#    -# <b>Level</b>
+#      - <b>Improve load times</b>
+#    -# <b>Saving</b>
+#    -# <b>Documentation</b>
+#      - <b>package documentation for Level</b>
+#      - All new code must be documented as it is written.
+#
+
+import random
+import pygame
+from pygame.locals import *
+
+pygame.init()
+
+import player
+import graphics
+import menu
+import game
+import input as Input
+import level
+import gui
+import enemies
+import battle
+import jobs
+import errors
+
+import npc
+
+"""
+## Goals: V 0.2.0
+#
+#    -# Player
+#      - Class Objects
+#    -# GUI
+#      - Pause/Main %Menu
+#      - Shops
+#    -# Battle
+#      - Abilities
+#      - Physics
+#    -# Compositor
+#      - VFX
+#      - Filter
+#    -# A Town
+#      - Shop
+#      - Inn
+#      - Tavern
+#    -# <b>Documentation</b>
+#      - All new code must be documented as it is written.
+"""
+
+def loadNewArea(xml,Level):
+	global gameEngine
+	global graphicsEngine
+	
+	gameEngine.clearActors()
+	gameEngine.clearNPCs()
+	gameEngine.clearTriggers()
+	graphicsEngine.clearObjects()
+	level.load(xml,Level,gameEngine,graphicsEngine)
+
+def battleStart(Enemies,bg,farBG):
+	global graphicsEngine
+	global graphicsEngineB
+	global battleEngine
+	global Player
+	global PlayerB
+	global BATTLING
+
+	graphicsEngineB = graphics.BattleGraphicsEngine(graphicsEngine.getScreen(),graphicsEngine.getIsScaled(),bg,farBG)
+	battleEngine = battle.BattleEngine(graphicsEngineB)
+	PlayerB = Player.getBattleObject()
+	
+	x = len(Player.getParty())*50
+	PlayerB.setX(x)
+	PlayerB.setState("Idle")
+	PlayerB.setDirection(1)
+	PlayerB.playerStatus = True
+	
+	if Player.getInventory().getArm1()!=None and PlayerB.getGraphicObject().weapon!=None:
+		if Player.getInventory().getArm1().getStyle() != PlayerB.getGraphicObject().weapon.getStyle():
+			PlayerB.updateWeapon(Player.getInventory().getArm1(),Player.constructBattleAnimations())
+	else:
+		if Player.getInventory().getArm1() != PlayerB.getGraphicObject().weapon:
+			PlayerB.updateWeapon(Player.getInventory().getArm1(),Player.constructBattleAnimations())
+	
+	battleEngine.addAlly(PlayerB)
+	for ally in Player.getParty():
+		x-=50
+		allyb = ally.getBattleObject()
+		allyb.setX(x)
+		allyb.setState("Idle")
+		allyb.setDirection(1)
+		battleEngine.addAlly(allyb)
+	
+	x = 800
+	for enemy in Enemies:
+		lvl = max(PlayerB.getLevel()+random.randint(-4,2),1)
+		print lvl
+		temp = enemies.getEnemyFromString(enemy)(lvl,x)
+		battleEngine.addEnemy(temp)
+		x-= 50
+	
+	graphicsEngineB.setFocus(PlayerB.getGraphicObject())
+	graphicsEngineB.getHud().update(battleEngine.playerParty)
+
+	BATTLING = True
+	
+	oldScreen = screen.screen.copy()
+	battleEngine.update(0)
+	newScreen = screen.screen.copy()
+	graphics.blurTrans(clock,screen,oldScreen,newScreen)
+
+screen = graphics.ScaledScreen(pygame.display.set_mode((640,480)),640,480,smoothing=0)
+#screen = graphics.ScaledScreen(pygame.display.set_mode((320,240)),320,240,smoothing=0)
+font = pygame.font.SysFont("Arial",12)
+clock = pygame.time.Clock()
+clock.tick()
+
+gameEngine = game.GameEngine(loadNewArea,battleStart)
+graphicsEngine = graphics.GraphicsEngine(screen,True)
+inputEngine = Input.InputEngine()
+errors.ErrorEngine(screen,level=errors.ERROR,quiet=False)
+
+pygame.key.set_repeat(250,100)
+
+gui.Icons=gui.loadIcons()
+
+#allies=[player.Player("Markus Clarkus ",3,1,[0,255,255],1,[0,255,127],False).getBattleObject(),player.Player("Clark",3,1,[0,255,255],1,[0,255,127],False).getBattleObject()]
+#enemies=[enemies.GreenSlime(1,100)]
+#battle.BattleTest(screen,allies,enemies)
+
+options = [["Levels/TestArea/Test.xml","Test1"],["Levels/TestArea/Test.xml","Test3"],["Levels/TestArea/TestVillage.xml","VillageMain"]]
+choice = random.choice(options)
+#choice = ["Levels/TestArea/TestVillage.xml","VillageMain"]
+level.load(choice[0],choice[1],gameEngine,graphicsEngine)
+
+menu = gui.MainMenu()
+while menu:
+	for inp in inputEngine.getInput():
+		if inp[0] == "Quit":
+			pygame.quit()
+			exit()
+		elif inp[1] == "Down":
+			if inp[0] == "Accept":
+				menu.Select()
+			elif inp[0] == "Cancel":
+				menu.Cancel()
+	
+	move = inputEngine.getMove()
+	if move[0]:
+		menu.SelUp()
+	if move[1]:
+		menu.SelRight()
+	if move[2]:
+		menu.SelDown()
+	if move[3]:
+		menu.SelLeft()
+	
+	tick = clock.tick()/1000.0
+	for item in gameEngine.actors:
+		item.update(tick,gameEngine.moveCheck)
+	for item in gameEngine.NPCs:
+		item.update(tick,gameEngine.moveCheck)
+	screen.blit(graphicsEngine.background,[0,0])
+	for item in graphicsEngine.objects:
+		item.update(tick)
+		screen.blit(item.getSprite(),item.getPos())
+	menu.update(screen,tick)
+	
+	if menu.closed():
+		val = menu.getValue()
+		if val == "Play":
+			Player = menu.getPlayer()
+			menu = False
+		elif val == "New Single":
+			menu = gui.CharacterCreator(player.Player,inputEngine.setDump(True))
+		elif val == "Exit":
+			pygame.quit()
+			exit()
+		elif val == "Main":
+			menu = gui.MainMenu()
+		
+	
+	screen.update()
+	pygame.display.update()
+
+
+loadNewArea("Levels/TestArea/TestVillage.xml","VillageMain");Player.getGameObject().setPos([400,550])
+#loadNewArea("Levels/TestArea/Test.xml","Test4");Player.getGameObject().setPos([100,100])
+graphicsEngine.setPlayer(Player.getGraphicObject())
+gameEngine.setPlayer(Player.getGameObject())
+
+gui.debugInfo=graphics.TextObject("",[0,0])
+gui.debugInfo.layer = 2
+#debugInfo = graphics.GraphicObject([[[pygame.image.load("sObjects/Lever1W1.png").convert_alpha()]]],[0.1])
+#fpsCount = 1.0
+#fps = []
+graphicsEngine.debug=gui.debugInfo
+
+graphicsEngine.setFocus(Player.getGraphicObject())
+
+Player.party.append(npc.BattleNPC("Jeorge",jobs.Warrior(1),1,(255,0,0),1,(255,127,0)))
+Player.party.append(npc.BattleNPC("George",jobs.Warrior(1),1,(0,0,255),1,(0,127,255)))
+Player.party.append(npc.BattleNPC("Jeorge",jobs.Warrior(1),1,(255,0,0),1,(255,127,0)))
+Player.party.append(npc.BattleNPC("George",jobs.Warrior(1),1,(0,0,255),1,(0,127,255)))
+Player.party.append(npc.BattleNPC("Jeorge",jobs.Warrior(1),1,(255,0,0),1,(255,127,0)))
+#Player.party[1].getBattleObject().HpM = 1000
+#Player.party[0].getBattleObject().ai = enemies.WandererAI(20,100)
+#Player.party[1].getBattleObject().ai = enemies.WandererAI(20,100)
+
+PLAYING=True
+BATTLING = False
+pygame.key.set_repeat()
+
+while PLAYING:
+	tick = clock.tick(60)/1000.0
+	if BATTLING:
+		for event in inputEngine.getInput(tick):
+			if event[0] == "Quit":
+				PLAYING = False
+			elif event[1] == "Down":
+				if event[0] == "Accept":
+					if PlayerB.getHP()>0:
+						PlayerB.attack()
+				elif event[0] == "Cancel":
+					if PlayerB.getGraphicObject().currentAnimation.getNextAnimation() != None:
+						errors.getLogger().info(PlayerB.getGraphicObject().currentAnimation.getName()+", "+PlayerB.getGraphicObject().currentAnimation.getNextAnimation().getName())
+					else:
+						errors.getLogger().info(PlayerB.getGraphicObject().currentAnimation.getName()+", "+PlayerB.getGraphicObject().currentAnimation.getNextAnimation())
+				elif event[0].startswith("S1"):
+					if Player.getSkill(event[0])!=None and Player.getSkill(event[0]).getType()=="Projectile":
+						proj = Player.getSkill(event[0]).use(PlayerB)
+						if proj:
+							battleEngine.addProjectile(proj)
+		move=inputEngine.getMove()
+		if move[1]:
+			if PlayerB.getDirection()!=1:
+				PlayerB.setDirection(1)
+			if PlayerB.getState()=="Idle":
+				PlayerB.setState("Run")
+		if move[3]:
+			if PlayerB.getDirection()!=0:
+				PlayerB.setDirection(0)
+			if PlayerB.getState()=="Idle":
+				PlayerB.setState("Run")
+		if (not move[1] and not move[3]) or (move[1] and move[3]):
+			if PlayerB.getState()=="Run":
+				PlayerB.setState("Idle")
+		
+		if battleEngine.update(tick):
+			BATTLING = False
+			battleEngine.getGraphicsEngine().victoryScreen(clock,inputEngine,battleEngine.getPlayerParty(),battleEngine.getGold(),battleEngine.getExp(),battleEngine.getLoot())
+			oldScreen = screen.copy()
+			graphicsEngine.update(0)
+			newScreen = screen.copy()
+			graphics.blurTrans(clock,screen,oldScreen,newScreen)
+			Player.getInventory().addGold(battleEngine.getGold())
+			for item in battleEngine.getLoot():
+				Player.getInventory().addItem(item)
+			for ally in battleEngine.getPlayerParty():
+				ally.addExp(battleEngine.getExp())
+	else:	#Overworld
+		for inp in inputEngine.getInput():
+			if inp[0] == "Quit":
+				PLAYING = False
+			elif inp[1] == "Down":
+				if graphicsEngine.getInven() == False and graphicsEngine.getPause() == False and graphicsEngine.getShop() == False:
+					if inp[0] == "Accept":
+						if Player.getTalking():
+							graphicsEngine.getTalking().Cont()
+						else:
+							gameEngine.interact(Player.getGameObject())
+				elif graphicsEngine.getPause():
+					if inp[0] == "Accept":
+						graphicsEngine.getPause().Select()
+					elif inp[0] == "Cancel":
+						graphicsEngine.getPause().Cancel()
+				elif graphicsEngine.getShop():
+					if inp[0] == "Accept":
+						graphicsEngine.getShop().Select()
+					elif inp[0] == "Cancel":
+						graphicsEngine.getShop().Cancel()
+				else:
+					if inp[0] == "Accept":
+						graphicsEngine.getInven().Select()
+					elif inp[0] == "Cancel":
+						graphicsEngine.getInven().Cancel()
+				if not Player.getTalking():
+					if inp[0] == "Inven":
+						graphicsEngine.toggleInven()
+					if inp[0] == "Pause":
+						graphicsEngine.togglePause()
+
+		
+		#tmp = None
+		#for actor in gameEngine.Actors:
+		#	if actor.ID == "Gate":
+		#		tmp = actor
+		#gui.debugInfo.setText(str(tmp.graphicObject.state)+":"+str(tmp.graphicObject.getFrame()))
+		
+		#gui.debugInfo.setText(str(Player.getGraphicObject().getPos()))
+		#gui.debugInfo.setText(str(gameEngine.actors))
+		
+		#Average Framerate:
+		#fpsCount -= tick
+		#if fpsCount >0:
+		#	fps.append(clock.get_fps())
+		#else:
+		#	fpsCount = 1.0
+		#	gui.debugInfo.setText(str(sum(fps)/len(fps)))
+		#	fps = []
+		
+		move = inputEngine.getMove()
+		if graphicsEngine.getTalking():
+			if move[0]:
+				graphicsEngine.getTalking().SelUp()
+			if move[2]:
+				graphicsEngine.getTalking().SelDown()
+		elif graphicsEngine.getPause():
+			if move[0]:
+				graphicsEngine.getPause().SelUp()
+			if move[1]:
+				graphicsEngine.getPause().SelRight()
+			if move[2]:
+				graphicsEngine.getPause().SelDown()
+			if move[3]:
+				graphicsEngine.getPause().SelLeft()
+		elif graphicsEngine.getInven():
+			if move[0]:
+				graphicsEngine.getInven().SelUp()
+			if move[1]:
+				graphicsEngine.getInven().SelRight()
+			if move[2]:
+				graphicsEngine.getInven().SelDown()
+			if move[3]:
+				graphicsEngine.getInven().SelLeft()
+		elif graphicsEngine.getShop():
+			if move[0]:
+				graphicsEngine.getShop().SelUp()
+			if move[1]:
+				graphicsEngine.getShop().SelRight()
+			if move[2]:
+				graphicsEngine.getShop().SelDown()
+			if move[3]:
+				graphicsEngine.getShop().SelLeft()
+		elif Player.getCanMove():
+			if move[0]:
+				Player.setDirection(0)
+			if move[2]:
+				Player.setDirection(2)
+			if move[1]:
+				Player.setDirection(1)
+			if move[3]:
+				Player.setDirection(3)
+			
+			dire = inputEngine.getDirection()
+			Player.getGameObject().setDirection(dire)
+			
+		if sum(move)!=0 and not Player.getGameObject().getMoving() and not graphicsEngine.getTalking() and not graphicsEngine.getInven() and not graphicsEngine.getPause() and not graphicsEngine.getShop():
+			Player.setState("Walk")
+			Player.getGraphicObject().setFrame(1)
+			Player.getGameObject().setMoving(True)
+		elif (sum(move)==0 and Player.getGameObject().getMoving()) or graphicsEngine.getTalking() or graphicsEngine.getInven() or graphicsEngine.getPause() or graphicsEngine.getShop():
+			Player.setState("Idle")
+			Player.getGameObject().setMoving(False)
+		
+		
+		#tick = clock.tick()/1000.0
+		
+		if graphicsEngine.getTalking()==None and Player.getTalking():
+			graphicsEngine.setTalking(Player.getTalking())
+		elif graphicsEngine.getTalking()==False and Player.getTalking():
+			graphicsEngine.resetTalking()
+			Player.setTalking(False)
+		
+		if graphicsEngine.getPause():
+			if graphicsEngine.getPause().closed():
+				if graphicsEngine.getPause().getValue() == "Exit":
+					PLAYING = False
+				elif graphicsEngine.getPause().getValue() == "Resume":
+					graphicsEngine.togglePause()
+		
+		if graphicsEngine.getSleep():
+			gameEngine.sleep()
+		
+		gameEngine.update(tick)
+		graphicsEngine.update(tick)
+
+#Exit code:		
+pygame.quit()
+exit()

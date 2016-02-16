@@ -1,0 +1,13 @@
+<Animation CloseN>
+	<delay>.5</delay>
+	<Frame>
+		<image>Objects/Testing/Test1.png</image>
+	</Frame>
+</Animation>
+
+<Animation OpenN>
+	<delay>.5</delay>
+	<Frame>
+		<image>Objects/Testing/Test1Open.png</image>
+	</Frame>
+</Animation>

@@ -1,0 +1,55 @@
+<GameObject CastleGate>
+	<Mask>
+		<State Close>"Objects/Buildings/CastleGateMask.png"</State>
+	</Mask>
+	<State>"Close"</State>
+	<Spd>0</Spd>
+	<GraphicObject>
+		<State Close>
+			<Direction 0>Objects/Buildings/CastleGate.xml</Direction>
+		</State>
+		<state>"Close"</state>
+	</GraphicObject>
+</GameObject>
+
+<GameObject WoodHouse1>
+	<Mask>
+		<State Close>"Objects/Buildings/Houses/WoodHouse1Mask.png"</State>
+		<State Open>"Objects/Buildings/Houses/WoodHouse1MaskOpen.png"</State>
+	</Mask>
+	<State>"Close"</State>
+	<Spd>0</Spd>
+	<GraphicObject>
+		<State Close>
+			<Direction 0>Objects/Buildings/Houses/WoodHouse1.xml</Direction>
+		</State>
+		<State Open>
+			<Direction 0>Objects/Buildings/Houses/WoodHouse1.xml</Direction>
+		</State>
+		<state>"Close"</state>
+	</GraphicObject>
+</GameObject>
+
+<GameObject BlueShopStall>
+	<Mask>
+		<State Idle>"Objects/Buildings/ShopStallMask.png"</State>
+	</Mask>
+	<Spd>0</Spd>
+	<GraphicObject>
+		<State Idle>
+			<Direction 0>Objects/Buildings/BlueShopStall.xml</Direction>
+		</State>
+	</GraphicObject>
+</GameObject>
+
+<GameObject RedShopStall>
+	<Mask>
+		<State Idle>"Objects/Buildings/ShopStallMask.png"</State>
+	</Mask>
+	<Spd>0</Spd>
+	<GraphicObject>
+		<State Idle>
+			<Direction 0>Objects/Buildings/RedShopStall.xml</Direction>
+		</State>
+	</GraphicObject>
+</GameObject>

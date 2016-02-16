@@ -1,0 +1,74 @@
+<Animation Idle>
+	<delay>.5</delay>
+	<Frame>
+		<image>Battle/Arms/Swords/IronShortSword/Idle1.png</image>
+	</Frame>
+</Animation>
+
+<Animation Walk>
+	<delay>.17</delay>
+	<Frame>
+		<image>Battle/Arms/Swords/IronShortSword/Walk1.png</image>
+	</Frame>
+	<Frame>
+		<image>Battle/Arms/Swords/IronShortSword/Walk2.png</image>
+	</Frame>
+	<Frame>
+		<image>Battle/Arms/Swords/IronShortSword/Walk3.png</image>
+	</Frame>
+	<Frame>
+		<image>Battle/Arms/Swords/IronShortSword/Walk4.png</image>
+	</Frame>
+</Animation>
+
+<Animation Attack1>
+	<Frame>
+		<delay>.05</delay>
+		<image>Battle/Arms/Swords/IronShortSword/Attack1.png</image>
+	</Frame>
+	<Frame>
+		<delay>.15</delay>
+		<image>Battle/Arms/Swords/IronShortSword/Attack2.png</image>
+	</Frame>
+	<Frame>
+		<delay>.25</delay>
+		<image>Battle/Arms/Swords/IronShortSword/Attack3.png</image>
+	</Frame>
+</Animation>
+
+<Animation Attack2>
+	<Frame>
+		<delay>.05</delay>
+		<image>Battle/Arms/Swords/IronShortSword/Attack4.png</image>
+	</Frame>
+	<Frame>
+		<delay>.15</delay>
+		<image>Battle/Arms/Swords/IronShortSword/Attack5.png</image>
+	</Frame>
+	<Frame>
+		<delay>.25</delay>
+		<image>Battle/Arms/Swords/IronShortSword/Attack6.png</image>
+	</Frame>
+</Animation>
+
+<Animation Attack3>
+	<Frame>
+		<delay>.05</delay>
+		<image>Battle/Arms/Swords/IronShortSword/Attack1.png</image>
+	</Frame>
+	<Frame>
+		<delay>.15</delay>
+		<image>Battle/Arms/Swords/IronShortSword/Attack2.png</image>
+	</Frame>
+	<Frame>
+		<delay>.25</delay>
+		<image>Battle/Arms/Swords/IronShortSword/Attack3.png</image>
+	</Frame>
+</Animation>
+
+<Animation Death>
+	<Frame>
+		<delay>.5</delay>
+		<image>Battle/Arms/Swords/IronShortSword/Attack6.png</image>
+	</Frame>
+</Animation>

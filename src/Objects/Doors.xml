@@ -1,0 +1,24 @@
+<GameObject IronGate>
+	<Mask>
+		<State Close>"Objects/Doors/IronGateS1Mask.png"</State>
+		<State Open>null</State>
+	</Mask>
+	<Spd>0</Spd>
+	<State>"Close"</State>
+	<GraphicObject>
+		<State Close>
+			<Direction 2>Objects/Doors/IronGate.xml</Direction>
+		</State>
+		<State Closed>
+			<Direction 2>Objects/Doors/IronGate.xml</Direction>
+		</State>
+		<State Open>
+			<Direction 2>Objects/Doors/IronGate.xml</Direction>
+		</State>
+		<State Opened>
+			<Direction 2>Objects/Doors/IronGate.xml</Direction>
+		</State>
+		<direction>2</direction>
+		<state>"Closed"</state>
+	</GraphicObject>
+</GameObject>

@@ -1,0 +1,41 @@
+<Animation ClosedS>
+	<delay>.5</delay>
+	<Frame>
+		<image>Objects/Doors/IronGateS1.png</image>
+	</Frame>
+</Animation>
+
+<Animation OpenS>
+	<delay>.25</delay>
+	<nextAnimation>OpenedS</nextAnimation>
+	<Frame>
+		<image>Objects/Doors/IronGateS1.png</image>
+	</Frame>
+	<Frame>
+		<image>Objects/Doors/IronGateS2.png</image>
+	</Frame>
+	<Frame>
+		<image>Objects/Doors/IronGateS3.png</image>
+	</Frame>
+</Animation>
+
+<Animation OpenedS>
+	<delay>.5</delay>
+	<Frame>
+		<image>Objects/Doors/IronGateS4.png</image>
+	</Frame>
+</Animation>
+
+<Animation CloseS>
+	<delay>.25</delay>
+	<nextAnimation>ClosedS</nextAnimation>
+	<Frame>
+		<image>Objects/Doors/IronGateS3.png</image>
+	</Frame>
+	<Frame>
+		<image>Objects/Doors/IronGateS2.png</image>
+	</Frame>
+	<Frame>
+		<image>Objects/Doors/IronGateS1.png</image>
+	</Frame>
+</Animation>

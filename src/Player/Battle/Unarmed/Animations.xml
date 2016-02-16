@@ -1,0 +1,58 @@
+<Animation Idle>
+	<delay>.5</delay>
+	<Frame>
+		<image>Player/Battle/Unarmed/Composite/Idle1</image>
+	</Frame>
+</Animation>
+
+<Animation Run>
+	<delay>.17</delay>
+	<Frame>
+		<image>Player/Battle/Unarmed/Composite/Walk1</image>
+	</Frame>
+	<Frame>
+		<image>Player/Battle/Unarmed/Composite/Walk2</image>
+	</Frame>
+	<Frame>
+		<image>Player/Battle/Unarmed/Composite/Walk3</image>
+	</Frame>
+	<Frame>
+		<image>Player/Battle/Unarmed/Composite/Walk4</image>
+	</Frame>
+</Animation>
+
+<Animation Attack1>
+	<delay>0.15</delay>
+	<nextAnimation>Idle</nextAnimation>
+	<Frame>
+		<image>Player/Battle/Unarmed/Composite/Attack1</image>
+	</Frame>
+	<Frame>
+		<image>Player/Battle/Unarmed/Composite/Idle1</image>
+	</Frame>
+</Animation>
+
+<Animation Attack2>
+	<delay>0.15</delay>
+	<nextAnimation>Idle</nextAnimation>
+	<Frame>
+		<image>Player/Battle/Unarmed/Composite/Attack2</image>
+	</Frame>
+	<Frame>
+		<image>Player/Battle/Unarmed/Composite/Attack3</image>
+	</Frame>
+	<Frame>
+		<image>Player/Battle/Unarmed/Composite/Attack2</image>
+	</Frame>
+</Animation>
+
+<Animation Attack3>
+	<nextAnimation>Idle</nextAnimation>
+	<delay>0.15</delay>
+	<Frame>
+		<image>Player/Battle/Unarmed/Composite/Attack1</image>
+	</Frame>
+	<Frame>
+		<image>Player/Battle/Unarmed/Composite/Idle1</image>
+	</Frame>
+</Animation>

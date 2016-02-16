@@ -1,0 +1,6 @@
+<Animation CloseN>
+	<delay>.5</delay>
+	<Frame>
+		<image>Objects/Testing/Test2.png</image>
+	</Frame>
+</Animation>

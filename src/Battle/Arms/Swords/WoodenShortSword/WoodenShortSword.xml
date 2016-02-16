@@ -1,0 +1,74 @@
+<Animation Idle>
+	<delay>.5</delay>
+	<Frame>
+		<image>Battle/Arms/Swords/WoodenShortSword/Idle1.png</image>
+	</Frame>
+</Animation>
+
+<Animation Walk>
+	<delay>.17</delay>
+	<Frame>
+		<image>Battle/Arms/Swords/WoodenShortSword/Walk1.png</image>
+	</Frame>
+	<Frame>
+		<image>Battle/Arms/Swords/WoodenShortSword/Walk2.png</image>
+	</Frame>
+	<Frame>
+		<image>Battle/Arms/Swords/WoodenShortSword/Walk3.png</image>
+	</Frame>
+	<Frame>
+		<image>Battle/Arms/Swords/WoodenShortSword/Walk4.png</image>
+	</Frame>
+</Animation>
+
+<Animation Attack1>
+	<Frame>
+		<delay>.05</delay>
+		<image>Battle/Arms/Swords/WoodenShortSword/Attack1.png</image>
+	</Frame>
+	<Frame>
+		<delay>.15</delay>
+		<image>Battle/Arms/Swords/WoodenShortSword/Attack2.png</image>
+	</Frame>
+	<Frame>
+		<delay>.25</delay>
+		<image>Battle/Arms/Swords/WoodenShortSword/Attack3.png</image>
+	</Frame>
+</Animation>
+
+<Animation Attack2>
+	<Frame>
+		<delay>.05</delay>
+		<image>Battle/Arms/Swords/WoodenShortSword/Attack4.png</image>
+	</Frame>
+	<Frame>
+		<delay>.15</delay>
+		<image>Battle/Arms/Swords/WoodenShortSword/Attack5.png</image>
+	</Frame>
+	<Frame>
+		<delay>.25</delay>
+		<image>Battle/Arms/Swords/WoodenShortSword/Attack6.png</image>
+	</Frame>
+</Animation>
+
+<Animation Attack3>
+	<Frame>
+		<delay>.05</delay>
+		<image>Battle/Arms/Swords/WoodenShortSword/Attack1.png</image>
+	</Frame>
+	<Frame>
+		<delay>.15</delay>
+		<image>Battle/Arms/Swords/WoodenShortSword/Attack2.png</image>
+	</Frame>
+	<Frame>
+		<delay>.25</delay>
+		<image>Battle/Arms/Swords/WoodenShortSword/Attack3.png</image>
+	</Frame>
+</Animation>
+
+<Animation Death>
+	<Frame>
+		<delay>.5</delay>
+		<image>Battle/Arms/Swords/WoodenShortSword/Attack6.png</image>
+	</Frame>
+</Animation>

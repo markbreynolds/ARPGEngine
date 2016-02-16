@@ -1,0 +1,157 @@
+<Level VillageMain>
+	<LevelName>Test Village</LevelName>
+	<Background>Backgrounds/Overworld/TestArea/VillageMainTestPaths.png</Background>
+	<BattleBG>["Backgrounds/Battle/TestArea/TestC.png","Backgrounds/Battle/TestArea/TestG.png"]</BattleBG>
+	<Mask>Backgrounds/Overworld/TestArea/Masks/VillageMain.png</Mask>
+	<NPC>
+		<Name>"Joey"</Name>
+		<ID>"Joey"</ID>
+		<Pos>[530,450]</Pos>
+		<Dialog>Levels/TestArea/Dialog/TestDialog.JSON</Dialog>
+		<ClothingType>null</ClothingType>
+		<ClothingColor>null</ClothingColor>
+		<HairType>null</HairType>
+		<HairColor>null</HairColor>
+		<Icon>null</Icon>
+		<Wander>true</Wander>
+	</NPC>
+	<NPC>
+		<Name>"Shopkeeper"</Name>
+		<ID>"Shopkeeper"</ID>
+		<Pos>[405,394]</Pos>
+		<Dialog>Levels/TestArea/Dialog/Shopkeeper.JSON</Dialog>
+		<Shop>["HealthPotion","ManaPotion","ElixirPotion","IronShortSword","IronChestPlate"]</Shop>
+		<ClothingType>null</ClothingType>
+		<ClothingColor>3</ClothingColor>
+		<HairType>1</HairType>
+		<HairColor>4</HairColor>
+		<Icon>null</Icon>
+		<Wander>false</Wander>
+		<Direction>2</Direction>
+	</NPC>
+	<GameObject Objects/Doors.xml IronGate>
+		<Pos>[551,108]</Pos>
+		<Id>"Top Gate"</Id>
+	</GameObject>
+	<GameObject Objects/Buildings.xml WoodHouse1>
+		<Pos>[193,150]</Pos>
+		<Id>"Inn"</Id>
+		<State>"Open"</State>
+		<GraphicObject>
+			<state>"Open"</state>
+		</GraphicObject>
+	</GameObject>
+	<GameObject Objects/Buildings.xml WoodHouse1>
+		<Pos>[348,150]</Pos>
+		<Id>"House1"</Id>
+	</GameObject>
+	<GameObject Objects/Buildings.xml WoodHouse1>
+		<Pos>[639,150]</Pos>
+		<Id>"House2"</Id>
+	</GameObject>
+	<GameObject Objects/Buildings.xml WoodHouse1>
+		<Pos>[193,321]</Pos>
+		<Id>"House3"</Id>
+	</GameObject>
+	<GameObject Objects/Buildings.xml WoodHouse1>
+		<Pos>[193,492]</Pos>
+		<Id>"House4"</Id>
+	</GameObject>
+	<GameObject Objects/Buildings.xml WoodHouse1>
+		<Pos>[639,492]</Pos>
+		<Id>"House5"</Id>
+	</GameObject>
+	<GameObject Objects/Buildings.xml BlueShopStall>
+		<Pos>[369,350]</Pos>
+		<Id>"Item Stall"</Id>
+	</GameObject>
+	<GameObject Objects/Buildings.xml RedShopStall>
+		<Pos>[659,350]</Pos>
+		<Id>"Weapon Stall"</Id>
+	</GameObject>
+	<GameObject Objects/Scenery.xml Well>
+		<Pos>[672,300]</Pos>
+		<Id>"Well"</Id>
+	</GameObject>
+	<GameObject Objects/Buildings.xml CastleGate>
+		<Pos>[170,613]</Pos>
+		<Id>"Gate"</Id>
+	</GameObject>
+	<Trigger>
+		<Type>"Position"</Type>
+		<Area>[210,244,19,20]</Area>
+		<Effect>"Area Change"</Effect>
+			<NewArea>"VillageInn"</NewArea>
+			<NewAreaXML>"Levels/TestArea/TestVillage.xml"</NewAreaXML>
+			<PlayerPos>[44,212]</PlayerPos>
+	</Trigger>
+	<Trigger>
+		<Type>"Action"</Type>
+		<Area>[657,315,44,50]</Area>
+		<Effect>"Area Change"</Effect>
+			<NewArea>"Test1"</NewArea>
+			<NewAreaXML>"Levels/TestArea/Test.xml"</NewAreaXML>
+			<PlayerPos>[257,178]</PlayerPos>
+	</Trigger>
+</Level>
+
+<Level VillageShop>
+	<LevelName>Test Village Shop</LevelName>
+	<NPC>
+		<Name>"Shopkeeper"</Name>
+		<ID>"Shopkeeper"</ID>
+		<Pos>[109,81]</Pos>
+		<Dialog>Levels/TestArea/Dialog/Innkeeper.JSON</Dialog>
+		<Shop>["HealthPotion","ManaPotion","ElixirPotion","IronShortSword","IronChestPlate"]</Shop>
+		<ClothingType>null</ClothingType>
+		<ClothingColor>3</ClothingColor>
+		<HairType>1</HairType>
+		<HairColor>4</HairColor>
+		<Icon>null</Icon>
+		<Wander>false</Wander>
+		<Direction>2</Direction>
+	</NPC>
+	<GameObject Objects/Scenery.xml Counter>
+		<Pos>[6,98]</Pos>
+		<Id>"Counter"</Id>
+	</GameObject>
+	<Trigger>
+		<Type>"Position"</Type>
+		<Area>[34,230,36,7]</Area>
+		<Effect>"Area Change"</Effect>
+			<NewArea>"VillageMain"</NewArea>
+			<NewAreaXML>"Levels/TestArea/TestVillage.xml"</NewAreaXML>
+			<PlayerPos>[211,254]</PlayerPos>
+	</Trigger>
+</Level>
+
+<Level VillageInn>
+	<LevelName>Test Village Shop</LevelName>
+	<Background>Backgrounds/Overworld/TestArea/VillageInn.png</Background>
+	<Mask>Backgrounds/Overworld/TestArea/Masks/VillageInn.png</Mask>
+	<NPC>
+		<Name>"Innkeeper"</Name>
+		<ID>"Innkeeper"</ID>
+		<Pos>[109,81]</Pos>
+		<Dialog>Levels/TestArea/Dialog/Innkeeper.JSON</Dialog>
+		<ClothingType>null</ClothingType>
+		<ClothingColor>3</ClothingColor>
+		<HairType>1</HairType>
+		<HairColor>4</HairColor>
+		<Icon>null</Icon>
+		<Wander>false</Wander>
+		<Direction>2</Direction>
+	</NPC>
+	<GameObject Objects/Scenery.xml Counter>
+		<Pos>[6,98]</Pos>
+		<Id>"Counter"</Id>
+	</GameObject>
+	<Trigger>
+		<Type>"Position"</Type>
+		<Area>[34,230,36,7]</Area>
+		<Effect>"Area Change"</Effect>
+			<NewArea>"VillageMain"</NewArea>
+			<NewAreaXML>"Levels/TestArea/TestVillage.xml"</NewAreaXML>
+			<PlayerPos>[211,254]</PlayerPos>
+	</Trigger>
+</Level>

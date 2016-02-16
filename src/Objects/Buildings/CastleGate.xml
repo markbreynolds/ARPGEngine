@@ -1,0 +1,13 @@
+<Animation CloseN>
+	<delay>.5</delay>
+	<Frame>
+		<image>Objects/Buildings/CastleGate.png</image>
+	</Frame>
+</Animation>
+
+<Animation OpenN>
+	<delay>.5</delay>
+	<Frame>
+		<image>Objects/Buildings/Houses/WoodHouse1Open.png</image>
+	</Frame>
+</Animation>

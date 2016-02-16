@@ -1,0 +1,83 @@
+<Animation UpS>
+	<delay>.1</delay>
+	<nextAnimation>UpsS</nextAnimation>
+	<Frame>
+		<image>Objects/Levers/Lever1S3.png</image>
+	</Frame>
+	<Frame>
+		<image>Objects/Levers/Lever1S2.png</image>
+	</Frame>
+	<Frame>
+		<image>Objects/Levers/Lever1S1.png</image>
+	</Frame>
+</Animation>
+
+<Animation UpsS>
+	<delay>.5</delay>
+	<Frame>
+		<image>Objects/Levers/Lever1S1.png</image>
+	</Frame>
+</Animation>
+
+<Animation DownS>
+	<delay>.1</delay>
+	<nextAnimation>DownsS</nextAnimation>
+	<Frame>
+		<image>Objects/Levers/Lever1S1.png</image>
+	</Frame>
+	<Frame>
+		<image>Objects/Levers/Lever1S2.png</image>
+	</Frame>
+	<Frame>
+		<image>Objects/Levers/Lever1S3.png</image>
+	</Frame>
+</Animation>
+
+<Animation DownsS>
+	<delay>.5</delay>
+	<Frame>
+		<image>Objects/Levers/Lever1S3.png</image>
+	</Frame>
+</Animation>
+
+<Animation UpE>
+	<delay>.1</delay>
+	<nextAnimation>UpsE</nextAnimation>
+	<Frame>
+		<image>Objects/Levers/Lever1E3.png</image>
+	</Frame>
+	<Frame>
+		<image>Objects/Levers/Lever1E2.png</image>
+	</Frame>
+	<Frame>
+		<image>Objects/Levers/Lever1E1.png</image>
+	</Frame>
+</Animation>
+
+<Animation UpsE>
+	<delay>.5</delay>
+	<Frame>
+		<image>Objects/Levers/Lever1E1.png</image>
+	</Frame>
+</Animation>
+
+<Animation DownE>
+	<delay>.1</delay>
+	<nextAnimation>DownsE</nextAnimation>
+	<Frame>
+		<image>Objects/Levers/Lever1E1.png</image>
+	</Frame>
+	<Frame>
+		<image>Objects/Levers/Lever1E2.png</image>
+	</Frame>
+	<Frame>
+		<image>Objects/Levers/Lever1E3.png</image>
+	</Frame>
+</Animation>
+
+<Animation DownsE>
+	<delay>.5</delay>
+	<Frame>
+		<image>Objects/Levers/Lever1E3.png</image>
+	</Frame>
+</Animation>

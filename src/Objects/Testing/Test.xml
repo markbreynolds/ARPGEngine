@@ -1,0 +1,43 @@
+<GameObject Test1>
+	<Mask>
+		<State Close>"Objects/Testing/Test1Mask.png"</State>
+		<State Open>"Objects/Testing/Test1MaskOpen.png"</State>
+	</Mask>
+	<State>"Close"</State>
+	<Spd>0</Spd>
+	<GraphicObject>
+		<State Close>
+			<Direction 0>Objects/Testing/Test1Anim.xml</Direction>
+		</State>
+		<State Open>
+			<Direction 0>Objects/Testing/Test1Anim.xml</Direction>
+		</State>
+		<state>"Close"<state>
+	</GraphicObject>
+</GameObject>
+<GameObject Test2>
+	<Mask>
+		<State Close>null</State>
+	</Mask>
+	<State>"Close"</State>
+	<Spd>0</Spd>
+	<GraphicObject>
+		<State Close>
+			<Direction 0>Objects/Testing/Test2Anim.xml</Direction>
+		</State>
+		<state>"Close"<state>
+	</GraphicObject>
+</GameObject>
+<GameObject Test3>
+	<Mask>
+		<State Close>null</State>
+	</Mask>
+	<State>"Close"</State>
+	<Spd>0</Spd>
+	<GraphicObject>
+		<State Close>
+			<Direction 0>Objects/Testing/Test3Anim.xml</Direction>
+		</State>
+		<state>"Close"<state>
+	</GraphicObject>
+</GameObject>

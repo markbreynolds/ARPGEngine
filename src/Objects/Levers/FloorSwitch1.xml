@@ -1,0 +1,13 @@
+<Animation UpN>
+	<delay>.5</delay>
+	<Frame>
+		<image>Objects/Levers/FloorSwitch1Up.png</image>
+	</Frame>
+</Animation>
+
+<Animation DownN>
+	<delay>.5</delay>
+	<Frame>
+		<image>Objects/Levers/FloorSwitch1Down.png</image>
+	</Frame>
+</Animation>

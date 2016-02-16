@@ -1,0 +1,6 @@
+<Animation IdleN>
+	<delay>.5</delay>
+	<Frame>
+		<image>Objects/Scenery/Crate1.png</image>
+	</Frame>
+</Animation>
