@@ -251,8 +251,8 @@ while menu:
 	pygame.display.update()
 
 
-loadNewArea("Levels/TestArea/TestVillage.xml","VillageMain");Player.getGameObject().setPos([400,550])
-#loadNewArea("Levels/TestArea/Test.xml","Test4");Player.getGameObject().setPos([100,100])
+#loadNewArea("Levels/TestArea/TestVillage.xml","VillageMain");Player.getGameObject().setPos([400,550])
+loadNewArea("Levels/TestArea/Test.xml","Test1");Player.getGameObject().setPos([100,100])
 graphicsEngine.setPlayer(Player.getGraphicObject())
 gameEngine.setPlayer(Player.getGameObject())
 

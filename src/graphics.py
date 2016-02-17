@@ -6,11 +6,12 @@
 import pygame
 import math
 import gui
+import config
 
 from pygame.locals import *
 
-## @deprecated Use fonts in gui
-font = pygame.font.Font("Fonts/visitor1.ttf",10)
+## @deprecated Use fonts in gui, will be removed soonish.
+font = pygame.font.Font(config.assetPath+"Fonts/visitor1.ttf",10)
 
 ## Sort function for sorting by y
 #
@@ -238,7 +239,7 @@ class Animation(object):
 #  @param xmlPath Path to xml file containing animation data.
 #  @param animation Name of animation to load from file.
 def loadAnimation(xmlPath,animation):
-	filer = open(xmlPath,"r")
+	filer = open(config.assetPath+xmlPath,"r")
 	lines = filer.readlines()
 	
 	started=False
@@ -276,7 +277,7 @@ def loadAnimation(xmlPath,animation):
 			
 			while animData[i] != "</Frame>":
 				if animData[i].startswith("<image>"):
-					image = pygame.image.load(animData[i][7:-8]).convert_alpha()
+					image = pygame.image.load(config.assetPath+animData[i][7:-8]).convert_alpha()
 				elif animData[i].startswith("<number>"):
 					number = int(animData[i][8:-9])
 				elif animData[i].startswith("<delay>"):
@@ -908,10 +909,10 @@ class BattleGraphicsEngine(object):
 		self.dmgVals = []
 		self.hud = gui.BattleHUD([])
 		
-		self.bgG=pygame.image.load("Backgrounds/Battle/"+bg+"G.png").convert()	#Ground
-		self.bgC=pygame.image.load("Backgrounds/Battle/"+bg+"C.png").convert_alpha()	#Close Objects
+		self.bgG=pygame.image.load(config.assetPath+bg+"G.png").convert()	#Ground
+		self.bgC=pygame.image.load(config.assetPath+bg+"C.png").convert_alpha()	#Close Objects
 		if farBG:
-			self.bgF=pygame.image.load("Backgrounds/Battle/"+bg+"F.png").convert()	#Far Objects
+			self.bgF=pygame.image.load(config.assetPath+"Backgrounds/Battle/"+bg+"F.png").convert()	#Far Objects
 		else:
 			self.bgF=None
 		
@@ -1031,8 +1032,8 @@ class BattleGraphicsEngine(object):
 			if blink <= 0:
 				blink = 1
 			self.screen.blit(bg,(0,0))
-			self.screen.fill(gui.ColorDark,(x-1,94,width+2,77))
-			self.screen.fill(gui.Color,(x,95,width,75))
+			self.screen.fill(config.ColorDark,(x-1,94,width+2,77))
+			self.screen.fill(config.Color,(x,95,width,75))
 			for inp in Input.getInput():
 				if inp[0] == "Quit":
 					pygame.quit()
@@ -1044,13 +1045,13 @@ class BattleGraphicsEngine(object):
 						if curr == 5:
 							temp=1
 			if curr == 0:
-				self.screen.blit(gui.font.render("Gold: 0",False,gui.ColorFont),(120,100))
+				self.screen.blit(gui.font.render("Gold: 0",False,config.ColorFont),(120,100))
 				time -= tick
 				if time <=0:
 					time =1
 					curr = 1
 			elif curr == 1:
-				self.screen.blit(gui.font.render("Gold: "+str(int(temp)),False,gui.ColorFont),(120,100))
+				self.screen.blit(gui.font.render("Gold: "+str(int(temp)),False,config.ColorFont),(120,100))
 				temp = min(temp+(tick*100),gold)
 				if temp>=gold:
 					time -= tick
@@ -1059,15 +1060,15 @@ class BattleGraphicsEngine(object):
 					curr = 2
 					temp = 0
 			elif curr == 2:
-				self.screen.blit(gui.font.render("Gold: "+str(gold),False,gui.ColorFont),(120,100))
-				self.screen.blit(gui.font.render("Exp: 0",False,gui.ColorFont),(120,112))
+				self.screen.blit(gui.font.render("Gold: "+str(gold),False,config.ColorFont),(120,100))
+				self.screen.blit(gui.font.render("Exp: 0",False,config.ColorFont),(120,112))
 				time -= tick
 				if time <=0:
 					time =1
 					curr = 3
 			elif curr == 3:
-				self.screen.blit(gui.font.render("Gold: "+str(gold),False,gui.ColorFont),(120,100))
-				self.screen.blit(gui.font.render("Exp: "+str(int(temp)),False,gui.ColorFont),(120,112))
+				self.screen.blit(gui.font.render("Gold: "+str(gold),False,config.ColorFont),(120,100))
+				self.screen.blit(gui.font.render("Exp: "+str(int(temp)),False,config.ColorFont),(120,112))
 				temp = min(temp+(tick*100),exp)
 				for ally in players:
 					if ally.getExp()+temp>=ally.getExpNext():
@@ -1076,9 +1077,9 @@ class BattleGraphicsEngine(object):
 						if tempX +30>x and tempX<x+width:
 							tempY = 180
 						if blink<=.5:
-							self.screen.blit(gui.font.render("Level Up!",False,gui.ColorFont),(tempX,tempY))
+							self.screen.blit(gui.font.render("Level Up!",False,config.ColorFont),(tempX,tempY))
 						else:
-							self.screen.blit(gui.font.render("Level Up!",False,gui.ColorSel),(tempX,tempY))
+							self.screen.blit(gui.font.render("Level Up!",False,config.ColorSel),(tempX,tempY))
 				if temp>=exp:
 					time -= tick
 					if time <=0:
@@ -1086,8 +1087,8 @@ class BattleGraphicsEngine(object):
 						curr = 4
 						temp = 0
 			elif curr == 4:
-				self.screen.blit(gui.font.render("Gold: "+str(gold),False,gui.ColorFont),(120,100))
-				self.screen.blit(gui.font.render("Exp: "+str(exp),False,gui.ColorFont),(120,112))
+				self.screen.blit(gui.font.render("Gold: "+str(gold),False,config.ColorFont),(120,100))
+				self.screen.blit(gui.font.render("Exp: "+str(exp),False,config.ColorFont),(120,112))
 				for ally in players:
 					if ally.getExp()+exp>=ally.getExpNext():
 						tempX = max(min(ally.getGraphicObject().getPos()[0]+self.x,265),5)
@@ -1095,18 +1096,18 @@ class BattleGraphicsEngine(object):
 						if tempX +30>x and tempX<x+width:
 							tempY = 180
 						if blink<=.5:
-							self.screen.blit(gui.font.render("Level Up!",False,gui.ColorFont),(tempX,tempY))
+							self.screen.blit(gui.font.render("Level Up!",False,config.ColorFont),(tempX,tempY))
 						else:
-							self.screen.blit(gui.font.render("Level Up!",False,gui.ColorSel),(tempX,tempY))
-				self.screen.blit(gui.font.render("Items:",False,gui.ColorFont),(120,124))
+							self.screen.blit(gui.font.render("Level Up!",False,config.ColorSel),(tempX,tempY))
+				self.screen.blit(gui.font.render("Items:",False,config.ColorFont),(120,124))
 				time -= tick
 				if time <=0:
 					time =1
 					curr = 5
 					temp = 1
 			elif curr == 5:
-				self.screen.blit(gui.font.render("Gold: "+str(gold),False,gui.ColorFont),(120,100))
-				self.screen.blit(gui.font.render("Exp: "+str(exp),False,gui.ColorFont),(120,112))
+				self.screen.blit(gui.font.render("Gold: "+str(gold),False,config.ColorFont),(120,100))
+				self.screen.blit(gui.font.render("Exp: "+str(exp),False,config.ColorFont),(120,112))
 				for ally in players:
 					if ally.getExp()+exp>=ally.getExpNext():
 						tempX = max(min(ally.getGraphicObject().getPos()[0]+self.x,265),5)
@@ -1114,12 +1115,12 @@ class BattleGraphicsEngine(object):
 						if tempX +30>x and tempX<x+width:
 							tempY = 180
 						if blink<=.5:
-							self.screen.blit(gui.font.render("Level Up!",False,gui.ColorFont),(tempX,tempY))
+							self.screen.blit(gui.font.render("Level Up!",False,config.ColorFont),(tempX,tempY))
 						else:
-							self.screen.blit(gui.font.render("Level Up!",False,gui.ColorSel),(tempX,tempY))
-				self.screen.blit(gui.font.render("Items:",False,gui.ColorFont),(120,124))
+							self.screen.blit(gui.font.render("Level Up!",False,config.ColorSel),(tempX,tempY))
+				self.screen.blit(gui.font.render("Items:",False,config.ColorFont),(120,124))
 				if len(items)==0:
-					self.screen.blit(gui.font.render("No Items",False,gui.ColorFont),(120,136))
+					self.screen.blit(gui.font.render("No Items",False,config.ColorFont),(120,136))
 				else:
 					for i in range(0,temp):
 						self.screen.blit(items[i].getSprite(),((26*i)+140+offset,136))
@@ -1129,11 +1130,11 @@ class BattleGraphicsEngine(object):
 							time = 1
 							temp += 1
 			else:
-				self.screen.blit(gui.font.render("Gold: "+str(gold),False,gui.ColorFont),(120,100))
-				self.screen.blit(gui.font.render("Exp: "+str(exp),False,gui.ColorFont),(120,112))
-				self.screen.blit(gui.font.render("Items:",False,gui.ColorFont),(120,124))
+				self.screen.blit(gui.font.render("Gold: "+str(gold),False,config.ColorFont),(120,100))
+				self.screen.blit(gui.font.render("Exp: "+str(exp),False,config.ColorFont),(120,112))
+				self.screen.blit(gui.font.render("Items:",False,config.ColorFont),(120,124))
 				if len(items)==0:
-					self.screen.blit(gui.font.render("No Items",False,gui.ColorFont),(120,136))
+					self.screen.blit(gui.font.render("No Items",False,config.ColorFont),(120,136))
 				else:
 					for i in range(0,len(items)):
 						self.screen.blit(items[i].getSprite(),((26*i)+140+offset,136))
@@ -1155,12 +1156,9 @@ class BattleGraphicsEngine(object):
 				self.scrollX(self.focus.getSpd()*10*tick)
 			else:	#Stabilization Code
 				self.setX(160-(self.focus.getWidth()/2) - self.focus.getX())
-			#offsetX = self.focus.getX()+(self.focus.getWidth()/2)-160
-			#print self.x,offsetX
-			#if int(self.x)>offsetX:
-			#	self.scrollX(-10*tick)
-			#elif int(self.x)<offsetX:
-			#	self.scrollX(10*tick)
+
+			#Perfect tracking with no scroll:
+			self.setX(160-(self.focus.getWidth()/2) - self.focus.getX())
 		
 		if self.bgF!=None:
 			self.screen.blit(self.bgF,[int(self.x*.5),int(self.y*.5)])

@@ -32,7 +32,7 @@
 		<Area>[150,10,20,20]</Area>
 		<Effect>"Battle"</Effect>
 			<Enemies>["GreenSlime","GreenSlime"]</Enemies>
-			<BG>"Test"</BG>
+			<BG>"Backgrounds/Battle/TestArea/Test"</BG>
 			<AutoReset>true</AutoReset>
 	</Trigger>
 	<Trigger>

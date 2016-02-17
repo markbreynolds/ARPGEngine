@@ -15,6 +15,7 @@ import random
 from battle import BattleObject
 from graphics import BattleGraphicObject, Animation, AnimationFrame
 import items
+import config
 
 import pygame
 from pygame.locals import *
@@ -319,28 +320,28 @@ class Slime(Enemy):
 		animations = {"Idle":[Animation(None,None,"IdleW"),Animation(None,None,"IdleE")],"Run":[Animation(None,None,"RunW"),Animation(None,None,"RunE")],"Attack":[Animation(None,None,"AttackW"),Animation(None,None,"AttackE")],"Death":[Animation(None,None,"DeathW"),Animation(None,None,"DeathE")],"Dead":[Animation(None,None,"DeadW"),Animation(None,None,"DeadE")]}
 		
 		#Idle:
-		temp = pygame.image.load("Battle/Enemies/Gelatinous/Slime/Idle1.png").convert_alpha()
+		temp = pygame.image.load(config.assetPath+"Battle/Enemies/Gelatinous/Slime/Idle1.png").convert_alpha()
 		temp.fill(self.color,special_flags=BLEND_MULT)
 		animations["Idle"][1].addFrame(AnimationFrame(temp,.5,None,0))
 		
 		#Run:
 		for i in range(1,7):
-			temp = pygame.image.load("Battle/Enemies/Gelatinous/Slime/Walk"+str(i)+".png").convert_alpha()
+			temp = pygame.image.load(config.assetPath+"Battle/Enemies/Gelatinous/Slime/Walk"+str(i)+".png").convert_alpha()
 			temp.fill(self.color,special_flags=BLEND_MULT)
 			animations["Run"][1].addFrame(AnimationFrame(temp,.17,None,i-1))
 		
 		#Attack:
 		for i in range(1,3):
-			temp = pygame.image.load("Battle/Enemies/Gelatinous/Slime/Attack"+str(i)+".png").convert_alpha()
+			temp = pygame.image.load(config.assetPath+"Battle/Enemies/Gelatinous/Slime/Attack"+str(i)+".png").convert_alpha()
 			temp.fill(self.color,special_flags=BLEND_MULT)
 			animations["Attack"][1].addFrame(AnimationFrame(temp,.17,None,i-1))
 		
 		#Death:
 		for i in range(1,7):
-			temp = pygame.image.load("Battle/Enemies/Gelatinous/Slime/Death"+str(i)+".png").convert_alpha()
+			temp = pygame.image.load(config.assetPath+"Battle/Enemies/Gelatinous/Slime/Death"+str(i)+".png").convert_alpha()
 			temp.fill(self.color,special_flags=BLEND_MULT)
 			animations["Death"][1].addFrame(AnimationFrame(temp,.1,None,i-1))
-		temp = pygame.image.load("Battle/Enemies/Gelatinous/Slime/Dead.png").convert_alpha()
+		temp = pygame.image.load(config.assetPath+"Battle/Enemies/Gelatinous/Slime/Dead.png").convert_alpha()
 		temp.fill(self.color,special_flags=BLEND_MULT)
 		animations["Dead"][1].addFrame(AnimationFrame(temp,.17,None,i-1))
 		

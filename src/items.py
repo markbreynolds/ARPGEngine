@@ -1,3 +1,5 @@
+import config
+
 import pygame
 from pygame.locals import *
 
@@ -223,7 +225,7 @@ class IronShortSword(OHSword):
 	#  @param amount Amount of the item in this stack/inventory.
 	def __init__(self):
 		hitbox = [pygame.rect.Rect([-2,0,31,67]),pygame.rect.Rect([24,0,31,67])]
-		OHSword.__init__(self,"Iron Short Sword",pygame.image.load("Icons/Items/Weapons/IronShortSword.png"),{"Atk":10},hitbox,5,"Battle/Arms/Swords/IronShortSword/IronShortSword.xml",1000)
+		OHSword.__init__(self,"Iron Short Sword",pygame.image.load(config.assetPath+"Icons/Items/Weapons/IronShortSword.png"),{"Atk":10},hitbox,5,"Battle/Arms/Swords/IronShortSword/IronShortSword.xml",1000)
 
 ##Wooden Short Sword
 class WoodenShortSword(OHSword):
@@ -233,13 +235,13 @@ class WoodenShortSword(OHSword):
 	#  @param amount Amount of the item in this stack/inventory.
 	def __init__(self):
 		hitbox = [pygame.rect.Rect([-2,0,31,67]),pygame.rect.Rect([24,0,31,67])]
-		OHSword.__init__(self,"Short Sword",pygame.image.load("Icons/Items/Weapons/WoodenShortSword.png"),{"Atk":1},hitbox,5,"Battle/Arms/Swords/WoodenShortSword/WoodenShortSword.xml",100)
+		OHSword.__init__(self,"Short Sword",pygame.image.load(config.assetPath+"Icons/Items/Weapons/WoodenShortSword.png"),{"Atk":1},hitbox,5,"Battle/Arms/Swords/WoodenShortSword/WoodenShortSword.xml",100)
 
 #Items:
 
 class EmptyPotion(Item):
 	def __init__(self,amount=1):
-		Item.__init__(self,"Empty Potion",pygame.image.load("Icons/Items/Potions/PotionEmpty.png").convert_alpha(),"Potion",10,amount)
+		Item.__init__(self,"Empty Potion",pygame.image.load(config.assetPath+"Icons/Items/Potions/PotionEmpty.png").convert_alpha(),"Potion",10,amount)
 	
 	## see Item.getUsable().
 	def getUsable(self):
@@ -247,7 +249,7 @@ class EmptyPotion(Item):
 
 class StrangePotion(Item):
 	def __init__(self,amount=1):
-		Item.__init__(self,"Strange Potion",pygame.image.load("Icons/Items/Potions/PotionStrange.png").convert_alpha(),"Potion",-1,amount)
+		Item.__init__(self,"Strange Potion",pygame.image.load(config.assetPath+"Icons/Items/Potions/PotionStrange.png").convert_alpha(),"Potion",-1,amount)
 	
 	def getDescription(self):
 		return "A strange potion with unknown effects."
@@ -260,26 +262,26 @@ class StrangePotion(Item):
 
 class HealthPotion(Potion):
 	def __init__(self,amount=1):
-		Potion.__init__(self,"Health Potion",pygame.image.load("Icons/Items/Potions/PotionHealth.png").convert_alpha(),"HP",25,50,amount)
+		Potion.__init__(self,"Health Potion",pygame.image.load(config.assetPath+"Icons/Items/Potions/PotionHealth.png").convert_alpha(),"HP",25,50,amount)
 
 class ManaPotion(Potion):
 	def __init__(self,amount=1):
-		Potion.__init__(self,"Mana Potion",pygame.image.load("Icons/Items/Potions/PotionMana.png").convert_alpha(),"MP",25,50,amount)
+		Potion.__init__(self,"Mana Potion",pygame.image.load(config.assetPath+"Icons/Items/Potions/PotionMana.png").convert_alpha(),"MP",25,50,amount)
 		
 class ElixirPotion(Potion):
 	def __init__(self,amount=1):
-		Potion.__init__(self,"Elixir",pygame.image.load("Icons/Items/Potions/PotionElixir.png").convert_alpha(),"HP/MP",50,300,amount)
+		Potion.__init__(self,"Elixir",pygame.image.load(config.assetPath+"Icons/Items/Potions/PotionElixir.png").convert_alpha(),"HP/MP",50,300,amount)
 
 #Armor (Chest):
 class LeatherTunic(Body):
 	def __init__(self,color,amount=1):
-		Body.__init__(self,color+" Leather Tunic",pygame.image.load("Icons/Items/Armor/LeatherTunic.png").convert_alpha(),{"Def":1},200,amount)
+		Body.__init__(self,color+" Leather Tunic",pygame.image.load(config.assetPath+"Icons/Items/Armor/LeatherTunic.png").convert_alpha(),{"Def":1},200,amount)
 		self.color=pygame.Color(color)
 		self.sprite.fill(self.color,special_flags=BLEND_RGBA_MULT)
 
 class IronChestplate(Body):
 	def __init__(self,amount=1):
-		Body.__init__(self,"Iron Chestplate",pygame.image.load("Icons/Items/Armor/IronChestplate.png").convert_alpha(),{"Def":5},1000,amount)
+		Body.__init__(self,"Iron Chestplate",pygame.image.load(config.assetPath+"Icons/Items/Armor/IronChestplate.png").convert_alpha(),{"Def":5},1000,amount)
 
 #Weapon Styles:
 

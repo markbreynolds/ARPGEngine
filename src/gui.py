@@ -50,38 +50,20 @@
 
 """
 
+import config
 import pygame
 
 from pygame.locals import *
 
 ## Standard default font, @todo Check for legal issues with distribution of fonts.
-font = pygame.font.Font("Fonts/visitor1.ttf",10)
+font = pygame.font.Font(config.assetPath+"Fonts/visitor1.ttf",10)
 
 ## Font used for titles, @todo Check for legal issues with distribution of fonts.
-titleFont = pygame.font.Font("Fonts/visitor1.ttf",12)
+titleFont = pygame.font.Font(config.assetPath+"Fonts/visitor1.ttf",12)
 
 ## Bold default font, @todo Check for legal issues with distribution of fonts.
-boldFont = pygame.font.Font("Fonts/visitor1.ttf",10)
+boldFont = pygame.font.Font(config.assetPath+"Fonts/visitor1.ttf",10)
 boldFont.set_italic(True)
-
-
-## Background color of windows.
-Color = (0,0,255)
-
-## Outline color of windows.
-ColorDark = (0,0,64)
-
-## Color of text.
-ColorFont = (255,255,255)
-
-## Color of selected text.
-ColorSel = (255,255,0)
-
-## Color of bolded text.
-ColorBold = (255,0,0)
-
-## Color of disabled options.
-ColorDisable = (127,127,127)
 
 ## Helpful for scrolling text.
 #
@@ -90,7 +72,7 @@ ColorDisable = (127,127,127)
 #  @param size How many pixels the @c text needs to fit in.
 #  @param amount How many pixels to scroll for this iteration.
 #  @param color Text color.
-def scrollText(text,size,amount,color=ColorFont):
+def scrollText(text,size,amount,color=config.ColorFont):
 	cropped=pygame.Surface((size,font.size(text)[1]),SRCALPHA)
 	if font.size(text)[0]>size:
 		if amount<0:
@@ -236,10 +218,10 @@ class Hud(object):
 		tempData = []
 		for key in self.data.keys():
 			tempData.append(key+str(self.data[key]()))
-		screen.fill(Color,(self.x,self.y,self.width,self.height))
+		screen.fill(config.Color,(self.x,self.y,self.width,self.height))
 		y = self.y+3
 		for data in tempData:
-			screen.blit(font.render(data,True,ColorFont),(self.x+3,y))
+			screen.blit(font.render(data,True,config.ColorFont),(self.x+3,y))
 			y+=9
 	
 	## Updates the window.
@@ -256,52 +238,52 @@ class loadIcons():
 	#  @todo Fix HeadArmor Icon.
 	#  @todo Maybe fix Gold Icon?
 	def __init__(self):
-		self.cont = pygame.image.load("Icons/Cont.png").convert_alpha()
-		self.cursor = pygame.image.load("Icons/Cursor.png").convert_alpha()
-		self.cursorBlink = pygame.image.load("Icons/CursorBlink.png").convert_alpha()
-		self.cursorTab = pygame.image.load("Icons/CursorTab.png").convert_alpha()
-		self.cursorTabBlink = pygame.image.load("Icons/CursorTabBlink.png").convert_alpha()
-		self.cursorChar = pygame.image.load("Icons/CursorChar.png").convert_alpha()
-		self.cursorCharBlink = pygame.image.load("Icons/CursorCharBlink.png").convert_alpha()
-		self.cursor.fill(ColorSel,special_flags=BLEND_RGBA_MULT)
-		self.cursorBlink.fill(ColorSel,special_flags=BLEND_RGBA_MULT)
-		self.cursorTab.fill(ColorSel,special_flags=BLEND_RGBA_MULT)
-		self.cursorTabBlink.fill(ColorSel,special_flags=BLEND_RGBA_MULT)
-		self.cursorChar.fill(ColorSel,special_flags=BLEND_RGBA_MULT)
-		self.cursorCharBlink.fill(ColorSel,special_flags=BLEND_RGBA_MULT)
-		self.iconBG = pygame.image.load("Icons/IconBG.png").convert()
-		self.iconBGE = pygame.image.load("Icons/IconBG.png").convert()
+		self.cont = pygame.image.load(config.assetPath+"Icons/Cont.png").convert_alpha()
+		self.cursor = pygame.image.load(config.assetPath+"Icons/Cursor.png").convert_alpha()
+		self.cursorBlink = pygame.image.load(config.assetPath+"Icons/CursorBlink.png").convert_alpha()
+		self.cursorTab = pygame.image.load(config.assetPath+"Icons/CursorTab.png").convert_alpha()
+		self.cursorTabBlink = pygame.image.load(config.assetPath+"Icons/CursorTabBlink.png").convert_alpha()
+		self.cursorChar = pygame.image.load(config.assetPath+"Icons/CursorChar.png").convert_alpha()
+		self.cursorCharBlink = pygame.image.load(config.assetPath+"Icons/CursorCharBlink.png").convert_alpha()
+		self.cursor.fill(config.ColorSel,special_flags=BLEND_RGBA_MULT)
+		self.cursorBlink.fill(config.ColorSel,special_flags=BLEND_RGBA_MULT)
+		self.cursorTab.fill(config.ColorSel,special_flags=BLEND_RGBA_MULT)
+		self.cursorTabBlink.fill(config.ColorSel,special_flags=BLEND_RGBA_MULT)
+		self.cursorChar.fill(config.ColorSel,special_flags=BLEND_RGBA_MULT)
+		self.cursorCharBlink.fill(config.ColorSel,special_flags=BLEND_RGBA_MULT)
+		self.iconBG = pygame.image.load(config.assetPath+"Icons/IconBG.png").convert()
+		self.iconBGE = pygame.image.load(config.assetPath+"Icons/IconBG.png").convert()
 		self.iconBGE.fill([32,255,32],special_flags=BLEND_RGBA_MULT)
-		self.iconBGSmall = pygame.image.load("Icons/IconBGSmall.png").convert()
-		self.lock = pygame.image.load("Icons/Locked.png").convert_alpha()
+		self.iconBGSmall = pygame.image.load(config.assetPath+"Icons/IconBGSmall.png").convert()
+		self.lock = pygame.image.load(config.assetPath+"Icons/Locked.png").convert_alpha()
 		
-		self.headArmor = pygame.image.load("Icons/HeadArmor.png").convert_alpha()
-		self.bodyArmor = pygame.image.load("Icons/BodyArmor.png").convert_alpha()
-		self.legsArmor = pygame.image.load("Icons/LegsArmor.png").convert_alpha()
-		self.bootArmor = pygame.image.load("Icons/BootArmor.png").convert_alpha()
-		self.arm1Armor = pygame.image.load("Icons/Arm1Armor.png").convert_alpha()
-		self.arm2Armor = pygame.image.load("Icons/Arm2Armor.png").convert_alpha()
+		self.headArmor = pygame.image.load(config.assetPath+"Icons/HeadArmor.png").convert_alpha()
+		self.bodyArmor = pygame.image.load(config.assetPath+"Icons/BodyArmor.png").convert_alpha()
+		self.legsArmor = pygame.image.load(config.assetPath+"Icons/LegsArmor.png").convert_alpha()
+		self.bootArmor = pygame.image.load(config.assetPath+"Icons/BootArmor.png").convert_alpha()
+		self.arm1Armor = pygame.image.load(config.assetPath+"Icons/Arm1Armor.png").convert_alpha()
+		self.arm2Armor = pygame.image.load(config.assetPath+"Icons/Arm2Armor.png").convert_alpha()
 		
-		self.gold = pygame.image.load("Icons/Gold.png").convert_alpha()
+		self.gold = pygame.image.load(config.assetPath+"Icons/Gold.png").convert_alpha()
 		
-		self.inventory = pygame.image.load("Icons/Inven.png").convert_alpha()
-		self.armor = pygame.image.load("Icons/Armor.png").convert_alpha()
-		self.party = pygame.image.load("Icons/Party.png").convert_alpha()
-		self.globe = pygame.image.load("Icons/Map.png").convert_alpha()
-		self.quests = pygame.image.load("Icons/Quests.png").convert_alpha()
+		self.inventory = pygame.image.load(config.assetPath+"Icons/Inven.png").convert_alpha()
+		self.armor = pygame.image.load(config.assetPath+"Icons/Armor.png").convert_alpha()
+		self.party = pygame.image.load(config.assetPath+"Icons/Party.png").convert_alpha()
+		self.globe = pygame.image.load(config.assetPath+"Icons/Map.png").convert_alpha()
+		self.quests = pygame.image.load(config.assetPath+"Icons/Quests.png").convert_alpha()
 		
-		self.warrior = pygame.image.load("Icons/Warrior.png").convert()
-		self.warriorSmall = pygame.image.load("Icons/WarriorSmall.png").convert()
-		self.archer = pygame.image.load("Icons/Archer.png").convert()
-		self.archerSmall = pygame.image.load("Icons/ArcherSmall.png").convert()
-		self.mage = pygame.image.load("Icons/Mage?.png").convert()
-		self.mageSmall = pygame.image.load("Icons/MageSmall?.png").convert()
+		self.warrior = pygame.image.load(config.assetPath+"Icons/Warrior.png").convert()
+		self.warriorSmall = pygame.image.load(config.assetPath+"Icons/WarriorSmall.png").convert()
+		self.archer = pygame.image.load(config.assetPath+"Icons/Archer.png").convert()
+		self.archerSmall = pygame.image.load(config.assetPath+"Icons/ArcherSmall.png").convert()
+		self.mage = pygame.image.load(config.assetPath+"Icons/Mage?.png").convert()
+		self.mageSmall = pygame.image.load(config.assetPath+"Icons/MageSmall?.png").convert()
 		
-		self.rightArrow = pygame.image.load("Icons/RightArrow.png").convert_alpha()
+		self.rightArrow = pygame.image.load(config.assetPath+"Icons/RightArrow.png").convert_alpha()
 		self.leftArrow = pygame.transform.flip(self.rightArrow,True,False)
-		self.upArrow = pygame.image.load("Icons/UpArrow.png").convert_alpha()
+		self.upArrow = pygame.image.load(config.assetPath+"Icons/UpArrow.png").convert_alpha()
 		self.downArrow = pygame.transform.flip(self.upArrow,False,True)
-		self.circ = pygame.image.load("Icons/Circ.png").convert_alpha()
+		self.circ = pygame.image.load(config.assetPath+"Icons/Circ.png").convert_alpha()
 
 ## Main %Menu Class
 #
@@ -351,8 +333,8 @@ class MainMenu(Menu):
 	#
 	#  @param screen An object representing the screen, either a pygame.Surface or a ScaledScreen.
 	def draw(self,screen):
-		screen.fill(ColorDark,[114,126,97,64])
-		screen.fill(Color,[115,127,95,62])
+		screen.fill(config.ColorDark,[114,126,97,64])
+		screen.fill(config.Color,[115,127,95,62])
 		if self.menu == 0:
 			self.drawMain(screen)
 		elif self.menu==1:
@@ -363,38 +345,38 @@ class MainMenu(Menu):
 	#  @param screen An object representing the screen, either a pygame.Surface or a ScaledScreen.
 	def drawMain(self,screen):
 		if self.pos[1] == 0:
-			screen.blit(titleFont.render("Single Player",False,ColorSel),(120,130))
+			screen.blit(titleFont.render("Single Player",False,config.ColorSel),(120,130))
 		else:
-			screen.blit(titleFont.render("Single Player",False,ColorFont),(120,130))
+			screen.blit(titleFont.render("Single Player",False,config.ColorFont),(120,130))
 		if self.pos[1] == 1:
-			screen.blit(titleFont.render("Multiplayer",False,ColorSel),(120,144))
+			screen.blit(titleFont.render("Multiplayer",False,config.ColorSel),(120,144))
 		else:
-			screen.blit(titleFont.render("Multiplayer",False,ColorFont),(120,144))
+			screen.blit(titleFont.render("Multiplayer",False,config.ColorFont),(120,144))
 		if self.pos[1] == 2:
-			screen.blit(titleFont.render("Options",False,ColorSel),(120,158))
+			screen.blit(titleFont.render("Options",False,config.ColorSel),(120,158))
 		else:
-			screen.blit(titleFont.render("Options",False,ColorFont),(120,158))
+			screen.blit(titleFont.render("Options",False,config.ColorFont),(120,158))
 		if self.pos[1] ==3 :
-			screen.blit(titleFont.render("Exit",False,ColorSel),(120,172))
+			screen.blit(titleFont.render("Exit",False,config.ColorSel),(120,172))
 		else:
-			screen.blit(titleFont.render("Exit",False,ColorFont),(120,172))
+			screen.blit(titleFont.render("Exit",False,config.ColorFont),(120,172))
 	
 	## Draws the single player menu on the screen.
 	#
 	#  @param screen An object representing the screen, either a pygame.Surface or a ScaledScreen.
 	def drawSingle(self,screen):
 		if self.pos[1] == 0:
-			screen.blit(titleFont.render("New Game",False,ColorSel),(120,130))
+			screen.blit(titleFont.render("New Game",False,config.ColorSel),(120,130))
 		else:
-			screen.blit(titleFont.render("New Game",False,ColorFont),(120,130))
+			screen.blit(titleFont.render("New Game",False,config.ColorFont),(120,130))
 		if self.pos[1] == 1:
-			screen.blit(titleFont.render("Load Game",False,ColorSel),(120,144))
+			screen.blit(titleFont.render("Load Game",False,config.ColorSel),(120,144))
 		else:
-			screen.blit(titleFont.render("Load Game",False,ColorFont),(120,144))
+			screen.blit(titleFont.render("Load Game",False,config.ColorFont),(120,144))
 		if self.pos[1] == 2:
-			screen.blit(titleFont.render("Back",False,ColorSel),(120,158))
+			screen.blit(titleFont.render("Back",False,config.ColorSel),(120,158))
 		else:
-			screen.blit(titleFont.render("Back",False,ColorFont),(120,158))
+			screen.blit(titleFont.render("Back",False,config.ColorFont),(120,158))
 
 ## Dialog Class
 #
@@ -552,75 +534,75 @@ class Dialog(object):
 			self.count -=.05
 		
 		if self.y<len(self.formattedText) and self.x<len(self.formattedText[self.y]):
-			screen.fill(ColorDark,[4,179,312,59])
-			screen.fill(Color,[5,180,310,57])
+			screen.fill(config.ColorDark,[4,179,312,59])
+			screen.fill(config.Color,[5,180,310,57])
 			if self.talking.getIcon() != None:
 				if self.talking.getName()!=None:
 					pass
 			else:
 				if self.talking.getName()!=None:
-					screen.fill(ColorDark,[4,164,10+titleFont.size(self.talking.getName())[0],15])
-					screen.fill(Color,[5,165,8+titleFont.size(self.talking.getName())[0],13])
-					screen.blit(titleFont.render(self.talking.getName()+":",False,ColorFont),[8,166])
+					screen.fill(config.ColorDark,[4,164,10+titleFont.size(self.talking.getName())[0],15])
+					screen.fill(config.Color,[5,165,8+titleFont.size(self.talking.getName())[0],13])
+					screen.blit(titleFont.render(self.talking.getName()+":",False,config.ColorFont),[8,166])
 	
 			if self.bold == []:	#if not bold...
 				for i in range(self.y/5*5,self.y):
-					screen.blit(font.render(self.formattedText[i],False,ColorFont),[8,181+((i%5)*12)])
-				screen.blit(font.render(self.formattedText[self.y][:self.x],False,ColorFont),[8,181+((self.y%5)*12)])
+					screen.blit(font.render(self.formattedText[i],False,config.ColorFont),[8,181+((i%5)*12)])
+				screen.blit(font.render(self.formattedText[self.y][:self.x],False,config.ColorFont),[8,181+((self.y%5)*12)])
 			else:				#if bold..
 				for i in range(self.y/5*5,self.y):
 					for j in self.bold:
 						if i == j[2]:
-							screen.blit(font.render(self.formattedText[i][0:j[0]],False,ColorFont),[8,181+((i%5)*12)])
-							screen.blit(font.render(self.formattedText[i][j[0]:j[1]],False,ColorBold),[8+font.size(self.formattedText[i][0:j[0]])[0],181+((i%5)*12)])
-							screen.blit(font.render(self.formattedText[i][j[1]:],False,ColorFont),[8+font.size(self.formattedText[i][0:j[1]])[0],181+((i%5)*12)])
+							screen.blit(font.render(self.formattedText[i][0:j[0]],False,config.ColorFont),[8,181+((i%5)*12)])
+							screen.blit(font.render(self.formattedText[i][j[0]:j[1]],False,config.ColorBold),[8+font.size(self.formattedText[i][0:j[0]])[0],181+((i%5)*12)])
+							screen.blit(font.render(self.formattedText[i][j[1]:],False,config.ColorFont),[8+font.size(self.formattedText[i][0:j[1]])[0],181+((i%5)*12)])
 							break
 					else:
-						screen.blit(font.render(self.formattedText[i],False,ColorFont),[8,181+((i%5)*12)])
+						screen.blit(font.render(self.formattedText[i],False,config.ColorFont),[8,181+((i%5)*12)])
 				for j in self.bold:
 					if self.y==j[2]:
 						if self.x>j[0]:
-							screen.blit(font.render(self.formattedText[self.y][0:j[0]],False,ColorFont),[8,181+((self.y%5)*12)])
-							screen.blit(font.render(self.formattedText[self.y][j[0]:min(j[1],self.x)],False,ColorBold),[8+font.size(self.formattedText[self.y][0:j[0]])[0],181+((self.y%5)*12)])
-							screen.blit(font.render(self.formattedText[self.y][j[1]:self.x],False,ColorFont),[8+font.size(self.formattedText[self.y][0:min(j[1],self.x)])[0],181+((self.y%5)*12)])
+							screen.blit(font.render(self.formattedText[self.y][0:j[0]],False,config.ColorFont),[8,181+((self.y%5)*12)])
+							screen.blit(font.render(self.formattedText[self.y][j[0]:min(j[1],self.x)],False,config.ColorBold),[8+font.size(self.formattedText[self.y][0:j[0]])[0],181+((self.y%5)*12)])
+							screen.blit(font.render(self.formattedText[self.y][j[1]:self.x],False,config.ColorFont),[8+font.size(self.formattedText[self.y][0:min(j[1],self.x)])[0],181+((self.y%5)*12)])
 							break
 				else:
-					screen.blit(font.render(self.formattedText[self.y][:self.x],False,ColorFont),[8,181+((self.y%5)*12)])
+					screen.blit(font.render(self.formattedText[self.y][:self.x],False,config.ColorFont),[8,181+((self.y%5)*12)])
 		else:
-			screen.fill(ColorDark,[4,179,312,59])
-			screen.fill(Color,[5,180,310,57])
+			screen.fill(config.ColorDark,[4,179,312,59])
+			screen.fill(config.Color,[5,180,310,57])
 			if self.talking.getIcon() != None:
 				if self.talking.getName()!=None:
 					pass
 			else:
 				if self.talking.getName()!=None:
-					screen.fill(ColorDark,[4,164,10+titleFont.size(self.talking.getName())[0],15])
-					screen.fill(Color,[5,165,8+titleFont.size(self.talking.getName())[0],13])
-					screen.blit(titleFont.render(self.talking.getName()+":",False,ColorFont),[8,166])
+					screen.fill(config.ColorDark,[4,164,10+titleFont.size(self.talking.getName())[0],15])
+					screen.fill(config.Color,[5,165,8+titleFont.size(self.talking.getName())[0],13])
+					screen.blit(titleFont.render(self.talking.getName()+":",False,config.ColorFont),[8,166])
 			if self.bold == []:	#if not bolded...
 				if self.y-5>=0:
 					if (self.y+1)%5==0:
 						if self.y!=len(self.formattedText):
 							for i in range(self.y/5*5,self.y+1):
-								screen.blit(font.render(self.formattedText[i],False,ColorFont),[8,181+((i%5)*12)])
+								screen.blit(font.render(self.formattedText[i],False,config.ColorFont),[8,181+((i%5)*12)])
 						else:	#Deals with case when the text ends on the fourth line
 							for i in range(self.y/5*5,self.y):
-								screen.blit(font.render(self.formattedText[i],False,ColorFont),[8,181+((i%5)*12)])
+								screen.blit(font.render(self.formattedText[i],False,config.ColorFont),[8,181+((i%5)*12)])
 					else:
 						for i in range(self.y/5*5,self.y):
-							screen.blit(font.render(self.formattedText[i],False,ColorFont),[8,181+((i%5)*12)])
+							screen.blit(font.render(self.formattedText[i],False,config.ColorFont),[8,181+((i%5)*12)])
 				else:
 					if (self.y+1)%5==0:
 						if self.y!=len(self.formattedText):
 							for i in range(0,self.y+1):
-								screen.blit(font.render(self.formattedText[i],False,ColorFont),[8,181+((i%5)*12)])
+								screen.blit(font.render(self.formattedText[i],False,config.ColorFont),[8,181+((i%5)*12)])
 						else:	#Deals with case when the text ends on the fourth line
 							for i in range(0,self.y):
-								screen.blit(font.render(self.formattedText[i],False,ColorFont),[8,181+((i%5)*12)])
+								screen.blit(font.render(self.formattedText[i],False,config.ColorFont),[8,181+((i%5)*12)])
 
 					else:
 						for i in range(0,self.y):
-							screen.blit(font.render(self.formattedText[i],False,ColorFont),[8,181+((i%5)*12)])
+							screen.blit(font.render(self.formattedText[i],False,config.ColorFont),[8,181+((i%5)*12)])
 			else:	#if bolded...
 				if self.y-5>=0:
 					if (self.y+1)%5==0:
@@ -628,58 +610,58 @@ class Dialog(object):
 							for i in range(self.y/5*5,self.y+1):
 								for j in self.bold:
 									if i == j[2]:
-										screen.blit(font.render(self.formattedText[i][0:j[0]],False,ColorFont),[8,181+((i%5)*12)])
-										screen.blit(font.render(self.formattedText[i][j[0]:j[1]],False,ColorBold),[8+font.size(self.formattedText[i][0:j[0]])[0],181+((i%5)*12)])
-										screen.blit(font.render(self.formattedText[i][j[1]:],False,ColorFont),[8+font.size(self.formattedText[i][0:j[1]])[0],181+((i%5)*12)])
+										screen.blit(font.render(self.formattedText[i][0:j[0]],False,config.ColorFont),[8,181+((i%5)*12)])
+										screen.blit(font.render(self.formattedText[i][j[0]:j[1]],False,config.ColorBold),[8+font.size(self.formattedText[i][0:j[0]])[0],181+((i%5)*12)])
+										screen.blit(font.render(self.formattedText[i][j[1]:],False,config.ColorFont),[8+font.size(self.formattedText[i][0:j[1]])[0],181+((i%5)*12)])
 									else:
-										screen.blit(font.render(self.formattedText[i],False,ColorFont),[8,181+((i%5)*12)])
+										screen.blit(font.render(self.formattedText[i],False,config.ColorFont),[8,181+((i%5)*12)])
 						else:	#Deals with case when the text ends on the fourth line
 							for i in range(self.y/5*5,self.y):
 								for j in self.bold:
 									if i == j[2]:
-										screen.blit(font.render(self.formattedText[i][0:j[0]],False,ColorFont),[8,181+((i%5)*12)])
-										screen.blit(font.render(self.formattedText[i][j[0]:j[1]],False,ColorBold),[8+font.size(self.formattedText[i][0:j[0]])[0],181+((i%5)*12)])
-										screen.blit(font.render(self.formattedText[i][j[1]:],False,ColorFont),[8+font.size(self.formattedText[i][0:j[1]])[0],181+((i%5)*12)])
+										screen.blit(font.render(self.formattedText[i][0:j[0]],False,config.ColorFont),[8,181+((i%5)*12)])
+										screen.blit(font.render(self.formattedText[i][j[0]:j[1]],False,config.ColorBold),[8+font.size(self.formattedText[i][0:j[0]])[0],181+((i%5)*12)])
+										screen.blit(font.render(self.formattedText[i][j[1]:],False,config.ColorFont),[8+font.size(self.formattedText[i][0:j[1]])[0],181+((i%5)*12)])
 									else:
-										screen.blit(font.render(self.formattedText[i],False,ColorFont),[8,181+((i%5)*12)])
+										screen.blit(font.render(self.formattedText[i],False,config.ColorFont),[8,181+((i%5)*12)])
 					else:
 						for i in range(self.y/5*5,self.y):
 							for j in self.bold:
 								if i == j[2]:
-									screen.blit(font.render(self.formattedText[i][0:j[0]],False,ColorFont),[8,181+((i%5)*12)])
-									screen.blit(font.render(self.formattedText[i][j[0]:j[1]],False,ColorBold),[8+font.size(self.formattedText[i][0:j[0]])[0],181+((i%5)*12)])
-									screen.blit(font.render(self.formattedText[i][j[1]:],False,ColorFont),[8+font.size(self.formattedText[i][0:j[1]])[0],181+((i%5)*12)])
+									screen.blit(font.render(self.formattedText[i][0:j[0]],False,config.ColorFont),[8,181+((i%5)*12)])
+									screen.blit(font.render(self.formattedText[i][j[0]:j[1]],False,config.ColorBold),[8+font.size(self.formattedText[i][0:j[0]])[0],181+((i%5)*12)])
+									screen.blit(font.render(self.formattedText[i][j[1]:],False,config.ColorFont),[8+font.size(self.formattedText[i][0:j[1]])[0],181+((i%5)*12)])
 								else:
-									screen.blit(font.render(self.formattedText[i],False,ColorFont),[8,181+((i%5)*12)])
+									screen.blit(font.render(self.formattedText[i],False,config.ColorFont),[8,181+((i%5)*12)])
 				else:
 					if (self.y+1)%5==0:
 						if self.y!=len(self.formattedText):
 							for i in range(0,self.y+1):
 								for j in self.bold:
 									if i == j[2]:
-										screen.blit(font.render(self.formattedText[i][0:j[0]],False,ColorFont),[8,181+((i%5)*12)])
-										screen.blit(font.render(self.formattedText[i][j[0]:j[1]],False,ColorBold),[8+font.size(self.formattedText[i][0:j[0]])[0],181+((i%5)*12)])
-										screen.blit(font.render(self.formattedText[i][j[1]:],False,ColorFont),[8+font.size(self.formattedText[i][0:j[1]])[0],181+((i%5)*12)])
+										screen.blit(font.render(self.formattedText[i][0:j[0]],False,config.ColorFont),[8,181+((i%5)*12)])
+										screen.blit(font.render(self.formattedText[i][j[0]:j[1]],False,config.ColorBold),[8+font.size(self.formattedText[i][0:j[0]])[0],181+((i%5)*12)])
+										screen.blit(font.render(self.formattedText[i][j[1]:],False,config.ColorFont),[8+font.size(self.formattedText[i][0:j[1]])[0],181+((i%5)*12)])
 									else:
-										screen.blit(font.render(self.formattedText[i],False,ColorFont),[8,181+((i%5)*12)])
+										screen.blit(font.render(self.formattedText[i],False,config.ColorFont),[8,181+((i%5)*12)])
 						else:	#Deals with case when the text ends on the fourth line
 							for i in range(0,self.y):
 								for j in self.bold:
 									if i == j[2]:
-										screen.blit(font.render(self.formattedText[i][0:j[0]],False,ColorFont),[8,181+((i%5)*12)])
-										screen.blit(font.render(self.formattedText[i][j[0]:j[1]],False,ColorBold),[8+font.size(self.formattedText[i][0:j[0]])[0],181+((i%5)*12)])
-										screen.blit(font.render(self.formattedText[i][j[1]:],False,ColorFont),[8+font.size(self.formattedText[i][0:j[1]])[0],181+((i%5)*12)])
+										screen.blit(font.render(self.formattedText[i][0:j[0]],False,config.ColorFont),[8,181+((i%5)*12)])
+										screen.blit(font.render(self.formattedText[i][j[0]:j[1]],False,config.ColorBold),[8+font.size(self.formattedText[i][0:j[0]])[0],181+((i%5)*12)])
+										screen.blit(font.render(self.formattedText[i][j[1]:],False,config.ColorFont),[8+font.size(self.formattedText[i][0:j[1]])[0],181+((i%5)*12)])
 									else:
-										screen.blit(font.render(self.formattedText[i],False,ColorFont),[8,181+((i%5)*12)])
+										screen.blit(font.render(self.formattedText[i],False,config.ColorFont),[8,181+((i%5)*12)])
 					else:
 						for i in range(0,self.y):
 							for j in self.bold:
 								if i == j[2]:
-									screen.blit(font.render(self.formattedText[i][0:j[0]],False,ColorFont),[8,181+((i%5)*12)])
-									screen.blit(font.render(self.formattedText[i][j[0]:j[1]],False,ColorBold),[8+font.size(self.formattedText[i][0:j[0]])[0],181+((i%5)*12)])
-									screen.blit(font.render(self.formattedText[i][j[1]:],False,ColorFont),[8+font.size(self.formattedText[i][0:j[1]])[0],181+((i%5)*12)])
+									screen.blit(font.render(self.formattedText[i][0:j[0]],False,config.ColorFont),[8,181+((i%5)*12)])
+									screen.blit(font.render(self.formattedText[i][j[0]:j[1]],False,config.ColorBold),[8+font.size(self.formattedText[i][0:j[0]])[0],181+((i%5)*12)])
+									screen.blit(font.render(self.formattedText[i][j[1]:],False,config.ColorFont),[8+font.size(self.formattedText[i][0:j[1]])[0],181+((i%5)*12)])
 								else:
-									screen.blit(font.render(self.formattedText[i],False,ColorFont),[8,181+((i%5)*12)])
+									screen.blit(font.render(self.formattedText[i],False,config.ColorFont),[8,181+((i%5)*12)])
 			if not self.options:
 				if self.count >=1 and self.y>=len(self.formattedText):
 					self.count=0
@@ -693,13 +675,13 @@ class Dialog(object):
 			for item in self.formattedOptions:
 				if font.size(item)[0]>self.longest:
 					self.longest=font.size(item)[0]
-		screen.fill(ColorDark,[311-self.longest,175-(len(self.formattedOptions)*12),self.longest+5,(len(self.formattedOptions)*12)+3])
-		screen.fill(Color,[312-self.longest,176-(len(self.formattedOptions)*12),self.longest+3,(len(self.formattedOptions)*12)+1])
+		screen.fill(config.ColorDark,[311-self.longest,175-(len(self.formattedOptions)*12),self.longest+5,(len(self.formattedOptions)*12)+3])
+		screen.fill(config.Color,[312-self.longest,176-(len(self.formattedOptions)*12),self.longest+3,(len(self.formattedOptions)*12)+1])
 		for i in range(len(self.current.getOptions())):
 			if i == self.sel:
-				screen.blit(font.render(self.formattedOptions[i],False,ColorSel),[314-font.size(self.formattedOptions[i])[0],(177-len(self.formattedOptions)*12)+12*i])
+				screen.blit(font.render(self.formattedOptions[i],False,config.ColorSel),[314-font.size(self.formattedOptions[i])[0],(177-len(self.formattedOptions)*12)+12*i])
 			else:
-				screen.blit(font.render(self.formattedOptions[i],False,ColorFont),[314-font.size(self.formattedOptions[i])[0],(177-len(self.formattedOptions)*12)+12*i])
+				screen.blit(font.render(self.formattedOptions[i],False,config.ColorFont),[314-font.size(self.formattedOptions[i])[0],(177-len(self.formattedOptions)*12)+12*i])
 	
 	## Updates the dialog object so that it is drawn properly.
 	def update(self,screen,tick):
@@ -1077,7 +1059,7 @@ class InvenMenu(Menu):
 	def drawInventory(self,screen):
 		if self.pos[0]==-1:
 			self.status="Inventory"
-		screen.fill(Color,[220,40,14,18])
+		screen.fill(config.Color,[220,40,14,18])
 		
 		for x in range(0,4):
 			for y in range(0,6):
@@ -1103,7 +1085,7 @@ class InvenMenu(Menu):
 			
 			if item.getAmount()>1:
 				#print font.size(str(item.getAmount()))[0]
-				screen.blit(font.render(str(item.getAmount()),False,ColorFont),[x+22-font.size(str(item.getAmount()))[0],y+14])
+				screen.blit(font.render(str(item.getAmount()),False,config.ColorFont),[x+22-font.size(str(item.getAmount()))[0],y+14])
 			
 			if self.pos==[(x-98)/30,(y-33)/30]:
 				#debugInfo.setText(str(item.getEquiped()))
@@ -1119,15 +1101,15 @@ class InvenMenu(Menu):
 				x+=30
 		
 		if self.menu==1:	#Item Menu
-			screen.fill((ColorDark),[91+(self.pos[0]*30),59+(self.pos[1]*30),38,38])
-			screen.fill((Color),[92+(self.pos[0]*30),60+(self.pos[1]*30),36,36])
+			screen.fill((config.ColorDark),[91+(self.pos[0]*30),59+(self.pos[1]*30),38,38])
+			screen.fill((config.Color),[92+(self.pos[0]*30),60+(self.pos[1]*30),36,36])
 			if len(self.player.getInventory().getItems())-1>=(self.pos[1]*4)+self.pos[0]:
 				item = self.player.getInventory().getItems()[(self.pos[1]*4)+self.pos[0]]
 				if item.getType()=="Equipment":
 					if self.subPos==0:
-						screen.blit(font.render("Equip",False,ColorSel),[94+(self.pos[0]*30),61+(self.pos[1]*30)])
+						screen.blit(font.render("Equip",False,config.ColorSel),[94+(self.pos[0]*30),61+(self.pos[1]*30)])
 					else:
-						screen.blit(font.render("Equip",False,ColorFont),[94+(self.pos[0]*30),61+(self.pos[1]*30)])
+						screen.blit(font.render("Equip",False,config.ColorFont),[94+(self.pos[0]*30),61+(self.pos[1]*30)])
 					self.status=""
 					for stat in item.getStats():
 						statVal = item.getStats()[stat]
@@ -1144,19 +1126,19 @@ class InvenMenu(Menu):
 				else:
 					if item.getUsable():
 						if self.subPos==0:
-							screen.blit(font.render("Use",False,ColorSel),[94+(self.pos[0]*30),61+(self.pos[1]*30)])
+							screen.blit(font.render("Use",False,config.ColorSel),[94+(self.pos[0]*30),61+(self.pos[1]*30)])
 						else:
-							screen.blit(font.render("Use",False,ColorFont),[94+(self.pos[0]*30),61+(self.pos[1]*30)])
+							screen.blit(font.render("Use",False,config.ColorFont),[94+(self.pos[0]*30),61+(self.pos[1]*30)])
 					else:
-						screen.blit(font.render("Use",False,ColorDisable),[94+(self.pos[0]*30),61+(self.pos[1]*30)])
+						screen.blit(font.render("Use",False,config.ColorDisable),[94+(self.pos[0]*30),61+(self.pos[1]*30)])
 				if self.subPos==1:
-					screen.blit(font.render("Move",False,ColorSel),[94+(self.pos[0]*30),73+(self.pos[1]*30)])
+					screen.blit(font.render("Move",False,config.ColorSel),[94+(self.pos[0]*30),73+(self.pos[1]*30)])
 				else:
-					screen.blit(font.render("Move",False,ColorFont),[94+(self.pos[0]*30),73+(self.pos[1]*30)])
+					screen.blit(font.render("Move",False,config.ColorFont),[94+(self.pos[0]*30),73+(self.pos[1]*30)])
 				if self.subPos==2:
-					screen.blit(font.render("Drop",False,ColorSel),[94+(self.pos[0]*30),85+(self.pos[1]*30)])
+					screen.blit(font.render("Drop",False,config.ColorSel),[94+(self.pos[0]*30),85+(self.pos[1]*30)])
 				else:
-					screen.blit(font.render("Drop",False,ColorFont),[94+(self.pos[0]*30),85+(self.pos[1]*30)])
+					screen.blit(font.render("Drop",False,config.ColorFont),[94+(self.pos[0]*30),85+(self.pos[1]*30)])
 		elif self.menu==2:	#Move Item
 			self.status = "Move where?"
 			screen.blit(Icons.cursor,[98+(self.pos[0]*30),33+(self.pos[1]*30)])
@@ -1164,25 +1146,25 @@ class InvenMenu(Menu):
 			temp.fill((255,255,255,127+abs(int(self.blink*127))),special_flags=BLEND_RGBA_MULT)
 			screen.blit(temp,[98+(self.sel[0]*30),33+(self.sel[1]*30)])
 		elif self.menu==3: #Drop Item Confirm
-			screen.fill((ColorDark),[117,107,82,26])
-			screen.fill((Color),[118,108,80,24])
-			screen.blit(font.render("Destroy item?",False,ColorFont),[122,110])
+			screen.fill((config.ColorDark),[117,107,82,26])
+			screen.fill((config.Color),[118,108,80,24])
+			screen.blit(font.render("Destroy item?",False,config.ColorFont),[122,110])
 			if self.subPos==0:
-				screen.blit(font.render("Yes",False,ColorSel),[130,122])
+				screen.blit(font.render("Yes",False,config.ColorSel),[130,122])
 			else:
-				screen.blit(font.render("Yes",False,ColorFont),[130,122])
+				screen.blit(font.render("Yes",False,config.ColorFont),[130,122])
 			if self.subPos==1:
-				screen.blit(font.render("No",False,ColorSel),[165,122])
+				screen.blit(font.render("No",False,config.ColorSel),[165,122])
 			else:
-				screen.blit(font.render("No",False,ColorFont),[165,122])
+				screen.blit(font.render("No",False,config.ColorFont),[165,122])
 		elif self.menu==4:
 			self.status = "Use on who?"
-			#screen.fill((ColorDark),[92,32,126,176])
-			screen.fill((Color),[93,33,124,174])
-			screen.fill(ColorDark,[93,33,124,35])	#Draw Player Stat Box
-			screen.fill(Color,[94,34,122,33])		#Fill
-			screen.fill(ColorDark,[96,36,29,29])	#Draw Icon Outline
-			screen.fill(Color,[97,37,27,27])
+			#screen.fill((config.ColorDark),[92,32,126,176])
+			screen.fill((config.Color),[93,33,124,174])
+			screen.fill(config.ColorDark,[93,33,124,35])	#Draw Player Stat Box
+			screen.fill(config.Color,[94,34,122,33])		#Fill
+			screen.fill(config.ColorDark,[96,36,29,29])	#Draw Icon Outline
+			screen.fill(config.Color,[97,37,27,27])
 			screen.blit(self.player.getIcon(),[97,37])
 			i=0
 			if self.pos[1] < 4:
@@ -1196,14 +1178,14 @@ class InvenMenu(Menu):
 				else:
 					screen.blit(scrollText(self.player.getName(),86,0),[128,36])
 					
-				screen.blit(font.render(str(game.getLevel()),False,ColorFont),[99,55])
+				screen.blit(font.render(str(game.getLevel()),False,config.ColorFont),[99,55])
 				
 				screen.fill([64,0,0],[144,49,56,3])	#Health Bar
 				screen.fill([255,0,0],[145,50,int(float(game.getHP())/game.getHPM()*54),1])
 				screen.fill([0,0,64],[144,59,56,3])	#Mana Bar
 				screen.fill([0,0,255],[145,60,int(float(game.getMP())/game.getMPM()*54),1])
-				screen.blit(font.render("HP: "+game.getHPS()+"/"+str(game.getHPMS()),False,ColorFont),[128,46])
-				screen.blit(font.render("MP: "+game.getMPS()+"/"+str(game.getMPMS()),False,ColorFont),[128,56])
+				screen.blit(font.render("HP: "+game.getHPS()+"/"+str(game.getHPMS()),False,config.ColorFont),[128,46])
+				screen.blit(font.render("MP: "+game.getMPS()+"/"+str(game.getMPMS()),False,config.ColorFont),[128,56])
 				
 				if self.player.getClass()=="Warrior":
 					screen.blit(Icons.warriorSmall,(203,53))
@@ -1217,15 +1199,15 @@ class InvenMenu(Menu):
 					character = self.player.getParty()[n]
 					
 					if n <3:
-						screen.fill(ColorDark,[93,33+(38*i),124,35])	#Draw Character Stat Box
-						screen.fill(Color,[94,34+(38*i),122,33])		#Fill
-						screen.fill(ColorDark,[96,36+(38*i),29,29])		#Draw Icon Outline
-						screen.fill(Color,[97,37+(38*i),27,27])
+						screen.fill(config.ColorDark,[93,33+(38*i),124,35])	#Draw Character Stat Box
+						screen.fill(config.Color,[94,34+(38*i),122,33])		#Fill
+						screen.fill(config.ColorDark,[96,36+(38*i),29,29])		#Draw Icon Outline
+						screen.fill(config.Color,[97,37+(38*i),27,27])
 					else:
-						screen.fill(Color,[93,33+(38*i),124,35])		#Not in battle so grayed out
-						screen.fill(ColorDark,[94,34+(38*i),122,33])	
-						screen.fill(ColorDark,[96,36+(38*i),29,29])
-						screen.fill(ColorDark,[97,37+(38*i),27,27])
+						screen.fill(config.Color,[93,33+(38*i),124,35])		#Not in battle so grayed out
+						screen.fill(config.ColorDark,[94,34+(38*i),122,33])	
+						screen.fill(config.ColorDark,[96,36+(38*i),29,29])
+						screen.fill(config.ColorDark,[97,37+(38*i),27,27])
 					screen.blit(character.getIcon(),[97,37+(38*i)])
 					
 					game = character.getBattleObject()
@@ -1238,14 +1220,14 @@ class InvenMenu(Menu):
 					else:
 						screen.blit(scrollText(character.getName(),86,0),[128,36+(38*i)])
 					
-					screen.blit(font.render(str(game.getLevel()),False,ColorFont),[99,55+(38*i)])
+					screen.blit(font.render(str(game.getLevel()),False,config.ColorFont),[99,55+(38*i)])
 					
 					screen.fill([64,0,0],[144,49+(38*i),56,3])	#Health Bar
 					screen.fill([255,0,0],[145,50+(38*i),int(float(game.getHP())/game.getHPM()*54),1])
 					screen.fill([0,0,64],[144,59+(38*i),56,3])	#Mana Bar
 					screen.fill([0,0,255],[145,60+(38*i),int(float(game.getMP())/game.getMPM()*54),1])
-					screen.blit(font.render("HP: "+game.getHPS()+"/"+game.getHPMS(),False,ColorFont),[128,46+(38*i)])
-					screen.blit(font.render("MP: "+game.getMPS()+"/"+game.getMPMS(),False,ColorFont),[128,56+(38*i)])
+					screen.blit(font.render("HP: "+game.getHPS()+"/"+game.getHPMS(),False,config.ColorFont),[128,46+(38*i)])
+					screen.blit(font.render("MP: "+game.getMPS()+"/"+game.getMPMS(),False,config.ColorFont),[128,56+(38*i)])
 					
 					if character.getClass()=="Warrior":
 						screen.blit(Icons.warriorSmall,(203,53+(38*i)))
@@ -1268,10 +1250,10 @@ class InvenMenu(Menu):
 					character = self.player.getParty()[3]
 				else:
 					character = self.player.getParty()[self.pos[1]]
-				screen.fill(Color,[93,185,124,25])			#Draw Character Stat Box
-				screen.fill(ColorDark,[94,186,122,24])		#Fill (Inactive)
-				screen.fill(ColorDark,[96,188,29,22])		#Draw Icon Outline
-				screen.fill(ColorDark,[97,189,27,21])
+				screen.fill(config.Color,[93,185,124,25])			#Draw Character Stat Box
+				screen.fill(config.ColorDark,[94,186,122,24])		#Fill (Inactive)
+				screen.fill(config.ColorDark,[96,188,29,22])		#Draw Icon Outline
+				screen.fill(config.ColorDark,[97,189,27,21])
 				screen.blit(character.getIcon(),[98,189],area=[0,0,25,22])
 				
 				game = character.getBattleObject()
@@ -1279,7 +1261,7 @@ class InvenMenu(Menu):
 				
 				screen.fill([64,0,0],[144,49+(38*i),56,3])	#Health Bar
 				screen.fill([255,0,0],[145,50+(38*i),int(float(game.getHP())/game.getHPM()*54),1])
-				screen.blit(font.render("HP: "+game.getHPS()+"/"+game.getHPMS(),False,ColorFont),[128,46+(38*i)])
+				screen.blit(font.render("HP: "+game.getHPS()+"/"+game.getHPMS(),False,config.ColorFont),[128,46+(38*i)])
 				
 				if character.getClass()=="Warrior":
 					screen.blit(Icons.warriorSmall,(203,53+(38*i)),area=[0,0,12,5])
@@ -1308,18 +1290,18 @@ class InvenMenu(Menu):
 	def drawArmor(self,screen):
 		if self.pos[0]==-1:
 			self.status="Armor"
-		screen.fill(Color,[220,65,14,18])
+		screen.fill(config.Color,[220,65,14,18])
 		if self.menu == 0:
-			screen.fill(ColorDark,(91,31,46,16))
-			screen.fill(Color,(92,32,44,14))
+			screen.fill(config.ColorDark,(91,31,46,16))
+			screen.fill(config.Color,(92,32,44,14))
 			screen.blit(Icons.gold,(122,33))
 			gold = self.player.getInventory().getGold()
 			if gold < 10000:
-				screen.blit(font.render(str(gold),False,ColorFont),(94,35))
+				screen.blit(font.render(str(gold),False,config.ColorFont),(94,35))
 			elif gold < 1000000:
-				screen.blit(font.render("%.1fK"%(gold/1000.0),False,ColorFont),(94,35))
+				screen.blit(font.render("%.1fK"%(gold/1000.0),False,config.ColorFont),(94,35))
 			else:
-				screen.blit(font.render("%.1fM"%(gold/1000000.0),False,ColorFont),(94,35))
+				screen.blit(font.render("%.1fM"%(gold/1000000.0),False,config.ColorFont),(94,35))
 			
 			head = self.player.getInventory().getHead()
 			body = self.player.getInventory().getBody()
@@ -1369,23 +1351,23 @@ class InvenMenu(Menu):
 			#	for stat in arm2.getStats():
 			#		stats[stat]+=arm2.getStats()[stat]
 			
-			screen.blit(font.render("Atk: "+str(stats["Atk"]),False,ColorFont),(94,80))
-			screen.blit(font.render("Def: "+str(stats["Def"]),False,ColorFont),(94,90))
-			screen.blit(font.render("Spd: "+str(stats["Spd"]),False,ColorFont),(94,100))
-			screen.blit(font.render("Vit: "+str(stats["Vit"]),False,ColorFont),(94,110))
+			screen.blit(font.render("Atk: "+str(stats["Atk"]),False,config.ColorFont),(94,80))
+			screen.blit(font.render("Def: "+str(stats["Def"]),False,config.ColorFont),(94,90))
+			screen.blit(font.render("Spd: "+str(stats["Spd"]),False,config.ColorFont),(94,100))
+			screen.blit(font.render("Vit: "+str(stats["Vit"]),False,config.ColorFont),(94,110))
 			
-			screen.blit(font.render("Mag: "+str(stats["Mag"]),False,ColorFont),(94,130))
-			screen.blit(font.render("Res: "+str(stats["Res"]),False,ColorFont),(94,140))
-			screen.blit(font.render("Con: "+str(stats["Con"]),False,ColorFont),(94,150))
-			screen.blit(font.render("Mnd: "+str(stats["Mnd"]),False,ColorFont),(94,160))
+			screen.blit(font.render("Mag: "+str(stats["Mag"]),False,config.ColorFont),(94,130))
+			screen.blit(font.render("Res: "+str(stats["Res"]),False,config.ColorFont),(94,140))
+			screen.blit(font.render("Con: "+str(stats["Con"]),False,config.ColorFont),(94,150))
+			screen.blit(font.render("Mnd: "+str(stats["Mnd"]),False,config.ColorFont),(94,160))
 	
 	def drawParty(self,screen):
-		screen.fill(Color,[220,90,14,18])		#Lighten current tab
+		screen.fill(config.Color,[220,90,14,18])		#Lighten current tab
 		if self.menu == 0 or self.menu == 1 or self.menu==3:
-			screen.fill(ColorDark,[93,33,124,35])	#Draw Player Stat Box
-			screen.fill(Color,[94,34,122,33])		#Fill
-			screen.fill(ColorDark,[96,36,29,29])	#Draw Icon Outline
-			screen.fill(Color,[97,37,27,27])
+			screen.fill(config.ColorDark,[93,33,124,35])	#Draw Player Stat Box
+			screen.fill(config.Color,[94,34,122,33])		#Fill
+			screen.fill(config.ColorDark,[96,36,29,29])	#Draw Icon Outline
+			screen.fill(config.Color,[97,37,27,27])
 			screen.blit(self.player.getIcon(),[97,37])
 			
 			i=0
@@ -1401,14 +1383,14 @@ class InvenMenu(Menu):
 				else:
 					screen.blit(scrollText(self.player.getName(),86,0),[128,36])
 					
-				screen.blit(font.render(str(game.getLevel()),False,ColorFont),[99,55])
+				screen.blit(font.render(str(game.getLevel()),False,config.ColorFont),[99,55])
 				
 				screen.fill([64,0,0],[144,49,56,3])	#Health Bar
 				screen.fill([255,0,0],[145,50,int(float(game.getHP())/game.getHPM()*54),1])
 				screen.fill([0,0,64],[144,59,56,3])	#Mana Bar
 				screen.fill([0,0,255],[145,60,int(float(game.getMP())/game.getMPM()*54),1])
-				screen.blit(font.render("HP: "+game.getHPS()+"/"+str(game.getHPMS()),False,ColorFont),[128,46])
-				screen.blit(font.render("MP: "+game.getMPS()+"/"+str(game.getMPMS()),False,ColorFont),[128,56])
+				screen.blit(font.render("HP: "+game.getHPS()+"/"+str(game.getHPMS()),False,config.ColorFont),[128,46])
+				screen.blit(font.render("MP: "+game.getMPS()+"/"+str(game.getMPMS()),False,config.ColorFont),[128,56])
 				
 				if self.player.getClass().getName()=="Warrior":
 					screen.blit(Icons.warriorSmall,(203,53))
@@ -1420,18 +1402,18 @@ class InvenMenu(Menu):
 	#				if font.size(self.status)[0]>86:
 	#					cropped=pygame.Surface((86,12),SRCALPHA)
 	#					if self.scroll<0:
-	#						cropped.blit(font.render(self.status,False,ColorFont),[0,0])
+	#						cropped.blit(font.render(self.status,False,config.ColorFont),[0,0])
 	#						screen.blit(cropped,[95,214])
 	#					elif self.scroll>=font.size(self.status)[0]-120:
-	#						cropped.blit(font.render(self.status,False,ColorFont),[-(font.size(self.status)[0]-120),0])
+	#						cropped.blit(font.render(self.status,False,config.ColorFont),[-(font.size(self.status)[0]-120),0])
 	#						screen.blit(cropped,[95,214])
 	#						if self.scroll>font.size(self.status)[0]-90:
 	#							self.scroll=-30
 	#					else:
-	#						cropped.blit(font.render(self.status,False,ColorFont),[-self.scroll,0])
+	#						cropped.blit(font.render(self.status,False,config.ColorFont),[-self.scroll,0])
 	#						screen.blit(cropped,[95,214])
 	#				else:
-	#					screen.blit(font.render(self.status,False,ColorFont),[95,214])
+	#					screen.blit(font.render(self.status,False,config.ColorFont),[95,214])
 				i=1
 			if len(self.player.getParty())>0:
 				for n in range(max(self.pos[1]-4,0),min(max(3,self.pos[1]),len(self.player.getParty()))):
@@ -1439,15 +1421,15 @@ class InvenMenu(Menu):
 					character = self.player.getParty()[n]
 					
 					if n <3:
-						screen.fill(ColorDark,[93,33+(38*i),124,35])	#Draw Character Stat Box
-						screen.fill(Color,[94,34+(38*i),122,33])		#Fill
-						screen.fill(ColorDark,[96,36+(38*i),29,29])		#Draw Icon Outline
-						screen.fill(Color,[97,37+(38*i),27,27])
+						screen.fill(config.ColorDark,[93,33+(38*i),124,35])	#Draw Character Stat Box
+						screen.fill(config.Color,[94,34+(38*i),122,33])		#Fill
+						screen.fill(config.ColorDark,[96,36+(38*i),29,29])		#Draw Icon Outline
+						screen.fill(config.Color,[97,37+(38*i),27,27])
 					else:
-						screen.fill(Color,[93,33+(38*i),124,35])		#Not in battle so grayed out
-						screen.fill(ColorDark,[94,34+(38*i),122,33])	
-						screen.fill(ColorDark,[96,36+(38*i),29,29])
-						screen.fill(ColorDark,[97,37+(38*i),27,27])
+						screen.fill(config.Color,[93,33+(38*i),124,35])		#Not in battle so grayed out
+						screen.fill(config.ColorDark,[94,34+(38*i),122,33])	
+						screen.fill(config.ColorDark,[96,36+(38*i),29,29])
+						screen.fill(config.ColorDark,[97,37+(38*i),27,27])
 					screen.blit(character.getIcon(),[97,37+(38*i)])
 					
 					game = character.getBattleObject()
@@ -1460,14 +1442,14 @@ class InvenMenu(Menu):
 					else:
 						screen.blit(scrollText(character.getName(),86,0),[128,36+(38*i)])
 					
-					screen.blit(font.render(str(game.getLevel()),False,ColorFont),[99,55+(38*i)])
+					screen.blit(font.render(str(game.getLevel()),False,config.ColorFont),[99,55+(38*i)])
 					
 					screen.fill([64,0,0],[144,49+(38*i),56,3])	#Health Bar
 					screen.fill([255,0,0],[145,50+(38*i),int(float(game.getHP())/game.getHPM()*54),1])
 					screen.fill([0,0,64],[144,59+(38*i),56,3])	#Mana Bar
 					screen.fill([0,0,255],[145,60+(38*i),int(float(game.getMP())/game.getMPM()*54),1])
-					screen.blit(font.render("HP: "+game.getHPS()+"/"+game.getHPMS(),False,ColorFont),[128,46+(38*i)])
-					screen.blit(font.render("MP: "+game.getMPS()+"/"+game.getMPMS(),False,ColorFont),[128,56+(38*i)])
+					screen.blit(font.render("HP: "+game.getHPS()+"/"+game.getHPMS(),False,config.ColorFont),[128,46+(38*i)])
+					screen.blit(font.render("MP: "+game.getMPS()+"/"+game.getMPMS(),False,config.ColorFont),[128,56+(38*i)])
 					
 					if character.getClass().getName()=="Warrior":
 						screen.blit(Icons.warriorSmall,(203,53+(38*i)))
@@ -1491,10 +1473,10 @@ class InvenMenu(Menu):
 				else:
 					character = self.player.getParty()[self.pos[1]]
 				
-				screen.fill(Color,[93,185,124,25])			#Draw Character Stat Box
-				screen.fill(ColorDark,[94,186,122,24])		#Fill (Inactive)
-				screen.fill(ColorDark,[96,188,29,22])		#Draw Icon Outline
-				screen.fill(ColorDark,[97,189,27,21])
+				screen.fill(config.Color,[93,185,124,25])			#Draw Character Stat Box
+				screen.fill(config.ColorDark,[94,186,122,24])		#Fill (Inactive)
+				screen.fill(config.ColorDark,[96,188,29,22])		#Draw Icon Outline
+				screen.fill(config.ColorDark,[97,189,27,21])
 				screen.blit(character.getIcon(),[98,189],area=[0,0,25,22])
 				
 				game = character.getBattleObject()
@@ -1502,7 +1484,7 @@ class InvenMenu(Menu):
 				
 				screen.fill([64,0,0],[144,49+(38*i),56,3])	#Health Bar
 				screen.fill([255,0,0],[145,50+(38*i),int(float(game.getHP())/game.getHPM()*54),1])
-				screen.blit(font.render("HP: "+game.getHPS()+"/"+game.getHPMS(),False,ColorFont),[128,46+(38*i)])
+				screen.blit(font.render("HP: "+game.getHPS()+"/"+game.getHPMS(),False,config.ColorFont),[128,46+(38*i)])
 				
 				if character.getClass()=="Warrior":
 					screen.blit(Icons.warriorSmall,(203,53+(38*i)),area=[0,0,12,5])
@@ -1530,70 +1512,70 @@ class InvenMenu(Menu):
 			
 			if self.menu == 1:
 				if self.pos[1]<3:
-					screen.fill(ColorDark,[139,69+(38*self.pos[1]),32,26])
-					screen.fill(Color,[140,70+(38*self.pos[1]),30,24])
+					screen.fill(config.ColorDark,[139,69+(38*self.pos[1]),32,26])
+					screen.fill(config.Color,[140,70+(38*self.pos[1]),30,24])
 					if self.subPos == 0:
-						screen.blit(font.render("View",False,ColorSel),[142,72+(38*self.pos[1])])
+						screen.blit(font.render("View",False,config.ColorSel),[142,72+(38*self.pos[1])])
 					else:
-						screen.blit(font.render("View",False,ColorFont),[142,72+(38*self.pos[1])])
+						screen.blit(font.render("View",False,config.ColorFont),[142,72+(38*self.pos[1])])
 					if self.subPos == 1:
-						screen.blit(font.render("Move",False,ColorSel),[142,82+(38*self.pos[1])])
+						screen.blit(font.render("Move",False,config.ColorSel),[142,82+(38*self.pos[1])])
 					else:
-						screen.blit(font.render("Move",False,ColorFont),[142,82+(38*self.pos[1])])
+						screen.blit(font.render("Move",False,config.ColorFont),[142,82+(38*self.pos[1])])
 				else:
-					screen.fill(ColorDark,[139,183,32,26])
-					screen.fill(Color,[140,184,30,24])
+					screen.fill(config.ColorDark,[139,183,32,26])
+					screen.fill(config.Color,[140,184,30,24])
 					if self.subPos == 0:
-						screen.blit(font.render("View",False,ColorSel),[142,186])
+						screen.blit(font.render("View",False,config.ColorSel),[142,186])
 					else:
-						screen.blit(font.render("View",False,ColorFont),[142,186])
+						screen.blit(font.render("View",False,config.ColorFont),[142,186])
 					if self.subPos == 1:
-						screen.blit(font.render("Move",False,ColorSel),[142,196])
+						screen.blit(font.render("Move",False,config.ColorSel),[142,196])
 					else:
-						screen.blit(font.render("Move",False,ColorFont),[142,196])
+						screen.blit(font.render("Move",False,config.ColorFont),[142,196])
 			elif self.menu == 3:	#Switch Characters
 				self.status = "Switch with whom?"
 				
 				
 			
 		elif self.menu == 2:
-			screen.fill(ColorDark,[96,36,29,29])	#Draw Icon Outline
-			screen.fill(Color,[97,37,27,27])
+			screen.fill(config.ColorDark,[96,36,29,29])	#Draw Icon Outline
+			screen.fill(config.Color,[97,37,27,27])
 			screen.blit(self.sel.getIcon(),[97,37])
-			screen.blit(titleFont.render(self.sel.getName().split()[0],False,ColorFont),[128,36])
+			screen.blit(titleFont.render(self.sel.getName().split()[0],False,config.ColorFont),[128,36])
 			if self.pos[1]==0:
-				screen.blit(font.render(self.sel.getClass().getName(),False,ColorSel),[128,47])
+				screen.blit(font.render(self.sel.getClass().getName(),False,config.ColorSel),[128,47])
 				self.status=self.sel.getClass().getDescription()
 			else:
-				screen.blit(font.render(self.sel.getClass().getName(),False,ColorFont),[128,47])
+				screen.blit(font.render(self.sel.getClass().getName(),False,config.ColorFont),[128,47])
 			
 			game = self.sel.getBattleObject()
 			
 			screen.fill([0,64,0],[162,58,51,3])	#Experience Bar
 			screen.fill([0,255,0],[163,59,int(float(min(game.getExp(),game.getExpNext()))/game.getExpNext()*49),1])
 			if self.pos[1]==1:
-				screen.blit(font.render("Level: "+str(game.getLevel()),False,ColorSel),[128,55])
+				screen.blit(font.render("Level: "+str(game.getLevel()),False,config.ColorSel),[128,55])
 				if game.getExp()>=game.getExpNext():
 					self.status="Level up! Press [Accept] to level up."
 				else:
 					self.status="Level: "+str(game.getLevel())+", "+str(game.getExpNext()-game.getExp())+" exp until next level!"
 			else:
-				screen.blit(font.render("Level: "+str(game.getLevel()),False,ColorFont),[128,55])
+				screen.blit(font.render("Level: "+str(game.getLevel()),False,config.ColorFont),[128,55])
 			
 			screen.fill([64,0,0],[112,69,101,3])	#Health Bar
 			screen.fill([255,0,0],[113,70,int(float(game.getHP())/game.getHPM()*99),1])
 			screen.fill([0,0,64],[112,78,101,3])	#Mana Bar
 			screen.fill([0,0,255],[113,79,int(float(game.getMP())/game.getMPM()*99),1])
 			if self.pos[1]==2:
-				screen.blit(font.render("HP: "+str(game.getHP())+"/"+str(game.getHPM()),False,ColorSel),[96,66])
+				screen.blit(font.render("HP: "+str(game.getHP())+"/"+str(game.getHPM()),False,config.ColorSel),[96,66])
 				self.status="Health: "+str(game.getHP())
 			else:
-				screen.blit(font.render("HP: "+str(game.getHP())+"/"+str(game.getHPM()),False,ColorFont),[96,66])
+				screen.blit(font.render("HP: "+str(game.getHP())+"/"+str(game.getHPM()),False,config.ColorFont),[96,66])
 			if self.pos[1]==3:
-				screen.blit(font.render("MP: "+str(game.getMP())+"/"+str(game.getMPM()),False,ColorSel),[96,75])
+				screen.blit(font.render("MP: "+str(game.getMP())+"/"+str(game.getMPM()),False,config.ColorSel),[96,75])
 				self.status="Mana: "+str(game.getMP())
 			else:
-				screen.blit(font.render("MP: "+str(game.getMP())+"/"+str(game.getMPM()),False,ColorFont),[96,75])
+				screen.blit(font.render("MP: "+str(game.getMP())+"/"+str(game.getMPM()),False,config.ColorFont),[96,75])
 			
 			status = game.getStatus()
 			statusT = ""		#status Text
@@ -1610,8 +1592,8 @@ class InvenMenu(Menu):
 			statusT=statusT[0:-2]
 			
 			if self.pos[1]==4:
-				screen.blit(font.render("Status:",False,ColorSel),[96,84])
-				screen.blit(scrollText(statusT,77,self.selScroll,ColorSel),[136,84])
+				screen.blit(font.render("Status:",False,config.ColorSel),[96,84])
+				screen.blit(scrollText(statusT,77,self.selScroll,config.ColorSel),[136,84])
 				if self.selScroll>=font.size(statusT)[0]-37:
 					self.selScroll=-30
 				
@@ -1629,179 +1611,179 @@ class InvenMenu(Menu):
 						self.status+="Burned - This character will take damage over time in battle, "
 					self.status=self.status[0:-2]+'.'
 			else:
-				screen.blit(font.render("Status:",False,ColorFont),[96,84])
+				screen.blit(font.render("Status:",False,config.ColorFont),[96,84])
 				screen.blit(scrollText(statusT,77,0),[136,84])
 			
-			screen.fill(ColorDark,[94,97,122,1])
+			screen.fill(config.ColorDark,[94,97,122,1])
 			
 			if self.pos[0]==0:
 				if self.pos[1]==5:
-					screen.blit(font.render("Atk: "+str(game.getAtkN()),False,ColorSel),[96,103])
+					screen.blit(font.render("Atk: "+str(game.getAtkN()),False,config.ColorSel),[96,103])
 					self.status="Physical Attack - Affects how much damage physical attacks do."
 				else:
-					screen.blit(font.render("Atk: "+str(game.getAtkN()),False,ColorFont),[96,103])
+					screen.blit(font.render("Atk: "+str(game.getAtkN()),False,config.ColorFont),[96,103])
 				
 				if self.pos[1]==6:
-					screen.blit(font.render("Spd: "+str(game.getSpdN()),False,ColorSel),[96,112])
+					screen.blit(font.render("Spd: "+str(game.getSpdN()),False,config.ColorSel),[96,112])
 					self.status="Speed - Affects movement and physical attack speed in battles."
 				else:
-					screen.blit(font.render("Spd: "+str(game.getSpdN()),False,ColorFont),[96,112])
+					screen.blit(font.render("Spd: "+str(game.getSpdN()),False,config.ColorFont),[96,112])
 				
 				if self.pos[1]==7:
-					screen.blit(font.render("Mag: "+str(game.getMagN()),False,ColorSel),[96,130])
+					screen.blit(font.render("Mag: "+str(game.getMagN()),False,config.ColorSel),[96,130])
 					self.status="Magic Attack - Affects how much damage magical attacks do."
 				else:
-					screen.blit(font.render("Mag: "+str(game.getMagN()),False,ColorFont),[96,130])
+					screen.blit(font.render("Mag: "+str(game.getMagN()),False,config.ColorFont),[96,130])
 				
 				if self.pos[1]==8:
-					screen.blit(font.render("Con: "+str(game.getConN()),False,ColorSel),[96,139])
+					screen.blit(font.render("Con: "+str(game.getConN()),False,config.ColorSel),[96,139])
 					self.status="Concentration - Makes it harder for abilities to be interupted, as well as affecting magical attack speed in battles."
 				else:
-					screen.blit(font.render("Con: "+str(game.getConN()),False,ColorFont),[96,139])
+					screen.blit(font.render("Con: "+str(game.getConN()),False,config.ColorFont),[96,139])
 			else:
-				screen.blit(font.render("Atk: "+str(game.getAtkN()),False,ColorFont),[96,103])
-				screen.blit(font.render("Spd: "+str(game.getSpdN()),False,ColorFont),[96,112])
-				screen.blit(font.render("Mag: "+str(game.getMagN()),False,ColorFont),[96,130])
-				screen.blit(font.render("Con: "+str(game.getConN()),False,ColorFont),[96,139])
+				screen.blit(font.render("Atk: "+str(game.getAtkN()),False,config.ColorFont),[96,103])
+				screen.blit(font.render("Spd: "+str(game.getSpdN()),False,config.ColorFont),[96,112])
+				screen.blit(font.render("Mag: "+str(game.getMagN()),False,config.ColorFont),[96,130])
+				screen.blit(font.render("Con: "+str(game.getConN()),False,config.ColorFont),[96,139])
 			
 			if self.pos[0]==1:
 				if self.pos[1]==5:
-					screen.blit(font.render("Def: "+str(game.getDefN()),False,ColorSel),[156,103])
+					screen.blit(font.render("Def: "+str(game.getDefN()),False,config.ColorSel),[156,103])
 					self.status="Physical Defense - Affects how much damage is taken from physical attacks."
 				else:
-					screen.blit(font.render("Def: "+str(game.getDefN()),False,ColorFont),[156,103])
+					screen.blit(font.render("Def: "+str(game.getDefN()),False,config.ColorFont),[156,103])
 				
 				if self.pos[1]==6:
-					screen.blit(font.render("Vit: "+str(game.getVitN()),False,ColorSel),[156,112])
+					screen.blit(font.render("Vit: "+str(game.getVitN()),False,config.ColorSel),[156,112])
 					self.status="Vitality - Affects Health."
 				else:
-					screen.blit(font.render("Vit: "+str(game.getVitN()),False,ColorFont),[156,112])
+					screen.blit(font.render("Vit: "+str(game.getVitN()),False,config.ColorFont),[156,112])
 				
 				if self.pos[1]==7:
-					screen.blit(font.render("Res: "+str(game.getResN()),False,ColorSel),[156,130])
+					screen.blit(font.render("Res: "+str(game.getResN()),False,config.ColorSel),[156,130])
 					self.status="Resistance (Magic Defence) - Affects how much damage is take from magical attacks."
 				else:
-					screen.blit(font.render("Res: "+str(game.getResN()),False,ColorFont),[156,130])
+					screen.blit(font.render("Res: "+str(game.getResN()),False,config.ColorFont),[156,130])
 				
 				if self.pos[1]==8:
-					screen.blit(font.render("Mnd: "+str(game.getMndN()),False,ColorSel),[156,139])
+					screen.blit(font.render("Mnd: "+str(game.getMndN()),False,config.ColorSel),[156,139])
 					self.status="Mind - Affects Mana."
 				else:
-					screen.blit(font.render("Mnd: "+str(game.getMndN()),False,ColorFont),[156,139])
+					screen.blit(font.render("Mnd: "+str(game.getMndN()),False,config.ColorFont),[156,139])
 			else:
-				screen.blit(font.render("Def: "+str(game.getDefN()),False,ColorFont),[156,103])
-				screen.blit(font.render("Vit: "+str(game.getVitN()),False,ColorFont),[156,112])
-				screen.blit(font.render("Res: "+str(game.getResN()),False,ColorFont),[156,130])
-				screen.blit(font.render("Mnd: "+str(game.getMndN()),False,ColorFont),[156,139])
+				screen.blit(font.render("Def: "+str(game.getDefN()),False,config.ColorFont),[156,103])
+				screen.blit(font.render("Vit: "+str(game.getVitN()),False,config.ColorFont),[156,112])
+				screen.blit(font.render("Res: "+str(game.getResN()),False,config.ColorFont),[156,130])
+				screen.blit(font.render("Mnd: "+str(game.getMndN()),False,config.ColorFont),[156,139])
 			
 			if self.sel.isPlayer():
-				screen.fill(ColorDark,[94,152,122,1])
+				screen.fill(config.ColorDark,[94,152,122,1])
 				if self.pos[1]==9:
 					if self.sel.getSkill("S1")==None:
-						screen.blit(font.render("S1  :",False,ColorSel),[96,158])
+						screen.blit(font.render("S1  :",False,config.ColorSel),[96,158])
 						self.status="[S1]: Not Assigned"
 					else:
-						screen.blit(font.render("S1  : "+self.sel.getSkill("S1").getName(),False,ColorSel),[96,158])
+						screen.blit(font.render("S1  : "+self.sel.getSkill("S1").getName(),False,config.ColorSel),[96,158])
 						self.status="[S1]: "+self.sel.getSkill("S1").getName()
 					temp = Icons.circ.copy()
-					temp.fill(ColorSel,special_flags=BLEND_MULT)
+					temp.fill(config.ColorSel,special_flags=BLEND_MULT)
 					screen.blit(temp,(105,157))
 				else:
 					if self.sel.getSkill("S1")==None:
-						screen.blit(font.render("S1  :",False,ColorFont),[96,158])
+						screen.blit(font.render("S1  :",False,config.ColorFont),[96,158])
 					else:
-						screen.blit(font.render("S1  : "+self.sel.getSkill("S1").getName(),False,ColorFont),[96,158])
+						screen.blit(font.render("S1  : "+self.sel.getSkill("S1").getName(),False,config.ColorFont),[96,158])
 					screen.blit(Icons.circ,(105,157))
 				if self.pos[1]==10:
 					if self.sel.getSkill("S1U")==None:
-						screen.blit(font.render("S1  :",False,ColorSel),[96,167])
+						screen.blit(font.render("S1  :",False,config.ColorSel),[96,167])
 						self.status="[S1]+[Up]: Not Assigned"
 					else:
-						screen.blit(font.render("S1  : "+self.sel.getSkill("S1U").getName(),False,ColorSel),[96,167])
+						screen.blit(font.render("S1  : "+self.sel.getSkill("S1U").getName(),False,config.ColorSel),[96,167])
 						self.status="[S1]+[Up]: "+self.sel.getSkill("S1U").getName()
 					temp = Icons.upArrow.copy()
-					temp.fill(ColorSel,special_flags=BLEND_MULT)
+					temp.fill(config.ColorSel,special_flags=BLEND_MULT)
 					screen.blit(temp,(105,168))
 				else:
 					if self.sel.getSkill("S1U")==None:
-						screen.blit(font.render("S1  :",False,ColorFont),[96,167])
+						screen.blit(font.render("S1  :",False,config.ColorFont),[96,167])
 					else:
-						screen.blit(font.render("S1  : "+self.sel.getSkill("S1U").getName(),False,ColorFont),[96,167])
+						screen.blit(font.render("S1  : "+self.sel.getSkill("S1U").getName(),False,config.ColorFont),[96,167])
 					screen.blit(Icons.upArrow,(105,168))
 				if self.pos[1]==11:
 					if self.sel.getSkill("S1R")==None:
-						screen.blit(font.render("S1  :",False,ColorSel),[96,176])
+						screen.blit(font.render("S1  :",False,config.ColorSel),[96,176])
 						self.status="[S1]+[Right]: Not Assigned"
 					else:
-						screen.blit(font.render("S1  : "+self.sel.getSkill("S1R").getName(),False,ColorSel),[96,176])
+						screen.blit(font.render("S1  : "+self.sel.getSkill("S1R").getName(),False,config.ColorSel),[96,176])
 						self.status="[S1]+[Right]: "+self.sel.getSkill("S1R").getName()
 					temp = Icons.rightArrow.copy()
-					temp.fill(ColorSel,special_flags=BLEND_MULT)
+					temp.fill(config.ColorSel,special_flags=BLEND_MULT)
 					screen.blit(temp,(103,175))
 				else:
 					if self.sel.getSkill("S1R")==None:
-						screen.blit(font.render("S1  :",False,ColorFont),[96,176])
+						screen.blit(font.render("S1  :",False,config.ColorFont),[96,176])
 					else:
-						screen.blit(font.render("S1  : "+self.sel.getSkill("S1R").getName(),False,ColorFont),[96,176])
+						screen.blit(font.render("S1  : "+self.sel.getSkill("S1R").getName(),False,config.ColorFont),[96,176])
 					screen.blit(Icons.rightArrow,(103,175))
 				if self.pos[1]==12:
 					if self.sel.getSkill("S1L")==None:
-						screen.blit(font.render("S1  :",False,ColorSel),[96,185])
+						screen.blit(font.render("S1  :",False,config.ColorSel),[96,185])
 						self.status="[S1]+[Left]: Not Assigned"
 					else:
-						screen.blit(font.render("S1  : "+self.sel.getSkill("S1L").getName(),False,ColorSel),[96,185])
+						screen.blit(font.render("S1  : "+self.sel.getSkill("S1L").getName(),False,config.ColorSel),[96,185])
 						self.status="[S1]+[Left]: "+self.sel.getSkill("S1L").getName()
 					temp = Icons.leftArrow.copy()
-					temp.fill(ColorSel,special_flags=BLEND_MULT)
+					temp.fill(config.ColorSel,special_flags=BLEND_MULT)
 					screen.blit(temp,(108,184))
 				else:
 					if self.sel.getSkill("S1L")==None:
-						screen.blit(font.render("S1  :",False,ColorFont),[96,185])
+						screen.blit(font.render("S1  :",False,config.ColorFont),[96,185])
 					else:
-						screen.blit(font.render("S1  : "+self.sel.getSkill("S1L").getName(),False,ColorFont),[96,185])
+						screen.blit(font.render("S1  : "+self.sel.getSkill("S1L").getName(),False,config.ColorFont),[96,185])
 					screen.blit(Icons.leftArrow,(108,184))
 				if self.pos[1]==13:
 					if self.sel.getSkill("S1D")==None:
-						screen.blit(font.render("S1  :",False,ColorSel),[96,194])
+						screen.blit(font.render("S1  :",False,config.ColorSel),[96,194])
 						self.status="[S1]+[Down]: Not Assigned"
 					else:
-						screen.blit(font.render("S1  : "+self.sel.getSkill("S1D").getName(),False,ColorSel),[96,194])
+						screen.blit(font.render("S1  : "+self.sel.getSkill("S1D").getName(),False,config.ColorSel),[96,194])
 						self.status="[S1]+[Down]: "+self.sel.getSkill("S1D").getName()
 					temp = Icons.downArrow.copy()
-					temp.fill(ColorSel,special_flags=BLEND_MULT)
+					temp.fill(config.ColorSel,special_flags=BLEND_MULT)
 					screen.blit(temp,(105,191))
 				else:
 					if self.sel.getSkill("S1D")==None:
-						screen.blit(font.render("S1  :",False,ColorFont),[96,194])
+						screen.blit(font.render("S1  :",False,config.ColorFont),[96,194])
 					else:
-						screen.blit(font.render("S1  : "+self.sel.getSkill("S1D").getName(),False,ColorFont),[96,194])
+						screen.blit(font.render("S1  : "+self.sel.getSkill("S1D").getName(),False,config.ColorFont),[96,194])
 					screen.blit(Icons.downArrow,(105,191))
 		
 		elif self.menu == 4:
 			statChange = self.sel.getJob().getStatChange()
-			screen.fill(ColorDark,[96,36,29,29])	#Draw Icon Outline
-			screen.fill(Color,[97,37,27,27])
+			screen.fill(config.ColorDark,[96,36,29,29])	#Draw Icon Outline
+			screen.fill(config.Color,[97,37,27,27])
 			screen.blit(self.sel.getIcon(),[97,37])
-			screen.blit(titleFont.render(self.sel.getName().split()[0],False,ColorFont),[128,36])
-			screen.blit(font.render(self.sel.getClass().getName(),False,ColorFont),[128,47])
+			screen.blit(titleFont.render(self.sel.getName().split()[0],False,config.ColorFont),[128,36])
+			screen.blit(font.render(self.sel.getClass().getName(),False,config.ColorFont),[128,47])
 			
 			game = self.sel.getBattleObject()
 			
 			screen.fill([0,64,0],[162,58,51,3])	#Experience Bar
 			screen.fill([0,255,0],[163,59,int(float(min(game.getExp(),game.getExpNext()))/game.getExpNext()*49),1])
 
-			screen.blit(font.render("Level: "+str(game.getLevel()),False,ColorFont),[128,55])
-			screen.blit(font.render("+1",False,ColorSel),[188,55])
+			screen.blit(font.render("Level: "+str(game.getLevel()),False,config.ColorFont),[128,55])
+			screen.blit(font.render("+1",False,config.ColorSel),[188,55])
 			
 			screen.fill([64,0,0],[112,69,101,3])	#Health Bar
 			screen.fill([255,0,0],[113,70,int(float(game.getHP())/game.getHPM()*99),1])
 			screen.fill([0,0,64],[112,78,101,3])	#Mana Bar
 			screen.fill([0,0,255],[113,79,int(float(game.getMP())/game.getMPM()*99),1])
 
-			screen.blit(font.render("HP: "+str(game.getHP())+"/"+str(game.getHPM()),False,ColorFont),[96,66])
-			screen.blit(font.render("MP: "+str(game.getMP())+"/"+str(game.getMPM()),False,ColorFont),[96,75])
-			screen.blit(font.render("+"+str(statChange["HP"]),False,ColorSel),[188,66])
-			screen.blit(font.render("+"+str(statChange["MP"]),False,ColorSel),[188,75])
+			screen.blit(font.render("HP: "+str(game.getHP())+"/"+str(game.getHPM()),False,config.ColorFont),[96,66])
+			screen.blit(font.render("MP: "+str(game.getMP())+"/"+str(game.getMPM()),False,config.ColorFont),[96,75])
+			screen.blit(font.render("+"+str(statChange["HP"]),False,config.ColorSel),[188,66])
+			screen.blit(font.render("+"+str(statChange["MP"]),False,config.ColorSel),[188,75])
 			
 			status = game.getStatus()
 			statusT = ""		#status Text
@@ -1817,28 +1799,28 @@ class InvenMenu(Menu):
 				statusT+="Burned, "
 			statusT=statusT[0:-2]
 			
-			screen.blit(font.render("Status:",False,ColorFont),[96,84])
+			screen.blit(font.render("Status:",False,config.ColorFont),[96,84])
 			screen.blit(scrollText(statusT,77,0),[136,84])
 			
-			screen.fill(ColorDark,[94,97,122,1])
+			screen.fill(config.ColorDark,[94,97,122,1])
 			
-			screen.blit(font.render("Atk: "+str(game.getAtkN()),False,ColorFont),[96,103])
-			screen.blit(font.render("Spd: "+str(game.getSpdN()),False,ColorFont),[96,112])
-			screen.blit(font.render("Mag: "+str(game.getMagN()),False,ColorFont),[96,130])
-			screen.blit(font.render("Con: "+str(game.getConN()),False,ColorFont),[96,139])
-			screen.blit(font.render("Def: "+str(game.getDefN()),False,ColorFont),[156,103])
-			screen.blit(font.render("Vit: "+str(game.getVitN()),False,ColorFont),[156,112])
-			screen.blit(font.render("Res: "+str(game.getResN()),False,ColorFont),[156,130])
-			screen.blit(font.render("Mnd: "+str(game.getMndN()),False,ColorFont),[156,139])
+			screen.blit(font.render("Atk: "+str(game.getAtkN()),False,config.ColorFont),[96,103])
+			screen.blit(font.render("Spd: "+str(game.getSpdN()),False,config.ColorFont),[96,112])
+			screen.blit(font.render("Mag: "+str(game.getMagN()),False,config.ColorFont),[96,130])
+			screen.blit(font.render("Con: "+str(game.getConN()),False,config.ColorFont),[96,139])
+			screen.blit(font.render("Def: "+str(game.getDefN()),False,config.ColorFont),[156,103])
+			screen.blit(font.render("Vit: "+str(game.getVitN()),False,config.ColorFont),[156,112])
+			screen.blit(font.render("Res: "+str(game.getResN()),False,config.ColorFont),[156,130])
+			screen.blit(font.render("Mnd: "+str(game.getMndN()),False,config.ColorFont),[156,139])
 			
-			screen.blit(font.render("+"+str(statChange["Atk"]),False,ColorSel),[139,103])
-			screen.blit(font.render("+"+str(statChange["Spd"]),False,ColorSel),[139,112])
-			screen.blit(font.render("+"+str(statChange["Mag"]),False,ColorSel),[139,130])
-			screen.blit(font.render("+"+str(statChange["Con"]),False,ColorSel),[139,139])
-			screen.blit(font.render("+"+str(statChange["Def"]),False,ColorSel),[199,103])
-			screen.blit(font.render("+"+str(statChange["Vit"]),False,ColorSel),[199,112])
-			screen.blit(font.render("+"+str(statChange["Res"]),False,ColorSel),[199,130])
-			screen.blit(font.render("+"+str(statChange["Mnd"]),False,ColorSel),[199,139])
+			screen.blit(font.render("+"+str(statChange["Atk"]),False,config.ColorSel),[139,103])
+			screen.blit(font.render("+"+str(statChange["Spd"]),False,config.ColorSel),[139,112])
+			screen.blit(font.render("+"+str(statChange["Mag"]),False,config.ColorSel),[139,130])
+			screen.blit(font.render("+"+str(statChange["Con"]),False,config.ColorSel),[139,139])
+			screen.blit(font.render("+"+str(statChange["Def"]),False,config.ColorSel),[199,103])
+			screen.blit(font.render("+"+str(statChange["Vit"]),False,config.ColorSel),[199,112])
+			screen.blit(font.render("+"+str(statChange["Res"]),False,config.ColorSel),[199,130])
+			screen.blit(font.render("+"+str(statChange["Mnd"]),False,config.ColorSel),[199,139])
 			
 			self.status="Press [Accept] to continue."
 		
@@ -1846,11 +1828,11 @@ class InvenMenu(Menu):
 			if self.subPos!=0:
 				skill = self.sel.getJob().getUnlockedSkills()[self.subPos-1]
 				if skill.getLevel()>0:
-					color = ColorFont
-					colorB= ColorSel
+					color = config.ColorFont
+					colorB= config.ColorSel
 				else:
-					color = ColorDisable
-					colorB= ColorDisable
+					color = config.ColorDisable
+					colorB= config.ColorDisable
 				screen.blit(titleFont.render(skill.getName(),False,colorB),[96,32])
 				screen.blit(font.render(str(skill.getType()),False,color),[96,43])
 				screen.blit(font.render("Cost: "+str(skill.getCost())+" MP",False,color),[96,55])
@@ -1859,17 +1841,17 @@ class InvenMenu(Menu):
 				for line in skill.getDescription():
 					screen.blit(font.render(line,False,color),[96,y])
 					y+=9
-			#screen.blit(font.render("HP: "+str(game.getHP())+"/"+str(game.getHPM()),False,ColorFont),[96,66])
-			#screen.blit(font.render("MP: "+str(game.getMP())+"/"+str(game.getMPM()),False,ColorFont),[96,75])
-			#screen.blit(font.render("Status:",False,ColorFont),[96,84])
+			#screen.blit(font.render("HP: "+str(game.getHP())+"/"+str(game.getHPM()),False,config.ColorFont),[96,66])
+			#screen.blit(font.render("MP: "+str(game.getMP())+"/"+str(game.getMPM()),False,config.ColorFont),[96,75])
+			#screen.blit(font.render("Status:",False,config.ColorFont),[96,84])
 			
-			screen.fill(ColorDark,[94,97,122,1])
+			screen.fill(config.ColorDark,[94,97,122,1])
 			
 			if self.subPos == 0:
-				screen.blit(font.render("None",False,ColorSel),[96,100])
+				screen.blit(font.render("None",False,config.ColorSel),[96,100])
 				self.status = "No Skill"
 			else:
-				screen.blit(font.render("None",False,ColorFont),[96,100])
+				screen.blit(font.render("None",False,config.ColorFont),[96,100])
 			
 			x = 96
 			y = 110
@@ -1877,136 +1859,136 @@ class InvenMenu(Menu):
 				skill = self.sel.getJob().getUnlockedSkills()[n]
 				if skill.getLevel()>0:
 					if self.subPos == n+1:
-						screen.blit(font.render(skill.getName(),False,ColorSel),[x,y])
+						screen.blit(font.render(skill.getName(),False,config.ColorSel),[x,y])
 						self.status = skill.getInfo()
 					else:
-						screen.blit(font.render(skill.getName(),False,ColorFont),[x,y])
+						screen.blit(font.render(skill.getName(),False,config.ColorFont),[x,y])
 				else:
 					if self.subPos == n+1:
-						screen.blit(font.render(skill.getName(),False,ColorSel),[x,y])
+						screen.blit(font.render(skill.getName(),False,config.ColorSel),[x,y])
 						self.status = "This skill hasn't been learned yet."
 					else:
-						screen.blit(font.render(skill.getName(),False,ColorDisable),[x,y])
+						screen.blit(font.render(skill.getName(),False,config.ColorDisable),[x,y])
 				y+=9
 #			for skill in self.sel.getJob().getSkills():
 #				if skill.getUnlocked():
 #					if skill.getLevel()>0:
 #						if self.subPos == i:
-#							screen.blit(font.render(skill.getName(),False,ColorSel),[x,y])
+#							screen.blit(font.render(skill.getName(),False,config.ColorSel),[x,y])
 #							self.status = skill.getInfo()
 #						else:
-#							screen.blit(font.render(skill.getName(),False,ColorFont),[x,y])
+#							screen.blit(font.render(skill.getName(),False,config.ColorFont),[x,y])
 #					else:
 #						if self.subPos == i:
-#							screen.blit(font.render(skill.getName(),False,ColorSel),[x,y])
+#							screen.blit(font.render(skill.getName(),False,config.ColorSel),[x,y])
 #							self.status = "This skill hasn't been learned yet."
 #						else:
-#							screen.blit(font.render(skill.getName(),False,ColorDisable),[x,y])
+#							screen.blit(font.render(skill.getName(),False,config.ColorDisable),[x,y])
 #					i+=1
 #					y+=9
 			
-			screen.fill(ColorDark,[94,152,122,1])
+			screen.fill(config.ColorDark,[94,152,122,1])
 			if self.pos[1]==9:
 				if self.sel.getSkill("S1")==None:
-					screen.blit(font.render("S1  :",False,ColorSel),[96,158])
+					screen.blit(font.render("S1  :",False,config.ColorSel),[96,158])
 				else:
-					screen.blit(font.render("S1  : "+self.sel.getSkill("S1").getName(),False,ColorSel),[96,158])
+					screen.blit(font.render("S1  : "+self.sel.getSkill("S1").getName(),False,config.ColorSel),[96,158])
 				temp = Icons.circ.copy()
-				temp.fill(ColorSel,special_flags=BLEND_MULT)
+				temp.fill(config.ColorSel,special_flags=BLEND_MULT)
 				screen.blit(temp,(105,157))
 			else:
 				if self.sel.getSkill("S1")==None:
-					screen.blit(font.render("S1  :",False,ColorFont),[96,158])
+					screen.blit(font.render("S1  :",False,config.ColorFont),[96,158])
 				else:
-					screen.blit(font.render("S1  : "+self.sel.getSkill("S1").getName(),False,ColorFont),[96,158])
+					screen.blit(font.render("S1  : "+self.sel.getSkill("S1").getName(),False,config.ColorFont),[96,158])
 				screen.blit(Icons.circ,(105,157))
 			if self.pos[1]==10:
 				if self.sel.getSkill("S1U")==None:
-					screen.blit(font.render("S1  :",False,ColorSel),[96,167])
+					screen.blit(font.render("S1  :",False,config.ColorSel),[96,167])
 				else:
-					screen.blit(font.render("S1  : "+self.sel.getSkill("S1U").getName(),False,ColorSel),[96,167])
+					screen.blit(font.render("S1  : "+self.sel.getSkill("S1U").getName(),False,config.ColorSel),[96,167])
 				temp = Icons.upArrow.copy()
-				temp.fill(ColorSel,special_flags=BLEND_MULT)
+				temp.fill(config.ColorSel,special_flags=BLEND_MULT)
 				screen.blit(temp,(105,168))
 			else:
 				if self.sel.getSkill("S1U")==None:
-					screen.blit(font.render("S1  :",False,ColorFont),[96,167])
+					screen.blit(font.render("S1  :",False,config.ColorFont),[96,167])
 				else:
-					screen.blit(font.render("S1  : "+self.sel.getSkill("S1U").getName(),False,ColorFont),[96,167])
+					screen.blit(font.render("S1  : "+self.sel.getSkill("S1U").getName(),False,config.ColorFont),[96,167])
 				screen.blit(Icons.upArrow,(105,168))
 			if self.pos[1]==11:
 				if self.sel.getSkill("S1R")==None:
-					screen.blit(font.render("S1  :",False,ColorSel),[96,176])
+					screen.blit(font.render("S1  :",False,config.ColorSel),[96,176])
 				else:
-					screen.blit(font.render("S1  : "+self.sel.getSkill("S1R").getName(),False,ColorSel),[96,176])
+					screen.blit(font.render("S1  : "+self.sel.getSkill("S1R").getName(),False,config.ColorSel),[96,176])
 				temp = Icons.rightArrow.copy()
-				temp.fill(ColorSel,special_flags=BLEND_MULT)
+				temp.fill(config.ColorSel,special_flags=BLEND_MULT)
 				screen.blit(temp,(103,175))
 			else:
 				if self.sel.getSkill("S1R")==None:
-					screen.blit(font.render("S1  :",False,ColorFont),[96,176])
+					screen.blit(font.render("S1  :",False,config.ColorFont),[96,176])
 				else:
-					screen.blit(font.render("S1  : "+self.sel.getSkill("S1R").getName(),False,ColorFont),[96,176])
+					screen.blit(font.render("S1  : "+self.sel.getSkill("S1R").getName(),False,config.ColorFont),[96,176])
 				screen.blit(Icons.rightArrow,(103,175))
 			if self.pos[1]==12:
 				if self.sel.getSkill("S1L")==None:
-					screen.blit(font.render("S1  :",False,ColorSel),[96,185])
+					screen.blit(font.render("S1  :",False,config.ColorSel),[96,185])
 				else:
-					screen.blit(font.render("S1  : "+self.sel.getSkill("S1L").getName(),False,ColorSel),[96,185])
+					screen.blit(font.render("S1  : "+self.sel.getSkill("S1L").getName(),False,config.ColorSel),[96,185])
 				temp = Icons.leftArrow.copy()
-				temp.fill(ColorSel,special_flags=BLEND_MULT)
+				temp.fill(config.ColorSel,special_flags=BLEND_MULT)
 				screen.blit(temp,(108,184))
 			else:
 				if self.sel.getSkill("S1L")==None:
-					screen.blit(font.render("S1  :",False,ColorFont),[96,185])
+					screen.blit(font.render("S1  :",False,config.ColorFont),[96,185])
 				else:
-					screen.blit(font.render("S1  : "+self.sel.getSkill("S1L").getName(),False,ColorFont),[96,185])
+					screen.blit(font.render("S1  : "+self.sel.getSkill("S1L").getName(),False,config.ColorFont),[96,185])
 				screen.blit(Icons.leftArrow,(108,184))
 			if self.pos[1]==13:
 				if self.sel.getSkill("S1D")==None:
-					screen.blit(font.render("S1  :",False,ColorSel),[96,194])
+					screen.blit(font.render("S1  :",False,config.ColorSel),[96,194])
 				else:
-					screen.blit(font.render("S1  : "+self.sel.getSkill("S1D").getName(),False,ColorSel),[96,194])
+					screen.blit(font.render("S1  : "+self.sel.getSkill("S1D").getName(),False,config.ColorSel),[96,194])
 				temp = Icons.downArrow.copy()
-				temp.fill(ColorSel,special_flags=BLEND_MULT)
+				temp.fill(config.ColorSel,special_flags=BLEND_MULT)
 				screen.blit(temp,(105,191))
 			else:
 				if self.sel.getSkill("S1D")==None:
-					screen.blit(font.render("S1  :",False,ColorFont),[96,194])
+					screen.blit(font.render("S1  :",False,config.ColorFont),[96,194])
 				else:
-					screen.blit(font.render("S1  : "+self.sel.getSkill("S1D").getName(),False,ColorFont),[96,194])
+					screen.blit(font.render("S1  : "+self.sel.getSkill("S1D").getName(),False,config.ColorFont),[96,194])
 				screen.blit(Icons.downArrow,(105,191))
 				
 		elif self.menu == 6:
 			skill = self.sel.getJob().getUnlockedSkills()[self.subPos]
-			screen.blit(titleFont.render(skill.getName(),False,ColorSel),[96,32])
-			screen.blit(font.render(str(skill.getType()),False,ColorFont),[96,43])
-			screen.blit(font.render("Cost: "+str(skill.getNextCost())+" MP",False,ColorFont),[96,55])
-			screen.blit(font.render("Level: "+str(skill.getLevel()+1)+"",False,ColorFont),[164,55])
+			screen.blit(titleFont.render(skill.getName(),False,config.ColorSel),[96,32])
+			screen.blit(font.render(str(skill.getType()),False,config.ColorFont),[96,43])
+			screen.blit(font.render("Cost: "+str(skill.getNextCost())+" MP",False,config.ColorFont),[96,55])
+			screen.blit(font.render("Level: "+str(skill.getLevel()+1)+"",False,config.ColorFont),[164,55])
 			y=68
 			for line in skill.getDescription():
-				screen.blit(font.render(line,False,ColorFont),[96,y])
+				screen.blit(font.render(line,False,config.ColorFont),[96,y])
 				y+=9
 			
-			screen.fill(ColorDark,[94,97,122,1])
+			screen.fill(config.ColorDark,[94,97,122,1])
 			
 			x = 96
 			y = 101
 			for n in range(max(self.subPos-4,0),min(max(6,self.subPos+2),len(self.sel.getJob().getUnlockedSkills()))):
 				skill = self.sel.getJob().getUnlockedSkills()[n]
 				if self.subPos == n:
-					screen.blit(font.render(skill.getName(),False,ColorSel),[x,y])
+					screen.blit(font.render(skill.getName(),False,config.ColorSel),[x,y])
 					self.status = "Level up "+skill.getName()+"?"
 				else:
-					screen.blit(font.render(skill.getName(),False,ColorFont),[x,y])
+					screen.blit(font.render(skill.getName(),False,config.ColorFont),[x,y])
 				y+=9
 			
-			screen.fill(ColorDark,[94,152,122,1])
+			screen.fill(config.ColorDark,[94,152,122,1])
 			
 			x=96
 			y=156
 			for change in self.sel.getJob().getUnlockedSkills()[self.subPos].getChanges():
-				screen.blit(font.render(change,False,ColorFont),[x,y])
+				screen.blit(font.render(change,False,config.ColorFont),[x,y])
 				y+=9
 
 		if self.pos[0]==-1:
@@ -2015,25 +1997,25 @@ class InvenMenu(Menu):
 	def drawMap(self,screen):
 		if self.pos[0]==-1:
 			self.status="Map"
-		screen.fill(Color,[220,115,14,18])
+		screen.fill(config.Color,[220,115,14,18])
 	
 	def drawQuest(self,screen):
 		if self.pos[0]==-1:
 			self.status="Quests"
-		screen.fill(Color,[220,140,14,18])
+		screen.fill(config.Color,[220,140,14,18])
 	
 	def draw(self,screen):
-		screen.fill(ColorDark,[89,14,132,212])
-		screen.fill(Color,[90,30,130,180])	#Main Window
-		screen.fill(Color,[90,16,130,12])	#Area Name Window
-		screen.fill(Color,[90,212,130,12])	#Status Window
-		screen.fill(ColorDark,[220,39,15,20])
-		screen.fill(ColorDark,[220,64,15,20])
-		screen.fill(ColorDark,[220,89,15,20])
-		screen.fill(ColorDark,[220,114,15,20])
-		screen.fill(ColorDark,[220,139,15,20])
+		screen.fill(config.ColorDark,[89,14,132,212])
+		screen.fill(config.Color,[90,30,130,180])	#Main Window
+		screen.fill(config.Color,[90,16,130,12])	#Area Name Window
+		screen.fill(config.Color,[90,212,130,12])	#Status Window
+		screen.fill(config.ColorDark,[220,39,15,20])
+		screen.fill(config.ColorDark,[220,64,15,20])
+		screen.fill(config.ColorDark,[220,89,15,20])
+		screen.fill(config.ColorDark,[220,114,15,20])
+		screen.fill(config.ColorDark,[220,139,15,20])
 		
-		screen.blit(font.render(self.levelName,False,ColorFont),[95,18])
+		screen.blit(font.render(self.levelName,False,config.ColorFont),[95,18])
 		
 		if self.tab==0:	#Inventory Tab
 			self.drawInventory(screen)
@@ -2065,18 +2047,18 @@ class InvenMenu(Menu):
 		#if font.size(self.status)[0]>120:
 		#	cropped=pygame.Surface((120,12),SRCALPHA)
 		#	if self.statusScroll<0:
-		#		cropped.blit(font.render(self.status,False,ColorFont),[0,0])
+		#		cropped.blit(font.render(self.status,False,config.ColorFont),[0,0])
 		#		screen.blit(cropped,[95,214])
 		#	elif self.statusScroll>=font.size(self.status)[0]-120:
-		#		cropped.blit(font.render(self.status,False,ColorFont),[-(font.size(self.status)[0]-120),0])
+		#		cropped.blit(font.render(self.status,False,config.ColorFont),[-(font.size(self.status)[0]-120),0])
 		#		screen.blit(cropped,[95,214])
 		#		if self.statusScroll>font.size(self.status)[0]-90:
 		#			self.statusScroll=-30
 		#	else:
-		#		cropped.blit(font.render(self.status,False,ColorFont),[-self.statusScroll,0])
+		#		cropped.blit(font.render(self.status,False,config.ColorFont),[-self.statusScroll,0])
 		#		screen.blit(cropped,[95,214])
 		#else:
-		#	screen.blit(font.render(self.status,False,ColorFont),[95,214])
+		#	screen.blit(font.render(self.status,False,config.ColorFont),[95,214])
 	
 	def update(self,screen,tick):
 		self.status=""
@@ -2237,42 +2219,42 @@ class CharacterCreator(Menu):
 		return self.player
 	
 	def update(self,screen,tick):
-		screen.fill(ColorDark,[4,4,122,147])
-		screen.fill(Color,[5,5,120,145])
+		screen.fill(config.ColorDark,[4,4,122,147])
+		screen.fill(config.Color,[5,5,120,145])
 		if self.pos[1] == 0:
 			if self.editingName:
 				self.updateName()
-				screen.blit(font.render("Name: "+self.name+"|",False,ColorSel,Color),(10,10))
+				screen.blit(font.render("Name: "+self.name+"|",False,config.ColorSel,config.Color),(10,10))
 			else:
-				screen.blit(font.render("Name: "+self.name,False,ColorSel,Color),(10,10))
+				screen.blit(font.render("Name: "+self.name,False,config.ColorSel,config.Color),(10,10))
 		else:
-			screen.blit(font.render("Name: "+self.name,False,ColorFont,Color),(10,10))
+			screen.blit(font.render("Name: "+self.name,False,config.ColorFont,config.Color),(10,10))
 		if self.pos[1] == 1:
-			screen.blit(font.render("Clothing: "+str(self.clothingType),False,ColorSel,Color),(10,26))
+			screen.blit(font.render("Clothing: "+str(self.clothingType),False,config.ColorSel,config.Color),(10,26))
 		else:
-			screen.blit(font.render("Clothing: "+str(self.clothingType),False,ColorFont,Color),(10,26))
+			screen.blit(font.render("Clothing: "+str(self.clothingType),False,config.ColorFont,config.Color),(10,26))
 		if self.pos[1] == 2:
-			screen.blit(font.render("Color: "+str(self.clothingColor),False,ColorSel,Color),(10,38))
+			screen.blit(font.render("Color: "+str(self.clothingColor),False,config.ColorSel,config.Color),(10,38))
 		else:
-			screen.blit(font.render("Color: "+str(self.clothingColor),False,ColorFont,Color),(10,38))
+			screen.blit(font.render("Color: "+str(self.clothingColor),False,config.ColorFont,config.Color),(10,38))
 		if self.pos[1] == 3:
-			screen.blit(font.render("Hair: "+str(self.hairType),False,ColorSel,Color),(10,54))
+			screen.blit(font.render("Hair: "+str(self.hairType),False,config.ColorSel,config.Color),(10,54))
 		else:
-			screen.blit(font.render("Hair: "+str(self.hairType),False,ColorFont,Color),(10,54))
+			screen.blit(font.render("Hair: "+str(self.hairType),False,config.ColorFont,config.Color),(10,54))
 		if self.pos[1] == 4:
-			screen.blit(font.render("Color: "+str(self.hairColor),False,ColorSel,Color),(10,66))
+			screen.blit(font.render("Color: "+str(self.hairColor),False,config.ColorSel,config.Color),(10,66))
 		else:
-			screen.blit(font.render("Color: "+str(self.hairColor),False,ColorFont,Color),(10,66))
+			screen.blit(font.render("Color: "+str(self.hairColor),False,config.ColorFont,config.Color),(10,66))
 		if self.pos[1] == 5:
 			if self.pos[0] == 0:
-				screen.blit(font.render("Back",False,ColorSel,Color),(10,138))
-				screen.blit(font.render("Ok",False,ColorFont,Color),(50,138))
+				screen.blit(font.render("Back",False,config.ColorSel,config.Color),(10,138))
+				screen.blit(font.render("Ok",False,config.ColorFont,config.Color),(50,138))
 			elif self.pos[0]==1:
-				screen.blit(font.render("Back",False,ColorFont,Color),(10,138))
-				screen.blit(font.render("Ok",False,ColorSel,Color),(50,138))
+				screen.blit(font.render("Back",False,config.ColorFont,config.Color),(10,138))
+				screen.blit(font.render("Ok",False,config.ColorSel,config.Color),(50,138))
 		else:
-			screen.blit(font.render("Back",False,ColorFont,Color),(10,138))
-			screen.blit(font.render("Ok",False,ColorFont,Color),(50,138))
+			screen.blit(font.render("Back",False,config.ColorFont,config.Color),(10,138))
+			screen.blit(font.render("Ok",False,config.ColorFont,config.Color),(50,138))
 		
 		#if str(self.preview.getClass())=="Warrior":
 		#	screen.blit(Icons.warriorSmall,(44,22))
@@ -2282,9 +2264,9 @@ class CharacterCreator(Menu):
 		#	screen.blit(Icons.mageSmall,(44,22))
 		
 		if len(self.name)>14:
-			screen.fill(ColorDark,[4,224,313,14])
-			screen.fill(Color,[5,225,311,12])
-			screen.blit(font.render("*Warning:Your name is long, it may not display properly",False,ColorBold),(9,226))
+			screen.fill(config.ColorDark,[4,224,313,14])
+			screen.fill(config.Color,[5,225,311,12])
+			screen.blit(font.render("*Warning:Your name is long, it may not display properly",False,config.ColorBold),(9,226))
 		
 		self.timer += tick
 		if self.timer >= 2:
@@ -2295,8 +2277,8 @@ class CharacterCreator(Menu):
 			self.timer = 0
 		self.preview.update(tick)
 		screen.blit(pygame.transform.scale2x(self.preview.getSprite()),(150,50))
-		screen.fill(ColorDark,[152,14,29,29])
-		screen.fill(Color,[153,15,27,27])
+		screen.fill(config.ColorDark,[152,14,29,29])
+		screen.fill(config.Color,[153,15,27,27])
 		screen.blit(self.preview.getIcon(),[153,15])
 		self.move+=tick
 
@@ -2325,15 +2307,15 @@ class BattleHUD(object):
 				width = font.size(ally.getName())[0]+2
 			width=max(width,font.size("HP: "+ally.getHPS()+"/"+ally.getHPMS())[0]+2,76)
 			width=max(width,font.size("MP: "+ally.getMPS()+"/"+ally.getMPMS())[0]+2,76)
-			screen.fill(ColorDark,[x-1,4,width+2,27])
-			screen.fill(Color,[x,5,width,25])
-			screen.blit(font.render(ally.getName(),True,ColorFont),(x+2,5))
+			screen.fill(config.ColorDark,[x-1,4,width+2,27])
+			screen.fill(config.Color,[x,5,width,25])
+			screen.blit(font.render(ally.getName(),True,config.ColorFont),(x+2,5))
 			screen.fill([64,0,0],[x+18,15,56,3])	#Health Bar
 			screen.fill([255,0,0],[x+19,16,int(float(ally.getHP())/ally.getHPM()*54),1])
 			screen.fill([0,0,64],[x+18,24,56,3])	#Mana Bar
 			screen.fill([0,0,255],[x+19,25,int(float(ally.getMP())/ally.getMPM()*54),1])
-			screen.blit(font.render("HP: "+ally.getHPS()+"/"+ally.getHPMS(),True,ColorFont),(x+2,12))
-			screen.blit(font.render("MP: "+ally.getMPS()+"/"+ally.getMPMS(),True,ColorFont),(x+2,21))
+			screen.blit(font.render("HP: "+ally.getHPS()+"/"+ally.getHPMS(),True,config.ColorFont),(x+2,12))
+			screen.blit(font.render("MP: "+ally.getMPS()+"/"+ally.getMPMS(),True,config.ColorFont),(x+2,21))
 			x+=width+5
 
 ## The pause menu for the overworld and battles.
@@ -2365,8 +2347,8 @@ class PauseMenu(Menu):
 	#
 	#  @param screen An object representing the screen, either a pygame.Surface or a ScaledScreen.
 	def draw(self,screen):
-		screen.fill(ColorDark,[114,126,97,49])
-		screen.fill(Color,[115,127,95,47])
+		screen.fill(config.ColorDark,[114,126,97,49])
+		screen.fill(config.Color,[115,127,95,47])
 		if self.menu == 0:
 			self.drawMain(screen)
 	
@@ -2375,17 +2357,17 @@ class PauseMenu(Menu):
 	#  @param screen An object representing the screen, either a pygame.Surface or a ScaledScreen.
 	def drawMain(self,screen):
 		if self.pos[1] == 0:
-			screen.blit(titleFont.render("Resume Game",False,ColorSel),(120,130))
+			screen.blit(titleFont.render("Resume Game",False,config.ColorSel),(120,130))
 		else:
-			screen.blit(titleFont.render("Resume Game",False,ColorFont),(120,130))
+			screen.blit(titleFont.render("Resume Game",False,config.ColorFont),(120,130))
 		if self.pos[1] == 1:
-			screen.blit(titleFont.render("Options",False,ColorSel),(120,144))
+			screen.blit(titleFont.render("Options",False,config.ColorSel),(120,144))
 		else:
-			screen.blit(titleFont.render("Options",False,ColorFont),(120,144))
+			screen.blit(titleFont.render("Options",False,config.ColorFont),(120,144))
 		if self.pos[1] == 2:
-			screen.blit(titleFont.render("Exit",False,ColorSel),(120,158))
+			screen.blit(titleFont.render("Exit",False,config.ColorSel),(120,158))
 		else:
-			screen.blit(titleFont.render("Exit",False,ColorFont),(120,158))
+			screen.blit(titleFont.render("Exit",False,config.ColorFont),(120,158))
 
 ## Menu for buying things in shops.
 class ShopBuyMenu(Menu):
@@ -2489,13 +2471,13 @@ class ShopBuyMenu(Menu):
 	
 	## Draws the menu
 	def draw(self,screen):
-		screen.fill(ColorDark,[89,14,132,212])
-		screen.fill(Color,[90,30,130,180])	#Main Window
-		screen.fill(Color,[90,16,130,12])	#Area Name Window
-		screen.fill(Color,[90,212,130,12])	#Status Window
+		screen.fill(config.ColorDark,[89,14,132,212])
+		screen.fill(config.Color,[90,30,130,180])	#Main Window
+		screen.fill(config.Color,[90,16,130,12])	#Area Name Window
+		screen.fill(config.Color,[90,212,130,12])	#Status Window
 		
-		screen.blit(font.render("Buy",False,ColorFont),[95,18])
-		screen.blit(font.render("Gold: "+self.player.getInventory().getGoldS()+"G",False,ColorFont),[160,18])
+		screen.blit(font.render("Buy",False,config.ColorFont),[95,18])
+		screen.blit(font.render("Gold: "+self.player.getInventory().getGoldS()+"G",False,config.ColorFont),[160,18])
 		
 		for x in range(0,4):
 			for y in range(0,6):
@@ -2510,7 +2492,7 @@ class ShopBuyMenu(Menu):
 				amt = pItem.getAmount()
 			else:
 				amt = 0
-			screen.blit(font.render(str(amt),False,ColorFont),[(x*30)+117-font.size(str(item.getAmount()))[0],(y*30)+47])
+			screen.blit(font.render(str(amt),False,config.ColorFont),[(x*30)+117-font.size(str(item.getAmount()))[0],(y*30)+47])
 			if self.pos == [x,y]:
 				self.status=item.getName()+ ": "+str(item.getValue())+"G" 
 			x+=1
@@ -2519,17 +2501,17 @@ class ShopBuyMenu(Menu):
 				x =0
 		
 		if self.menu == 1:
-			screen.fill((ColorDark),[91+(self.pos[0]*30),59+(self.pos[1]*30),40,26])
-			screen.fill((Color),[92+(self.pos[0]*30),60+(self.pos[1]*30),38,24])
+			screen.fill((config.ColorDark),[91+(self.pos[0]*30),59+(self.pos[1]*30),40,26])
+			screen.fill((config.Color),[92+(self.pos[0]*30),60+(self.pos[1]*30),38,24])
 
 			if self.subPos==0:
-				screen.blit(font.render("Buy",False,ColorSel),[94+(self.pos[0]*30),61+(self.pos[1]*30)])
+				screen.blit(font.render("Buy",False,config.ColorSel),[94+(self.pos[0]*30),61+(self.pos[1]*30)])
 			else:
-				screen.blit(font.render("Buy",False,ColorFont),[94+(self.pos[0]*30),61+(self.pos[1]*30)])
+				screen.blit(font.render("Buy",False,config.ColorFont),[94+(self.pos[0]*30),61+(self.pos[1]*30)])
 			if self.subPos==1:
-				screen.blit(font.render("Cancel",False,ColorSel),[94+(self.pos[0]*30),73+(self.pos[1]*30)])
+				screen.blit(font.render("Cancel",False,config.ColorSel),[94+(self.pos[0]*30),73+(self.pos[1]*30)])
 			else:
-				screen.blit(font.render("Cancel",False,ColorFont),[94+(self.pos[0]*30),73+(self.pos[1]*30)])
+				screen.blit(font.render("Cancel",False,config.ColorFont),[94+(self.pos[0]*30),73+(self.pos[1]*30)])
 			
 			if self.sel.getType()=="Equipment":
 				self.status=""
@@ -2558,11 +2540,11 @@ class ShopBuyMenu(Menu):
 		screen.blit(temp,[98+(self.pos[0]*30),33+(self.pos[1]*30)])
 		
 		if self.menu == 2:
-			screen.fill((ColorDark),[66,59,166,26])
-			screen.fill((Color),[67,60,164,24])
+			screen.fill((config.ColorDark),[66,59,166,26])
+			screen.fill((config.Color),[67,60,164,24])
 			
-			screen.blit(font.render("You don't have enough money!",False,ColorFont),[69,61])
-			screen.blit(font.render("Ok",False,ColorSel),[146,73])
+			screen.blit(font.render("You don't have enough money!",False,config.ColorFont),[69,61])
+			screen.blit(font.render("Ok",False,config.ColorSel),[146,73])
 	
 	def update(self,screen,tick):
 		self.status=""
@@ -2679,13 +2661,13 @@ class ShopSellMenu(Menu):
 	
 	## Draws this menu on the screen.
 	def draw(self,screen):
-		screen.fill(ColorDark,[89,14,132,212])
-		screen.fill(Color,[90,30,130,180])	#Main Window
-		screen.fill(Color,[90,16,130,12])	#Area Name Window
-		screen.fill(Color,[90,212,130,12])	#Status Window
+		screen.fill(config.ColorDark,[89,14,132,212])
+		screen.fill(config.Color,[90,30,130,180])	#Main Window
+		screen.fill(config.Color,[90,16,130,12])	#Area Name Window
+		screen.fill(config.Color,[90,212,130,12])	#Status Window
 		
-		screen.blit(font.render("Sell",False,ColorFont),[95,18])
-		screen.blit(font.render("Gold: "+self.player.getInventory().getGoldS()+"G",False,ColorFont),[160,18])
+		screen.blit(font.render("Sell",False,config.ColorFont),[95,18])
+		screen.blit(font.render("Gold: "+self.player.getInventory().getGoldS()+"G",False,config.ColorFont),[160,18])
 		
 		for x in range(0,4):
 			for y in range(0,6):
@@ -2696,7 +2678,7 @@ class ShopSellMenu(Menu):
 		for item in self.player.getInventory().getItems():
 			screen.blit(item.getSprite(),[98+(x*30),33+(y*30)])
 			if item.getAmount()>1:
-				screen.blit(font.render(str(item.getAmount()),False,ColorFont),[(x*30)+120-font.size(str(item.getAmount()))[0],(y*30)+47])
+				screen.blit(font.render(str(item.getAmount()),False,config.ColorFont),[(x*30)+120-font.size(str(item.getAmount()))[0],(y*30)+47])
 			if self.pos == [x,y]:
 				self.status=item.getName()+ ": "+str(item.getValue())+"G" 
 			x+=1
@@ -2705,17 +2687,17 @@ class ShopSellMenu(Menu):
 				x =0
 		
 		if self.menu == 1:
-			screen.fill((ColorDark),[91+(self.pos[0]*30),59+(self.pos[1]*30),40,26])
-			screen.fill((Color),[92+(self.pos[0]*30),60+(self.pos[1]*30),38,24])
+			screen.fill((config.ColorDark),[91+(self.pos[0]*30),59+(self.pos[1]*30),40,26])
+			screen.fill((config.Color),[92+(self.pos[0]*30),60+(self.pos[1]*30),38,24])
 
 			if self.subPos==0:
-				screen.blit(font.render("Sell",False,ColorSel),[94+(self.pos[0]*30),61+(self.pos[1]*30)])
+				screen.blit(font.render("Sell",False,config.ColorSel),[94+(self.pos[0]*30),61+(self.pos[1]*30)])
 			else:
-				screen.blit(font.render("Sell",False,ColorFont),[94+(self.pos[0]*30),61+(self.pos[1]*30)])
+				screen.blit(font.render("Sell",False,config.ColorFont),[94+(self.pos[0]*30),61+(self.pos[1]*30)])
 			if self.subPos==1:
-				screen.blit(font.render("Cancel",False,ColorSel),[94+(self.pos[0]*30),73+(self.pos[1]*30)])
+				screen.blit(font.render("Cancel",False,config.ColorSel),[94+(self.pos[0]*30),73+(self.pos[1]*30)])
 			else:
-				screen.blit(font.render("Cancel",False,ColorFont),[94+(self.pos[0]*30),73+(self.pos[1]*30)])
+				screen.blit(font.render("Cancel",False,config.ColorFont),[94+(self.pos[0]*30),73+(self.pos[1]*30)])
 			
 			if self.sel.getType()=="Equipment":
 				self.status=""
@@ -2744,10 +2726,10 @@ class ShopSellMenu(Menu):
 		screen.blit(temp,[98+(self.pos[0]*30),33+(self.pos[1]*30)])
 		
 		if self.menu == 2:
-			screen.fill((ColorDark),[93,59,139,26])
-			screen.fill((Color),[94,60,137,24])
-			screen.blit(font.render("Sorry, I can't buy that!",False,ColorFont),[96,61])
-			screen.blit(font.render("Ok",False,ColorSel),[146,73])
+			screen.fill((config.ColorDark),[93,59,139,26])
+			screen.fill((config.Color),[94,60,137,24])
+			screen.blit(font.render("Sorry, I can't buy that!",False,config.ColorFont),[96,61])
+			screen.blit(font.render("Ok",False,config.ColorSel),[146,73])
 	
 	def update(self,screen,tick):
 		self.status=""

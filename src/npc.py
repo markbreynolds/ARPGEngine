@@ -6,6 +6,7 @@ import random
 #import enemies
 import items
 import jobs
+import config
 
 from graphics import GraphicObject, BattleGraphicObject, Animation, AnimationFrame
 from game import GameObject
@@ -73,13 +74,13 @@ class NPC(player.Player):
 				direI = 2
 			elif dire == "N":
 				direI = 0
-			hair = pygame.image.load("Player/Overworld/Hair/Hair"+str(HairType)+dire+".png").convert_alpha()
+			hair = pygame.image.load(config.assetPath+"Player/Overworld/Hair/Hair"+str(HairType)+dire+".png").convert_alpha()
 			hair.fill(HairColor,special_flags=BLEND_MULT)
 			for frame in range(1,4):
 				temp = pygame.surface.Surface((17,25),flags=SRCALPHA)
-				clothes = pygame.image.load("Player/Overworld/Clothes/Clothes"+str(ClothingType)+"Walk"+dire+str(frame)+".png").convert_alpha()
+				clothes = pygame.image.load(config.assetPath+"Player/Overworld/Clothes/Clothes"+str(ClothingType)+"Walk"+dire+str(frame)+".png").convert_alpha()
 				clothes.fill(ClothingColor,special_flags=BLEND_MULT)
-				body = pygame.image.load("Player/Overworld/Body/Walk"+dire+str(frame)+".png").convert_alpha()
+				body = pygame.image.load(config.assetPath+"Player/Overworld/Body/Walk"+dire+str(frame)+".png").convert_alpha()
 				temp.blit(clothes,(0,0))
 				temp.blit(body,(0,0))
 				temp.blit(hair,(0,0))

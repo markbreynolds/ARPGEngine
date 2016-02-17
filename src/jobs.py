@@ -13,6 +13,7 @@
 
 import gui
 import graphics
+import config
 import pygame
 from battle import Projectile
 
@@ -206,8 +207,8 @@ class WaveSlash(ProjectileSkill):
 	## Constructor:
 	def __init__(self):
 		self.dmg = 3
-		animr = graphics.Animation(graphics.AnimationFrame(pygame.image.load("Battle/Abilities/Warrior/WaveSlash.png").convert_alpha(),.5,None,"Idle"),None,"Idle")
-		animl = graphics.Animation(graphics.AnimationFrame(pygame.transform.flip(pygame.image.load("Battle/Abilities/Warrior/WaveSlash.png").convert_alpha(),True,False),.5,None,"Idle"),None,"Idle")
+		animr = graphics.Animation(graphics.AnimationFrame(pygame.image.load(config.assetPath+"Battle/Abilities/Warrior/WaveSlash.png").convert_alpha(),.5,None,"Idle"),None,"Idle")
+		animl = graphics.Animation(graphics.AnimationFrame(pygame.transform.flip(pygame.image.load(config.assetPath+"Battle/Abilities/Warrior/WaveSlash.png").convert_alpha(),True,False),.5,None,"Idle"),None,"Idle")
 		projectileGO = graphics.BattleGraphicObject({"Idle":[animl,animr]},(0,0),50)
 		proj = Projectile(projectileGO,[pygame.rect.Rect([2,0,30,70]),pygame.rect.Rect([20,0,30,70])],self.dmg,(0,0),125,150,None,piercing=True)
 		ProjectileSkill.__init__(self,"Wave Slash","Attack1",1,.75,proj)
@@ -226,7 +227,7 @@ class WaveSlash(ProjectileSkill):
 	
 	## Returns this skills projectile object.
 	def getProjectile(self):
-		animr = graphics.Animation(graphics.AnimationFrame(pygame.image.load("Battle/Abilities/Warrior/WaveSlash.png").convert_alpha(),.5,None,"Idle"),None,"Idle")
-		animl = graphics.Animation(graphics.AnimationFrame(pygame.transform.flip(pygame.image.load("Battle/Abilities/Warrior/WaveSlash.png").convert_alpha(),True,False),.5,None,"Idle"),None,"Idle")
+		animr = graphics.Animation(graphics.AnimationFrame(pygame.image.load(config.assetPath+"Battle/Abilities/Warrior/WaveSlash.png").convert_alpha(),.5,None,"Idle"),None,"Idle")
+		animl = graphics.Animation(graphics.AnimationFrame(pygame.transform.flip(pygame.image.load(config.assetPath+"Battle/Abilities/Warrior/WaveSlash.png").convert_alpha(),True,False),.5,None,"Idle"),None,"Idle")
 		projectileGO = graphics.BattleGraphicObject({"Idle":[animl,animr]},(0,0),50)
 		return Projectile(projectileGO,[pygame.rect.Rect([2,0,30,70]),pygame.rect.Rect([20,0,30,70])],self.dmg*self.level,(0,0),125,150,None,piercing=True)

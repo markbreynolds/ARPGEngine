@@ -24,6 +24,7 @@ from battle import BattleObject as BattlesObject
 import gui
 import items
 import jobs
+import config
 
 HairTypes=4
 ClothingTypes=1
@@ -88,10 +89,10 @@ class Player(object):
 		animations = {"Idle":[Animation(None,None,"IdleN"),Animation(None,None,"IdleE"),Animation(None,None,"IdleS"),Animation(None,None,"IdleW")],"Walk":[Animation(None,None,"WalkN"),Animation(None,None,"WalkE"),Animation(None,None,"WalkS"),Animation(None,None,"WalkW")]}
 		
 		self.icon = pygame.surface.Surface((27,27),flags=SRCALPHA)
-		base=pygame.image.load("Player/Overworld/Profile/Base.png").convert_alpha()
-		clothes=pygame.image.load("Player/Overworld/Profile/Shirt.png").convert_alpha()
+		base=pygame.image.load(config.assetPath+"Player/Overworld/Profile/Base.png").convert_alpha()
+		clothes=pygame.image.load(config.assetPath+"Player/Overworld/Profile/Shirt.png").convert_alpha()
 		clothes.fill(ClothingColor,special_flags=BLEND_MULT)
-		hair=pygame.image.load("Player/Overworld/Profile/Hair"+str(HairType)+".png").convert_alpha()
+		hair=pygame.image.load(config.assetPath+"Player/Overworld/Profile/Hair"+str(HairType)+".png").convert_alpha()
 		hair.fill(HairColor,special_flags=BLEND_MULT)
 		
 		self.icon.blit(base,[0,0])
@@ -106,12 +107,12 @@ class Player(object):
 			elif dire == "N":
 				direI = 0
 			for frame in range(1,4):
-				hair = pygame.image.load("Player/Overworld/Hair/Type"+str(HairType)+"/Walk"+dire+str(frame)+".png").convert_alpha()
+				hair = pygame.image.load(config.assetPath+"Player/Overworld/Hair/Type"+str(HairType)+"/Walk"+dire+str(frame)+".png").convert_alpha()
 				hair.fill(HairColor,special_flags=BLEND_MULT)
 				temp = pygame.surface.Surface((17,25),flags=SRCALPHA)
-				clothes = pygame.image.load("Player/Overworld/Clothes/Type"+str(ClothingType)+"/Walk"+dire+str(frame)+".png").convert_alpha()
+				clothes = pygame.image.load(config.assetPath+"Player/Overworld/Clothes/Type"+str(ClothingType)+"/Walk"+dire+str(frame)+".png").convert_alpha()
 				clothes.fill(ClothingColor,special_flags=BLEND_MULT)
-				body = pygame.image.load("Player/Overworld/Body/Type"+str(ClothingType)+"/Walk"+dire+str(frame)+".png").convert_alpha()
+				body = pygame.image.load(config.assetPath+"Player/Overworld/Body/Type"+str(ClothingType)+"/Walk"+dire+str(frame)+".png").convert_alpha()
 				temp.blit(clothes,(0,0))
 				temp.blit(body,(0,0))
 				temp.blit(hair,(0,0))
@@ -149,10 +150,10 @@ class Player(object):
 		#Idle:
 		temp = pygame.surface.Surface((52,70),flags=SRCALPHA)
 		
-		body = pygame.image.load("Player/Battle/"+styleName+"/Body/Type"+str(self.clothingType)+"/Idle1.png").convert_alpha()
-		hair = pygame.image.load("Player/Battle/"+styleName+"/Hair/Type"+str(self.hairType)+"/Idle1.png").convert_alpha()
+		body = pygame.image.load(config.assetPath+"Player/Battle/"+styleName+"/Body/Type"+str(self.clothingType)+"/Idle1.png").convert_alpha()
+		hair = pygame.image.load(config.assetPath+"Player/Battle/"+styleName+"/Hair/Type"+str(self.hairType)+"/Idle1.png").convert_alpha()
 		hair.fill(self.hairColor,special_flags=BLEND_MULT)
-		shirt= pygame.image.load("Player/Battle/"+styleName+"/Shirt/Type"+str(self.clothingType)+"/Idle1.png").convert_alpha()
+		shirt= pygame.image.load(config.assetPath+"Player/Battle/"+styleName+"/Shirt/Type"+str(self.clothingType)+"/Idle1.png").convert_alpha()
 		shirt.fill(self.clothingColor,special_flags=BLEND_MULT)
 		
 		temp.blit(shirt,(0,0))
@@ -164,10 +165,10 @@ class Player(object):
 		for i in range(1,5):
 			temp = pygame.surface.Surface((52,70),flags=SRCALPHA)
 			
-			body = pygame.image.load("Player/Battle/"+styleName+"/Body/Type"+str(self.clothingType)+"/Walk"+str(i)+".png").convert_alpha()
-			hair = pygame.image.load("Player/Battle/"+styleName+"/Hair/Type"+str(self.hairType)+"/Walk"+str(i)+".png").convert_alpha()
+			body = pygame.image.load(config.assetPath+"Player/Battle/"+styleName+"/Body/Type"+str(self.clothingType)+"/Walk"+str(i)+".png").convert_alpha()
+			hair = pygame.image.load(config.assetPath+"Player/Battle/"+styleName+"/Hair/Type"+str(self.hairType)+"/Walk"+str(i)+".png").convert_alpha()
 			hair.fill(self.hairColor,special_flags=BLEND_MULT)
-			shirt= pygame.image.load("Player/Battle/"+styleName+"/Shirt/Type"+str(self.clothingType)+"/Walk"+str(i)+".png").convert_alpha()
+			shirt= pygame.image.load(config.assetPath+"Player/Battle/"+styleName+"/Shirt/Type"+str(self.clothingType)+"/Walk"+str(i)+".png").convert_alpha()
 			shirt.fill(self.clothingColor,special_flags=BLEND_MULT)
 			
 			temp.blit(shirt,(0,0))
@@ -190,10 +191,10 @@ class Player(object):
 			for j in range(0,len(frameOrder[i-1])):
 				temp = pygame.surface.Surface((52,70),flags=SRCALPHA)
 					
-				body = pygame.image.load("Player/Battle/"+styleName+"/Body/Type"+str(self.clothingType)+"/"+frameOrder[i-1][j]).convert_alpha()
-				hair = pygame.image.load("Player/Battle/"+styleName+"/Hair/Type"+str(self.hairType)+"/"+frameOrder[i-1][j]).convert_alpha()
+				body = pygame.image.load(config.assetPath+"Player/Battle/"+styleName+"/Body/Type"+str(self.clothingType)+"/"+frameOrder[i-1][j]).convert_alpha()
+				hair = pygame.image.load(config.assetPath+"Player/Battle/"+styleName+"/Hair/Type"+str(self.hairType)+"/"+frameOrder[i-1][j]).convert_alpha()
 				hair.fill(self.hairColor,special_flags=BLEND_MULT)
-				shirt= pygame.image.load("Player/Battle/"+styleName+"/Shirt/Type"+str(self.clothingType)+"/"+frameOrder[i-1][j]).convert_alpha()
+				shirt= pygame.image.load(config.assetPath+"Player/Battle/"+styleName+"/Shirt/Type"+str(self.clothingType)+"/"+frameOrder[i-1][j]).convert_alpha()
 				shirt.fill(self.clothingColor,special_flags=BLEND_MULT)
 				
 				temp.blit(shirt,(0,0))
@@ -202,20 +203,20 @@ class Player(object):
 				animations["Attack"+str(i)][1].addFrame(AnimationFrame(temp,frameDelay[i-1][j],None,j))
 		#Death
 		temp = pygame.surface.Surface((70,70),flags=SRCALPHA)
-		body = pygame.image.load("Player/Battle/"+styleName+"/Body/Type"+str(self.clothingType)+"/Death1.png").convert_alpha()
-		hair = pygame.image.load("Player/Battle/"+styleName+"/Hair/Type"+str(self.hairType)+"/Death1.png").convert_alpha()
+		body = pygame.image.load(config.assetPath+"Player/Battle/"+styleName+"/Body/Type"+str(self.clothingType)+"/Death1.png").convert_alpha()
+		hair = pygame.image.load(config.assetPath+"Player/Battle/"+styleName+"/Hair/Type"+str(self.hairType)+"/Death1.png").convert_alpha()
 		hair.fill(self.hairColor,special_flags=BLEND_MULT)
-		shirt= pygame.image.load("Player/Battle/"+styleName+"/Shirt/Type"+str(self.clothingType)+"/Death1.png").convert_alpha()
+		shirt= pygame.image.load(config.assetPath+"Player/Battle/"+styleName+"/Shirt/Type"+str(self.clothingType)+"/Death1.png").convert_alpha()
 		shirt.fill(self.clothingColor,special_flags=BLEND_MULT)
 		temp.blit(shirt,(0,0))
 		temp.blit(body,(0,0))
 		temp.blit(hair,(0,0))
 		animations["Death"][1].addFrame(AnimationFrame(temp,.2,None,0))
 		temp = pygame.surface.Surface((70,70),flags=SRCALPHA)
-		body = pygame.image.load("Player/Battle/"+styleName+"/Body/Type"+str(self.clothingType)+"/Dead.png").convert_alpha()
-		hair = pygame.image.load("Player/Battle/"+styleName+"/Hair/Type"+str(self.hairType)+"/Dead.png").convert_alpha()
+		body = pygame.image.load(config.assetPath+"Player/Battle/"+styleName+"/Body/Type"+str(self.clothingType)+"/Dead.png").convert_alpha()
+		hair = pygame.image.load(config.assetPath+"Player/Battle/"+styleName+"/Hair/Type"+str(self.hairType)+"/Dead.png").convert_alpha()
 		hair.fill(self.hairColor,special_flags=BLEND_MULT)
-		shirt= pygame.image.load("Player/Battle/"+styleName+"/Shirt/Type"+str(self.clothingType)+"/Dead.png").convert_alpha()
+		shirt= pygame.image.load(config.assetPath+"Player/Battle/"+styleName+"/Shirt/Type"+str(self.clothingType)+"/Dead.png").convert_alpha()
 		shirt.fill(self.clothingColor,special_flags=BLEND_MULT)
 		temp.blit(shirt,(0,0))
 		temp.blit(body,(0,0))
