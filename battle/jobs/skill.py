@@ -1,71 +1,9 @@
-## @package jobs
-#  Documentation for the Jobs Module.
-#
-#  This module contains the code related to the jobs (called classes in game) and abilities.
-#
-#  In the code classes must be called jobs, because calling them classes would create a collision with the @c class keyword.
-#
-## Goals: V 0.2.0
-#
-#    -# Class objects - Done
-#      - Warrior - Done
-#    -# Leveling up - Done
-
-import gui
-import graphics
-import config
 import pygame
-from battle import Projectile
 
-## Base class for all jobs.
-class Job(object):
-	
-	## Constructor
-	#  @param name The name of this job.
-	#  @param skills A list of skills this job can have.
-	#  @param icon The icon associated with this job.
-	#  @param level What level in this job the character is.
-	def __init__(self,name,skills,icon,level):
-		self.name = name
-		self.skills = skills
-		self.icon = icon
-		self.level = level
-	
-	## Returns this job's name.
-	def getName(self):
-		return self.name
-	
-	## Return the skills this job can learn.
-	def getSkills(self):
-		return self.skills
-	
-	def getUnlockedSkills(self):
-		ret = []
-		for skill in self.skills:
-			if skill.getUnlocked():
-				ret.append(skill)
-		return ret
-	
-	## Return the icon associated with this job.
-	def getIcon(self):
-		return self.icon
-	
-	## Returns the description for this job.
-	def getDescription(self):
-		return self.name
-	
-	## Returns the starting stats for this job.
-	#
-	#  Should be overriden by subclass.
-	def getStartStats(self):
-		return {"HP":0,"MP":0,"Atk":0,"Def":0,"Spd":0,"Vit":0,"Mag":0,"Res":0,"Con":0,"Mnd":0}
-	
-	## Returns how much the character's stats should change next level.
-	#  Can be based on a formula, but should only increase five points per level.
-	#  
-	#  Should be overriden by subclass.
-	def getStatChange(self):
-		return {"HP":0,"MP":0,"Atk":0,"Def":0,"Spd":0,"Vit":0,"Mag":0,"Res":0,"Con":0,"Mnd":0}
+import config
+from battle.engine import Projectile
+from graphics.animation import Animation, AnimationFrame
+from graphics.battle import BattleGraphicObject
 
 ## Base class for all skills.
 class Skill(object):
@@ -141,26 +79,6 @@ class Skill(object):
 		self.level += 1
 
 
-## Warrior job
-class Warrior(Job):
-	
-	## Constructor
-	#  @param What level warrior the character is.
-	def __init__(self,level):
-		Job.__init__(self,"Warrior",[WaveSlash(),Skill("Test1",None,1,1),Skill("Test2",None,1,1),Skill("Test3",None,1,1),Skill("Test4",None,1,1),Skill("Test5",None,1,1),Skill("Test6",None,1,1)],gui.Icons.warriorSmall,level)
-	
-	## Returns the starting stats for this job.
-	def getStartStats(self):
-		return {"HP":10,"MP":1,"Atk":1,"Def":0,"Spd":20,"Vit":0,"Mag":0,"Res":0,"Con":0,"Mnd":0}
-	
-	## Returns how much the character's stats should change next level.
-	def getStatChange(self):
-		if self.level%5==0:
-			return {"HP":2,"MP":0,"Atk":1,"Def":1,"Spd":0,"Vit":1,"Mag":0,"Res":0,"Con":0,"Mnd":0}
-		elif self.level%2==0:
-			return {"HP":2,"MP":1,"Atk":1,"Def":0,"Spd":0,"Vit":1,"Mag":0,"Res":0,"Con":0,"Mnd":0}
-		return {"HP":2,"MP":0,"Atk":1,"Def":0,"Spd":1,"Vit":1,"Mag":0,"Res":0,"Con":0,"Mnd":0}
-
 ## The base class for projectile based skills
 class ProjectileSkill(Skill):
 
@@ -207,9 +125,10 @@ class WaveSlash(ProjectileSkill):
 	## Constructor:
 	def __init__(self):
 		self.dmg = 3
-		animr = graphics.Animation(graphics.AnimationFrame(pygame.image.load(config.assetPath+"Battle/Abilities/Warrior/WaveSlash.png").convert_alpha(),.5,None,"Idle"),None,"Idle")
-		animl = graphics.Animation(graphics.AnimationFrame(pygame.transform.flip(pygame.image.load(config.assetPath+"Battle/Abilities/Warrior/WaveSlash.png").convert_alpha(),True,False),.5,None,"Idle"),None,"Idle")
-		projectileGO = graphics.BattleGraphicObject({"Idle":[animl,animr]},(0,0),50)
+		img = pygame.image.load(config.AssetPath+"Battle/Abilities/Warrior/WaveSlash.png").convert_alpha()
+		animr = Animation(AnimationFrame(img,.5,None,"Idle"),None,"Idle")
+		animl = Animation(AnimationFrame(pygame.transform.flip(img,True,False),.5,None,"Idle"),None,"Idle")
+		projectileGO = BattleGraphicObject({"Idle":[animl,animr]},(0,0),50)
 		proj = Projectile(projectileGO,[pygame.rect.Rect([2,0,30,70]),pygame.rect.Rect([20,0,30,70])],self.dmg,(0,0),125,150,None,piercing=True)
 		ProjectileSkill.__init__(self,"Wave Slash","Attack1",1,.75,proj)
 	
@@ -225,9 +144,9 @@ class WaveSlash(ProjectileSkill):
 	def getDescription(self):
 		return ["A wave of energy","that slashes through","enemies."]
 	
-	## Returns this skills projectile object.
-	def getProjectile(self):
-		animr = graphics.Animation(graphics.AnimationFrame(pygame.image.load(config.assetPath+"Battle/Abilities/Warrior/WaveSlash.png").convert_alpha(),.5,None,"Idle"),None,"Idle")
-		animl = graphics.Animation(graphics.AnimationFrame(pygame.transform.flip(pygame.image.load(config.assetPath+"Battle/Abilities/Warrior/WaveSlash.png").convert_alpha(),True,False),.5,None,"Idle"),None,"Idle")
-		projectileGO = graphics.BattleGraphicObject({"Idle":[animl,animr]},(0,0),50)
-		return Projectile(projectileGO,[pygame.rect.Rect([2,0,30,70]),pygame.rect.Rect([20,0,30,70])],self.dmg*self.level,(0,0),125,150,None,piercing=True)
+#	## Returns this skills projectile object.
+#	def getProjectile(self):
+#		animr = graphics.Animation(graphics.AnimationFrame(pygame.image.load(config.AssetPath+"Battle/Abilities/Warrior/WaveSlash.png").convert_alpha(),.5,None,"Idle"),None,"Idle")
+#		animl = graphics.Animation(graphics.AnimationFrame(pygame.transform.flip(pygame.image.load(config.AssetPath+"Battle/Abilities/Warrior/WaveSlash.png").convert_alpha(),True,False),.5,None,"Idle"),None,"Idle")
+#		projectileGO = graphics.BattleGraphicObject({"Idle":[animl,animr]},(0,0),50)
+#		return Projectile(projectileGO,[pygame.rect.Rect([2,0,30,70]),pygame.rect.Rect([20,0,30,70])],self.dmg*self.level,(0,0),125,150,None,piercing=True)

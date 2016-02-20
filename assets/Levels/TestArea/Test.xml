@@ -3,6 +3,7 @@
 	<Background>Backgrounds/Overworld/TestArea/Test1.png</Background>
 	<Mask>Backgrounds/Overworld/TestArea/Masks/Test1.png</Mask>
 	<Enemies>["GreenSlime"]</Enemies>
+	<BattleBG>[["Backgrounds/Battle/TestArea/Test",null]]</BattleBG>
 	<GameObject Objects/Levers.xml Lever1>
 		<Pos>[58,14]</Pos>
 		<Id>"Lever"</Id>
@@ -73,6 +74,8 @@
 	<LevelName>Test Chamber 2</LevelName>
 	<Background>Backgrounds/Overworld/TestArea/Test2.png</Background>
 	<Mask>Backgrounds/Overworld/TestArea/Masks/Test2.png</Mask>
+	<Enemies>["GreenSlime"]</Enemies>
+	<BattleBG>[["Backgrounds/Battle/TestArea/Test",null]]</BattleBG>
 	<GameObject Objects/Doors.xml IronGate>
 		<Pos>[177,1]</Pos>
 		<Id>"Gate"</Id>
@@ -160,6 +163,8 @@
 	<LevelName>Test Chamber 3</LevelName>
 	<Background>Backgrounds/Overworld/TestArea/Test3.png</Background>
 	<Mask>Backgrounds/Overworld/TestArea/Masks/Test3.png</Mask>
+	<Enemies>["GreenSlime"]</Enemies>
+	<BattleBG>[["Backgrounds/Battle/TestArea/Test",null]]</BattleBG>
 	<GameObject Objects/Levers.xml FloorSwitch1>
 		<Pos>[200,195]</Pos>
 		<Id>"GateSwitch"</Id>
@@ -298,6 +303,8 @@
 	<LevelName>Test Chamber 4</LevelName>
 	<Background>Backgrounds/Overworld/TestArea/Test4.png</Background>
 	<Mask>Backgrounds/Overworld/TestArea/Masks/Test4.png</Mask>
+	<Enemies>["GreenSlime"]</Enemies>
+	<BattleBG>[["Backgrounds/Battle/TestArea/Test",null]]</BattleBG>
 	<GameObject Objects/Scenery.xml Crate1>
 		<Pos>[51,51]</Pos>
 		<Id>"Crate"</Id>

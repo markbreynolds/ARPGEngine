@@ -50,20 +50,119 @@
 
 """
 
-import config
 import pygame
-
 from pygame.locals import *
 
+import errors
+import config
+
 ## Standard default font, @todo Check for legal issues with distribution of fonts.
-font = pygame.font.Font(config.assetPath+"Fonts/visitor1.ttf",10)
+font = pygame.font.Font(config.AssetPath+"Fonts/visitor1.ttf",10)
 
 ## Font used for titles, @todo Check for legal issues with distribution of fonts.
-titleFont = pygame.font.Font(config.assetPath+"Fonts/visitor1.ttf",12)
+titleFont = pygame.font.Font(config.AssetPath+"Fonts/visitor1.ttf",12)
 
 ## Bold default font, @todo Check for legal issues with distribution of fonts.
-boldFont = pygame.font.Font(config.assetPath+"Fonts/visitor1.ttf",10)
+boldFont = pygame.font.Font(config.AssetPath+"Fonts/visitor1.ttf",10)
 boldFont.set_italic(True)
+
+## A class that contains all icons used throughout GUIs and the game.
+#
+#  Icons are stored this way to allow universal access from anywhere to the same icons giving a more put together and cohesive look.
+class Icons():
+	#  @todo Fix BootArmor Icon.
+	#  @todo Fix HeadArmor Icon.
+	#  @todo Maybe fix Gold Icon?
+	cont = None
+	cursor = None
+	cursorBlink = None
+	cursorTab = None
+	cursorTabBlink = None
+	cursorChar = None
+	cursorCharBlink = None
+	iconBG = None
+	iconBGE = None
+	iconBGSmall = None
+	lock = None
+
+	headArmor = None
+	bodyArmor = None
+	legsArmor = None
+	bootArmor = None
+	arm1Armor = None
+	arm2Armor = None
+
+	gold = None
+
+	inventory = None
+	armor = None
+	party = None
+	globe = None
+	quests = None
+
+	warrior = None
+	warriorSmall = None
+	archer = None
+	archerSmall = None
+	mage = None
+	mageSmall = None
+
+	rightArrow = None
+	leftArrow = None
+	upArrow = None
+	downArrow = None
+	circ = None
+	
+	##  Sets the Icons variable to an instance of this class.
+	@staticmethod
+	def load():
+		errors.getLogger().debug("Loading Icons")
+		Icons.cont = pygame.image.load(config.AssetPath+"Icons/Cont.png").convert_alpha()
+		Icons.cursor = pygame.image.load(config.AssetPath+"Icons/Cursor.png").convert_alpha()
+		Icons.cursorBlink = pygame.image.load(config.AssetPath+"Icons/CursorBlink.png").convert_alpha()
+		Icons.cursorTab = pygame.image.load(config.AssetPath+"Icons/CursorTab.png").convert_alpha()
+		Icons.cursorTabBlink = pygame.image.load(config.AssetPath+"Icons/CursorTabBlink.png").convert_alpha()
+		Icons.cursorChar = pygame.image.load(config.AssetPath+"Icons/CursorChar.png").convert_alpha()
+		Icons.cursorCharBlink = pygame.image.load(config.AssetPath+"Icons/CursorCharBlink.png").convert_alpha()
+		Icons.cursor.fill(config.ColorSel,special_flags=BLEND_RGBA_MULT)
+		Icons.cursorBlink.fill(config.ColorSel,special_flags=BLEND_RGBA_MULT)
+		Icons.cursorTab.fill(config.ColorSel,special_flags=BLEND_RGBA_MULT)
+		Icons.cursorTabBlink.fill(config.ColorSel,special_flags=BLEND_RGBA_MULT)
+		Icons.cursorChar.fill(config.ColorSel,special_flags=BLEND_RGBA_MULT)
+		Icons.cursorCharBlink.fill(config.ColorSel,special_flags=BLEND_RGBA_MULT)
+		Icons.iconBG = pygame.image.load(config.AssetPath+"Icons/IconBG.png").convert()
+		Icons.iconBGE = pygame.image.load(config.AssetPath+"Icons/IconBG.png").convert()
+		Icons.iconBGE.fill([32,255,32],special_flags=BLEND_RGBA_MULT)
+		Icons.iconBGSmall = pygame.image.load(config.AssetPath+"Icons/IconBGSmall.png").convert()
+		Icons.lock = pygame.image.load(config.AssetPath+"Icons/Locked.png").convert_alpha()
+		
+		Icons.headArmor = pygame.image.load(config.AssetPath+"Icons/HeadArmor.png").convert_alpha()
+		Icons.bodyArmor = pygame.image.load(config.AssetPath+"Icons/BodyArmor.png").convert_alpha()
+		Icons.legsArmor = pygame.image.load(config.AssetPath+"Icons/LegsArmor.png").convert_alpha()
+		Icons.bootArmor = pygame.image.load(config.AssetPath+"Icons/BootArmor.png").convert_alpha()
+		Icons.arm1Armor = pygame.image.load(config.AssetPath+"Icons/Arm1Armor.png").convert_alpha()
+		Icons.arm2Armor = pygame.image.load(config.AssetPath+"Icons/Arm2Armor.png").convert_alpha()
+		
+		Icons.gold = pygame.image.load(config.AssetPath+"Icons/Gold.png").convert_alpha()
+		
+		Icons.inventory = pygame.image.load(config.AssetPath+"Icons/Inven.png").convert_alpha()
+		Icons.armor = pygame.image.load(config.AssetPath+"Icons/Armor.png").convert_alpha()
+		Icons.party = pygame.image.load(config.AssetPath+"Icons/Party.png").convert_alpha()
+		Icons.globe = pygame.image.load(config.AssetPath+"Icons/Map.png").convert_alpha()
+		Icons.quests = pygame.image.load(config.AssetPath+"Icons/Quests.png").convert_alpha()
+		
+		Icons.warrior = pygame.image.load(config.AssetPath+"Icons/Warrior.png").convert()
+		Icons.warriorSmall = pygame.image.load(config.AssetPath+"Icons/WarriorSmall.png").convert()
+		Icons.archer = pygame.image.load(config.AssetPath+"Icons/Archer.png").convert()
+		Icons.archerSmall = pygame.image.load(config.AssetPath+"Icons/ArcherSmall.png").convert()
+		Icons.mage = pygame.image.load(config.AssetPath+"Icons/Mage?.png").convert()
+		Icons.mageSmall = pygame.image.load(config.AssetPath+"Icons/MageSmall?.png").convert()
+		
+		Icons.rightArrow = pygame.image.load(config.AssetPath+"Icons/RightArrow.png").convert_alpha()
+		Icons.leftArrow = pygame.transform.flip(Icons.rightArrow,True,False)
+		Icons.upArrow = pygame.image.load(config.AssetPath+"Icons/UpArrow.png").convert_alpha()
+		Icons.downArrow = pygame.transform.flip(Icons.upArrow,False,True)
+		Icons.circ = pygame.image.load(config.AssetPath+"Icons/Circ.png").convert_alpha()
 
 ## Helpful for scrolling text.
 #
@@ -227,63 +326,6 @@ class Hud(object):
 	## Updates the window.
 	def update(self,screen):
 		self.draw(screen)
-
-## A class that contains all icons used throughout GUIs and the game.
-#
-#  Icons are stored this way to allow universal access from anywhere to the same icons giving a more put together and cohesive look.
-class loadIcons():
-	## Constructor.
-	#
-	#  @todo Fix BootArmor Icon.
-	#  @todo Fix HeadArmor Icon.
-	#  @todo Maybe fix Gold Icon?
-	def __init__(self):
-		self.cont = pygame.image.load(config.assetPath+"Icons/Cont.png").convert_alpha()
-		self.cursor = pygame.image.load(config.assetPath+"Icons/Cursor.png").convert_alpha()
-		self.cursorBlink = pygame.image.load(config.assetPath+"Icons/CursorBlink.png").convert_alpha()
-		self.cursorTab = pygame.image.load(config.assetPath+"Icons/CursorTab.png").convert_alpha()
-		self.cursorTabBlink = pygame.image.load(config.assetPath+"Icons/CursorTabBlink.png").convert_alpha()
-		self.cursorChar = pygame.image.load(config.assetPath+"Icons/CursorChar.png").convert_alpha()
-		self.cursorCharBlink = pygame.image.load(config.assetPath+"Icons/CursorCharBlink.png").convert_alpha()
-		self.cursor.fill(config.ColorSel,special_flags=BLEND_RGBA_MULT)
-		self.cursorBlink.fill(config.ColorSel,special_flags=BLEND_RGBA_MULT)
-		self.cursorTab.fill(config.ColorSel,special_flags=BLEND_RGBA_MULT)
-		self.cursorTabBlink.fill(config.ColorSel,special_flags=BLEND_RGBA_MULT)
-		self.cursorChar.fill(config.ColorSel,special_flags=BLEND_RGBA_MULT)
-		self.cursorCharBlink.fill(config.ColorSel,special_flags=BLEND_RGBA_MULT)
-		self.iconBG = pygame.image.load(config.assetPath+"Icons/IconBG.png").convert()
-		self.iconBGE = pygame.image.load(config.assetPath+"Icons/IconBG.png").convert()
-		self.iconBGE.fill([32,255,32],special_flags=BLEND_RGBA_MULT)
-		self.iconBGSmall = pygame.image.load(config.assetPath+"Icons/IconBGSmall.png").convert()
-		self.lock = pygame.image.load(config.assetPath+"Icons/Locked.png").convert_alpha()
-		
-		self.headArmor = pygame.image.load(config.assetPath+"Icons/HeadArmor.png").convert_alpha()
-		self.bodyArmor = pygame.image.load(config.assetPath+"Icons/BodyArmor.png").convert_alpha()
-		self.legsArmor = pygame.image.load(config.assetPath+"Icons/LegsArmor.png").convert_alpha()
-		self.bootArmor = pygame.image.load(config.assetPath+"Icons/BootArmor.png").convert_alpha()
-		self.arm1Armor = pygame.image.load(config.assetPath+"Icons/Arm1Armor.png").convert_alpha()
-		self.arm2Armor = pygame.image.load(config.assetPath+"Icons/Arm2Armor.png").convert_alpha()
-		
-		self.gold = pygame.image.load(config.assetPath+"Icons/Gold.png").convert_alpha()
-		
-		self.inventory = pygame.image.load(config.assetPath+"Icons/Inven.png").convert_alpha()
-		self.armor = pygame.image.load(config.assetPath+"Icons/Armor.png").convert_alpha()
-		self.party = pygame.image.load(config.assetPath+"Icons/Party.png").convert_alpha()
-		self.globe = pygame.image.load(config.assetPath+"Icons/Map.png").convert_alpha()
-		self.quests = pygame.image.load(config.assetPath+"Icons/Quests.png").convert_alpha()
-		
-		self.warrior = pygame.image.load(config.assetPath+"Icons/Warrior.png").convert()
-		self.warriorSmall = pygame.image.load(config.assetPath+"Icons/WarriorSmall.png").convert()
-		self.archer = pygame.image.load(config.assetPath+"Icons/Archer.png").convert()
-		self.archerSmall = pygame.image.load(config.assetPath+"Icons/ArcherSmall.png").convert()
-		self.mage = pygame.image.load(config.assetPath+"Icons/Mage?.png").convert()
-		self.mageSmall = pygame.image.load(config.assetPath+"Icons/MageSmall?.png").convert()
-		
-		self.rightArrow = pygame.image.load(config.assetPath+"Icons/RightArrow.png").convert_alpha()
-		self.leftArrow = pygame.transform.flip(self.rightArrow,True,False)
-		self.upArrow = pygame.image.load(config.assetPath+"Icons/UpArrow.png").convert_alpha()
-		self.downArrow = pygame.transform.flip(self.upArrow,False,True)
-		self.circ = pygame.image.load(config.assetPath+"Icons/Circ.png").convert_alpha()
 
 ## Main %Menu Class
 #

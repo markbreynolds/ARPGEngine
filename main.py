@@ -78,19 +78,24 @@ from pygame.locals import *
 
 pygame.init()
 
-import player
-import graphics
-import menu
-import game
+#import game
 import input as Input
-import level
-import gui
-import enemies
-import battle
-import jobs
 import errors
+import config
+from game.engine import GameEngine
+from game.items.factory import ItemFactory
+from game import level
+from game import player
+from battle.engine import BattleEngine
+from battle.enemies.factory import EnemyFactory
+from graphics import transitions
+from graphics.scaled_screen import ScaledScreen
+from graphics.overworld import GraphicsEngine
+from graphics.battle import BattleGraphicsEngine
+from graphics.gui import MainMenu, CharacterCreator, Icons
 
-import npc
+from game import npc
+from battle.jobs.job import Warrior
 
 """
 ## Goals: V 0.2.0
@@ -117,12 +122,14 @@ import npc
 def loadNewArea(xml,Level):
 	global gameEngine
 	global graphicsEngine
+	global clock
 	
 	gameEngine.clearActors()
 	gameEngine.clearNPCs()
 	gameEngine.clearTriggers()
 	graphicsEngine.clearObjects()
 	level.load(xml,Level,gameEngine,graphicsEngine)
+	clock.tick()
 
 def battleStart(Enemies,bg,farBG):
 	global graphicsEngine
@@ -132,8 +139,8 @@ def battleStart(Enemies,bg,farBG):
 	global PlayerB
 	global BATTLING
 
-	graphicsEngineB = graphics.BattleGraphicsEngine(graphicsEngine.getScreen(),graphicsEngine.getIsScaled(),bg,farBG)
-	battleEngine = battle.BattleEngine(graphicsEngineB)
+	graphicsEngineB = BattleGraphicsEngine(graphicsEngine.getScreen(),graphicsEngine.getIsScaled(),bg,farBG)
+	battleEngine = BattleEngine(graphicsEngineB)
 	PlayerB = Player.getBattleObject()
 	
 	x = len(Player.getParty())*50
@@ -162,7 +169,7 @@ def battleStart(Enemies,bg,farBG):
 	for enemy in Enemies:
 		lvl = max(PlayerB.getLevel()+random.randint(-4,2),1)
 		print lvl
-		temp = enemies.getEnemyFromString(enemy)(lvl,x)
+		temp = EnemyFactory.createEnemy(enemy,lvl,x)
 		battleEngine.addEnemy(temp)
 		x-= 50
 	
@@ -174,22 +181,22 @@ def battleStart(Enemies,bg,farBG):
 	oldScreen = screen.screen.copy()
 	battleEngine.update(0)
 	newScreen = screen.screen.copy()
-	graphics.blurTrans(clock,screen,oldScreen,newScreen)
+	transitions.blurTrans(clock,screen,oldScreen,newScreen)
 
-screen = graphics.ScaledScreen(pygame.display.set_mode((640,480)),640,480,smoothing=0)
-#screen = graphics.ScaledScreen(pygame.display.set_mode((320,240)),320,240,smoothing=0)
+screen = ScaledScreen(pygame.display.set_mode((640,480)),640,480,smoothing=0)
+#screen = ScaledScreen(pygame.display.set_mode((320,240)),320,240,smoothing=0)
 font = pygame.font.SysFont("Arial",12)
 clock = pygame.time.Clock()
 clock.tick()
 
-gameEngine = game.GameEngine(loadNewArea,battleStart)
-graphicsEngine = graphics.GraphicsEngine(screen,True)
+gameEngine = GameEngine(loadNewArea,battleStart)
+graphicsEngine = GraphicsEngine(screen,True)
 inputEngine = Input.InputEngine()
-errors.ErrorEngine(screen,level=errors.ERROR,quiet=False)
+errors.ErrorEngine(screen,level=config.LogVerbosity,quiet=False)
 
 pygame.key.set_repeat(250,100)
 
-gui.Icons=gui.loadIcons()
+Icons.load()
 
 #allies=[player.Player("Markus Clarkus ",3,1,[0,255,255],1,[0,255,127],False).getBattleObject(),player.Player("Clark",3,1,[0,255,255],1,[0,255,127],False).getBattleObject()]
 #enemies=[enemies.GreenSlime(1,100)]
@@ -198,9 +205,10 @@ gui.Icons=gui.loadIcons()
 options = [["Levels/TestArea/Test.xml","Test1"],["Levels/TestArea/Test.xml","Test3"],["Levels/TestArea/TestVillage.xml","VillageMain"]]
 choice = random.choice(options)
 #choice = ["Levels/TestArea/TestVillage.xml","VillageMain"]
+choice = ["Levels/TestArea/Test.xml","Test1"]
 level.load(choice[0],choice[1],gameEngine,graphicsEngine)
 
-menu = gui.MainMenu()
+menu = MainMenu()
 while menu:
 	for inp in inputEngine.getInput():
 		if inp[0] == "Quit":
@@ -239,12 +247,12 @@ while menu:
 			Player = menu.getPlayer()
 			menu = False
 		elif val == "New Single":
-			menu = gui.CharacterCreator(player.Player,inputEngine.setDump(True))
+			menu = CharacterCreator(player.Player,inputEngine.setDump(True))
 		elif val == "Exit":
 			pygame.quit()
 			exit()
 		elif val == "Main":
-			menu = gui.MainMenu()
+			menu = MainMenu()
 		
 	
 	screen.update()
@@ -252,24 +260,25 @@ while menu:
 
 
 #loadNewArea("Levels/TestArea/TestVillage.xml","VillageMain");Player.getGameObject().setPos([400,550])
+#loadNewArea("Levels/TestArea/TestVillage.xml","VillageInn");Player.getGameObject().setPos([100,100])
 loadNewArea("Levels/TestArea/Test.xml","Test1");Player.getGameObject().setPos([100,100])
 graphicsEngine.setPlayer(Player.getGraphicObject())
 gameEngine.setPlayer(Player.getGameObject())
 
-gui.debugInfo=graphics.TextObject("",[0,0])
-gui.debugInfo.layer = 2
+#gui.debugInfo=graphics.TextObject("",[0,0])
+#gui.debugInfo.layer = 2
 #debugInfo = graphics.GraphicObject([[[pygame.image.load("sObjects/Lever1W1.png").convert_alpha()]]],[0.1])
 #fpsCount = 1.0
 #fps = []
-graphicsEngine.debug=gui.debugInfo
+#graphicsEngine.debug=gui.debugInfo
 
 graphicsEngine.setFocus(Player.getGraphicObject())
 
-Player.party.append(npc.BattleNPC("Jeorge",jobs.Warrior(1),1,(255,0,0),1,(255,127,0)))
-Player.party.append(npc.BattleNPC("George",jobs.Warrior(1),1,(0,0,255),1,(0,127,255)))
-Player.party.append(npc.BattleNPC("Jeorge",jobs.Warrior(1),1,(255,0,0),1,(255,127,0)))
-Player.party.append(npc.BattleNPC("George",jobs.Warrior(1),1,(0,0,255),1,(0,127,255)))
-Player.party.append(npc.BattleNPC("Jeorge",jobs.Warrior(1),1,(255,0,0),1,(255,127,0)))
+Player.party.append(npc.BattleNPC("Jeorge",Warrior(1),1,(255,0,0),1,(255,127,0)))
+Player.party.append(npc.BattleNPC("George",Warrior(1),1,(0,0,255),1,(0,127,255)))
+Player.party.append(npc.BattleNPC("Jeorge",Warrior(1),1,(255,0,0),1,(255,127,0)))
+Player.party.append(npc.BattleNPC("George",Warrior(1),1,(0,0,255),1,(0,127,255)))
+Player.party.append(npc.BattleNPC("Jeorge",Warrior(1),1,(255,0,0),1,(255,127,0)))
 #Player.party[1].getBattleObject().HpM = 1000
 #Player.party[0].getBattleObject().ai = enemies.WandererAI(20,100)
 #Player.party[1].getBattleObject().ai = enemies.WandererAI(20,100)
@@ -315,13 +324,16 @@ while PLAYING:
 		
 		if battleEngine.update(tick):
 			BATTLING = False
-			battleEngine.getGraphicsEngine().victoryScreen(clock,inputEngine,battleEngine.getPlayerParty(),battleEngine.getGold(),battleEngine.getExp(),battleEngine.getLoot())
+			loot = []
+			for item in battleEngine.getLoot():
+				loot.append(ItemFactory.createItem(item))
+			battleEngine.getGraphicsEngine().victoryScreen(clock,inputEngine,battleEngine.getPlayerParty(),battleEngine.getGold(),battleEngine.getExp(),loot)
 			oldScreen = screen.copy()
 			graphicsEngine.update(0)
 			newScreen = screen.copy()
-			graphics.blurTrans(clock,screen,oldScreen,newScreen)
+			transitions.blurTrans(clock,screen,oldScreen,newScreen)
 			Player.getInventory().addGold(battleEngine.getGold())
-			for item in battleEngine.getLoot():
+			for item in loot:
 				Player.getInventory().addItem(item)
 			for ally in battleEngine.getPlayerParty():
 				ally.addExp(battleEngine.getExp())
@@ -448,6 +460,7 @@ while PLAYING:
 		
 		if graphicsEngine.getSleep():
 			gameEngine.sleep()
+			graphicsEngine.resetSleep()
 		
 		gameEngine.update(tick)
 		graphicsEngine.update(tick)

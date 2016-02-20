@@ -1,17 +1,21 @@
 #npc.py
 
-import player
-import pygame
 import random
-#import enemies
-import items
-import jobs
+
+import pygame
+from pygame.locals import *
+
+from game import player
+from battle.jobs.job import Warrior
 import config
 
-from graphics import GraphicObject, BattleGraphicObject, Animation, AnimationFrame
-from game import GameObject
-from battle import BattleObject
-from pygame.locals import *
+#from graphics import GraphicObject, BattleGraphicObject, Animation, AnimationFrame
+from game.engine import GameObject
+from game.items.factory import ItemFactory
+from battle.engine import BattleObject
+from graphics.animation import Animation, AnimationFrame
+from graphics.overworld import GraphicObject
+from graphics.battle import BattleGraphicObject
 
 class Dialog(object):
 	def __init__(self,Text,Options,Links):
@@ -41,7 +45,7 @@ class NPC(player.Player):
 		if Shop != None:
 			self.shop = []
 			for item in Shop:
-				self.shop.append(items.getItemFromString(item)())
+				self.shop.append(ItemFactory.createItem(item))
 		else:
 			self.shop=Shop
 		
@@ -74,13 +78,13 @@ class NPC(player.Player):
 				direI = 2
 			elif dire == "N":
 				direI = 0
-			hair = pygame.image.load(config.assetPath+"Player/Overworld/Hair/Hair"+str(HairType)+dire+".png").convert_alpha()
+			hair = pygame.image.load(config.AssetPath+"Player/Overworld/Hair/Hair"+str(HairType)+dire+".png").convert_alpha()
 			hair.fill(HairColor,special_flags=BLEND_MULT)
 			for frame in range(1,4):
 				temp = pygame.surface.Surface((17,25),flags=SRCALPHA)
-				clothes = pygame.image.load(config.assetPath+"Player/Overworld/Clothes/Clothes"+str(ClothingType)+"Walk"+dire+str(frame)+".png").convert_alpha()
+				clothes = pygame.image.load(config.AssetPath+"Player/Overworld/Clothes/Clothes"+str(ClothingType)+"Walk"+dire+str(frame)+".png").convert_alpha()
 				clothes.fill(ClothingColor,special_flags=BLEND_MULT)
-				body = pygame.image.load(config.assetPath+"Player/Overworld/Body/Walk"+dire+str(frame)+".png").convert_alpha()
+				body = pygame.image.load(config.AssetPath+"Player/Overworld/Body/Walk"+dire+str(frame)+".png").convert_alpha()
 				temp.blit(clothes,(0,0))
 				temp.blit(body,(0,0))
 				temp.blit(hair,(0,0))

@@ -4,12 +4,17 @@
 # Caching things like object images and level backgrounds would probably be a good idea.
 
 import json
+
 import pygame
 
-from graphics import GraphicObject,Animation,AnimationFrame,loadAnimation
-from game import GameObject,Pushable,maskFromSurface
-from npc import NPC,Dialog
-import triggers
+#from graphics import GraphicObject,Animation,AnimationFrame,loadAnimation
+#from game import GameObject,Pushable,maskFromSurface
+from game.engine import GameObject, Pushable
+from game.mask import maskFromSurface
+from graphics.animation import Animation, AnimationFrame, loadAnimation
+from graphics.overworld import GraphicObject
+from game.npc import NPC,Dialog
+from game import triggers
 import errors
 import config
 
@@ -77,7 +82,7 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 			if len(levelData[i].lstrip("<GameObject").rstrip(">").lstrip(" ").split(" "))>1:
 				objectName = levelData[i].lstrip("<GameObject").rstrip(">").lstrip(" ").split(" ")[1]
 			if path != "":
-				tempFiler = file(config.assetPath+path,"r")
+				tempFiler = file(config.AssetPath+path,"r")
 				lines = tempFiler.readlines()
 				started=False
 				for j in range(len(lines)):	#Strip Tabs and New Lines
@@ -148,7 +153,7 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 			if len(levelData[i].lstrip("<NPC").rstrip(">").lstrip(" ").split(" "))>1:
 				objectName = levelData[i].lstrip("<GameObject").rstrip(">").lstrip(" ").split(" ")[1]
 			if path != "":
-				tempFiler = file(config.assetPath+path,"r")
+				tempFiler = file(config.AssetPath+path,"r")
 				lines = tempFiler.readlines()
 				started=False
 				for j in range(len(lines)):	#Strip Tabs and New Lines
@@ -169,7 +174,7 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 				key = levelData[i+n][1:levelData[i+n].find(">")]
 				value = levelData[i+n][levelData[i+n].find(">")+1:levelData[i+n].find("<",levelData[i+n].find(">"))]
 				if key == "Dialog":
-					dialog=open(config.assetPath+value,"r")
+					dialog=open(config.AssetPath+value,"r")
 					lines=dialog.readlines()
 					dialog=""
 					for line in lines:
@@ -195,29 +200,33 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 		errors.getLogger().error("Level has no Background attribute.")
 	else:
 		try:
-			GraphicEngine.setBackground(pygame.image.load(config.assetPath+BG).convert())
+			GraphicEngine.setBackground(pygame.image.load(config.AssetPath+BG).convert())
 		except pygame.error:
 			errors.getLogger().error("Unable to load level background.")
 	if Mask == None:
 		errors.getLogger().info("Level has no Mask attribute.")
 	else:
 		try:
-			GameEngine.setMask(pygame.image.load(config.assetPath+Mask).convert())
+			GameEngine.setMask(pygame.image.load(config.AssetPath+Mask).convert())
 		except pygame.error:
 			errors.getLogger().error("Unable to load level mask.")
 	if Enemies != None and len(Enemies)>0:
 		if BattleBG == None or len(BattleBG) == 0:
 			errors.getLogger().info("No battle backgrounds specified for this level.")
 		else:
-			for i in xrange(len(BattleBG)):
-				for j in range(len(BattleBG[i])):
-					if BattleBG[i][j] != None:
-						try:
-							BattleBG[i][j] = pygame.image.load(BattleBG[i][j]).convert_alpha()
-						except pygame.error:
-							errors.getLogger().error("Unable to load battle background for this level.")
-							BattleBG[i][j] = None
+#			for i in xrange(len(BattleBG)):
+#				for j in range(len(BattleBG[i])):
+#					if BattleBG[i][j] != None:
+#						try:
+#							BattleBG[i][j] = pygame.image.load(BattleBG[i][j]).convert_alpha()
+#						except pygame.error:
+#							errors.getLogger().error("Unable to load battle background for this level.")
+#							BattleBG[i][j] = None
 			GameEngine.setBattleBG(BattleBG)
+			GameEngine.setEnemies(Enemies)
+	else:
+		GameEngine.setBattleBG([])
+		GameEngine.setEnemies([])
 	
 	for trigger in Triggers:
 		errors.getLogger().debug("Adding "+trigger["Effect"]+" trigger.")
@@ -262,7 +271,7 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 		
 		for state in obj["mask"].keys():
 			if obj["mask"][state] != None:
-				img = pygame.image.load(config.assetPath+str(obj["mask"][state]))
+				img = pygame.image.load(config.AssetPath+str(obj["mask"][state]))
 				obj["mask"][state] = maskFromSurface(img)
 		if obj["graphicObject"].keys().__contains__("flipX"):
 			for state in obj["graphicObject"]["animations"].keys():
@@ -329,6 +338,6 @@ def loadDialog(data):
 	return dialog
 
 def load(xmlpath,level,GameEngine,GraphicEngine):
-	loadXML(config.assetPath+xmlpath,level,GameEngine,GraphicEngine)
+	loadXML(config.AssetPath+xmlpath,level,GameEngine,GraphicEngine)
 	GameEngine.loadLevel(level)
 	#GraphicEngine.loadLevel(level)

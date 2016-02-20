@@ -20,7 +20,7 @@
 		<ID>"Shopkeeper"</ID>
 		<Pos>[405,394]</Pos>
 		<Dialog>Levels/TestArea/Dialog/Shopkeeper.JSON</Dialog>
-		<Shop>["HealthPotion","ManaPotion","ElixirPotion","IronShortSword","IronChestPlate"]</Shop>
+		<Shop>["HealthPotion","ManaPotion","ElixirPotion","IronShortSword","IronChestplate"]</Shop>
 		<ClothingType>null</ClothingType>
 		<ClothingColor>3</ClothingColor>
 		<HairType>1</HairType>
@@ -102,7 +102,7 @@
 		<ID>"Shopkeeper"</ID>
 		<Pos>[109,81]</Pos>
 		<Dialog>Levels/TestArea/Dialog/Innkeeper.JSON</Dialog>
-		<Shop>["HealthPotion","ManaPotion","ElixirPotion","IronShortSword","IronChestPlate"]</Shop>
+		<Shop>["HealthPotion","ManaPotion","ElixirPotion","IronShortSword","IronChestplate"]</Shop>
 		<ClothingType>null</ClothingType>
 		<ClothingColor>3</ClothingColor>
 		<HairType>1</HairType>

@@ -1,158 +1,136 @@
-## @package battle
-#  Documentation for the Battle Module.
-#
-#  This module contains the code related battling.
-#
-## Goals: V 0.1.0 - Done
-#
-#    -# Animations - Done
-#      - Unarmed Animations - Done
-#      - Sword Animations - Done
-#    -# Player - Done
-#      - Dynamically Draw Weapons - Done
-#    -# Enemies - Done
-#    -# General - Done
-#      - Attacks do damage - Done
-#      - Attacks do knockback - Done
-#    -# HUD (in GUI) - Done
-#      - Display Party Stats - Done
-#      - Display Damage Amounts - Done
-#    -# End Game - Done
-#      - Monsters Die - Done
-#      - After all monsters are gone end battle - Done
-#
-## <b>Goals: V 0.2.0</b>
-#
-#    -# Battle Transistions - Done
-#      - Battle Intro - Done
-#      - Battle Outro - Done
-#      - Battle Rewards - Done
-#    -# <b>Abilities</b>
-#      - <b>Wave Slash</b>
-#    -# <b>Projectiles</b>
-#
-## Goals: Future
-#    -# <b>Physics</b>
-#      - <b>Jumping</b>
-
-"""
-#####################################
-#Goals: V 0.2.0						#
-#####################################
-#1.Abilities lv1-10					#
-#|--Warrior							#
-#|--Archer							#
-#|--Mage							#
-#|--Special							#
-#2.Physics							#
-#|--Colisions						#
-#|--Rigid Bodies					#
-#|--Particles						#
-#3.Compositor Integration			#
-#|--Magic Effects					#
-#    -# <b>Physics</b>
-#      - <b>Projectiles</b>
-#####################################
-"""
-
 import random
+
 import pygame
 
-pygame.init()
-
-import graphics
-import input as Input
-import gui
-
-## An object that shoots out of an actor and deals damage.
-class Projectile(object):
+## The Battle Engine
+#
+#  A new battle engine is created for each battle.
+class BattleEngine(object):
 	
 	## Constructor
 	#
-	#  @param graphicObject The graphics.BattleGraphicObject associated with this actor.
-	#  @param atkBox A pygame rect that describes the area in which this projectile does damage.
-	#  @param damage How much base damage this projectile does.
-	#  @param pos The starting postion of this projectile.
-	#  @param speed How fast the projectile will move in pixels/second.
-	#  @param dist How far the projectile will go in pixels.
-	#  @param parent Which actor shot this projectile.
-	#  @param piercing Whether this projectile moves through enemys or stops once they have been hit.
-	def __init__(self,graphicObject,atkbox,damage,pos,speed,dist,parent,direction=1,piercing=False):
-		self.graphicObject = graphicObject
-		self.atkbox = atkbox
-		self.damage = damage
-		self.x = pos[0]
-		self.y = pos[1]
-		self.speed = speed
-		self.distMax = dist
-		self.dist = 0
-		self.parent = parent
-		self.direction = direction
-		self.piercing = piercing
-		self.hitList = []
+	#  @param GraphicsEngine A reference to a graphics.BattleGraphicsEngine.
+	def __init__(self,GraphicsEngine):
+		self.playerParty=[]
+		self.enemyParty=[]
+		self.projectiles=[]
+		self.loot = []
+		self.exp = 0
+		self.gold = 0
+		self.graphicsEngine=GraphicsEngine
 	
-	## Returns the list of entities that have already been hit.
-	def getHitList(self):
-		return self.hitList
+	## Adds a BattleObject to the allies team.
+	def addAlly(self,ally):
+		ally.setTeam(1)
+		self.playerParty.append(ally)
+		self.graphicsEngine.addAlly(ally.getGraphicObject())
 	
-	## Adds @c hit to the list of entities that have already been hit.
-	def addHit(self,hit):
-		self.hitList.append(hit)
+	## Adds a BattleObject to the enemies team.
+	def addEnemy(self,enemy):
+		enemy.setTeam(-1)
+		self.enemyParty.append(enemy)
+		self.graphicsEngine.addEnemy(enemy.getGraphicObject())
 	
-	## Returns a copy of this projectile.
-	def getCopy(self):
-		return Projectile(self.graphicObject.getCopy(),self.atkbox,self.damage,[self.x,self.y],self.speed,self.distMax,self.parent,self.direction,self.piercing)
+	## Adds a projectile to the projectile list.
+	def addProjectile(self,projectile):
+		self.projectiles.append(projectile)
+		self.graphicsEngine.addProjectile(projectile.getGraphicObject())
 	
-	## Returns this objects graphic object.
-	def getGraphicObject(self):
-		return self.graphicObject
+	## Returns how much experience the player earned.
+	def getExp(self):
+		return self.exp
 	
-	## Returns this projectile's attack box.
-	def getAtkBox(self):
-		return self.atkbox[self.direction].move(self.getGraphicObject().getX(),self.getGraphicObject().getY())
+	## Returns the items the player got.
+	def getLoot(self):
+		return self.loot
 	
-	## Returns this projectile's parent.
-	def getParent(self):
-		return self.parent
+	## Returns how much gold the player earned.
+	def getGold(self):
+		return self.gold
 	
-	## Returns how much base damage this projectile does.
-	def getAtk(self):
-		return self.damage
+	## Returns the player's party
+	def getPlayerParty(self):
+		return self.playerParty
 	
-	## Returns if this projectile can travel through enemies
-	def getPiercing(self):
-		return self.piercing
+	## Returns the graphics.BattleGraphicsEngine.
+	def getGraphicsEngine(self):
+		return self.graphicsEngine
 	
-	## Sets this projectile's direction.
-	def setDirection(self,dire):
-		self.direction=dire
-		self.graphicObject.setDirection(dire)
-	
-	## Sets this projectile's position
-	def setPos(self,pos):
-		self.x=pos[0]
-		self.y=pos[1]
-		self.graphicObject.setPos(pos)
-	
-	## Resets how far this projectile has travelled
-	def resetDist(self):
-		self.dist = 0
-	
-	## Sets the actor who shot this projectile.
-	def setParent(self,parent):
-		self.parent = parent
-	
-	## Updates this projectile.
+	## Updates the battle engine.
 	def update(self,tick):
-		if self.direction == 1:
-			self.x+=self.speed*tick
-		else:
-			self.x-=self.speed*tick
-		self.dist+=self.speed*tick
-		self.graphicObject.setX(int(self.x))
-		if self.dist>=self.distMax:
-			return True
-	
+		for ally in self.playerParty:
+			ally.update(tick)
+			if ally.getHP()<=0:
+				if ally.getState() == "Death":
+						pass
+				else:
+					ally.setState("Death")
+				if ally.isPlayer():
+					print "Game Over"
+				self.playerParty.remove(ally)
+				#ally.setState("Dead")
+			
+			ally.updateAI(tick,self.playerParty+self.enemyParty)
+			if ally.isAttacking():
+				for enemy in self.enemyParty:
+					if enemy.getHitBox().colliderect(ally.getAtkBox()):
+						self.graphicsEngine.addDmgVal(enemy.takeDamage(ally.getAtk()),enemy.getGraphicObject().getPos(),(255,255,255))
+						ally.setAttacking(False)
+		
+		for enemy in self.enemyParty:
+			enemy.update(tick)
+			if enemy.getHP()<=0:
+				if enemy.getState() == "Death":
+					if enemy.getGraphicObject().getCurrAnimName()=="Remove":
+						self.enemyParty.remove(enemy)
+						self.graphicsEngine.removeEnemy(enemy.getGraphicObject())
+						self.exp+=enemy.calcExp()
+						self.gold+=enemy.calcGold()
+						for item in enemy.getDrops():
+							if random.random()<item[1]:
+								self.loot.append(item[0])
+					else:
+						pass
+				else:
+					enemy.setState("Death")
+			else:
+				enemy.updateAI(tick,self.playerParty+self.enemyParty)
+				if enemy.isAttacking():
+					for ally in self.playerParty:
+						if ally.getHitBox().colliderect(enemy.getAtkBox()):
+							self.graphicsEngine.addDmgVal(ally.takeDamage(enemy.getAtk()),ally.getGraphicObject().getPos(),(255,0,0))
+							enemy.setAttacking(False)
+		
+		for projectile in self.projectiles:
+			if projectile.getParent().isAlly():
+				for enemy in self.enemyParty:
+					if enemy.getHitBox().colliderect(projectile.getAtkBox()):
+						if not enemy in projectile.getHitList():
+							self.graphicsEngine.addDmgVal(enemy.takeDamage(projectile.getAtk()),enemy.getGraphicObject().getPos(),(255,255,255))
+							
+							if projectile.getPiercing():
+								projectile.addHit(enemy)
+							else:
+								self.projectiles.remove(projectile)
+								self.graphicsEngine.removeProjectile(projectile.getGraphicObject())
+							
+			elif projectile.getParent().isEnemy():
+				for ally in self.playerParty:
+					if ally.getHitBox().colliderect(projectile.getAtkBox()):
+						if not ally in projectile.getHitList():
+							self.graphicsEngine.addDmgVal(ally.takeDamage(projectile.getAtk()),ally.getGraphicObject().getPos(),(255,0,0))
+							if projectile.getPiercing():
+								projectile.addHit(ally)
+							else:
+								self.projectiles.remove(projectile)
+								self.graphicsEngine.removeProjectile(projectile.getGraphicObject())
+			if projectile.update(tick):
+				self.projectiles.remove(projectile)
+				self.graphicsEngine.removeProjectile(projectile.getGraphicObject())
+		
+		self.graphicsEngine.update(tick)
+		
+		return len(self.enemyParty)==0
 
 ## An actor involved in a battle.
 #
@@ -574,208 +552,91 @@ class BattleObject(object):
 		else:
 			self.velX = 0
 
-## The Battle Engine
-#
-#  A new battle engine is created for each battle.
-class BattleEngine(object):
+## An object that shoots out of an actor and deals damage.
+class Projectile(object):
 	
 	## Constructor
 	#
-	#  @param GraphicsEngine A reference to a graphics.BattleGraphicsEngine.
-	def __init__(self,GraphicsEngine):
-		self.playerParty=[]
-		self.enemyParty=[]
-		self.projectiles=[]
-		self.loot = []
-		self.exp = 0
-		self.gold = 0
-		self.graphicsEngine=GraphicsEngine
+	#  @param graphicObject The graphics.BattleGraphicObject associated with this actor.
+	#  @param atkBox A pygame rect that describes the area in which this projectile does damage.
+	#  @param damage How much base damage this projectile does.
+	#  @param pos The starting postion of this projectile.
+	#  @param speed How fast the projectile will move in pixels/second.
+	#  @param dist How far the projectile will go in pixels.
+	#  @param parent Which actor shot this projectile.
+	#  @param piercing Whether this projectile moves through enemys or stops once they have been hit.
+	def __init__(self,graphicObject,atkbox,damage,pos,speed,dist,parent,direction=1,piercing=False):
+		self.graphicObject = graphicObject
+		self.atkbox = atkbox
+		self.damage = damage
+		self.x = pos[0]
+		self.y = pos[1]
+		self.speed = speed
+		self.distMax = dist
+		self.dist = 0
+		self.parent = parent
+		self.direction = direction
+		self.piercing = piercing
+		self.hitList = []
 	
-	## Adds a BattleObject to the allies team.
-	def addAlly(self,ally):
-		ally.setTeam(1)
-		self.playerParty.append(ally)
-		self.graphicsEngine.addAlly(ally.getGraphicObject())
+	## Returns the list of entities that have already been hit.
+	def getHitList(self):
+		return self.hitList
 	
-	## Adds a BattleObject to the enemies team.
-	def addEnemy(self,enemy):
-		enemy.setTeam(-1)
-		self.enemyParty.append(enemy)
-		self.graphicsEngine.addEnemy(enemy.getGraphicObject())
+	## Adds @c hit to the list of entities that have already been hit.
+	def addHit(self,hit):
+		self.hitList.append(hit)
 	
-	## Adds a projectile to the projectile list.
-	def addProjectile(self,projectile):
-		self.projectiles.append(projectile)
-		self.graphicsEngine.addProjectile(projectile.getGraphicObject())
+	## Returns a copy of this projectile.
+	def getCopy(self):
+		return Projectile(self.graphicObject.getCopy(),self.atkbox,self.damage,[self.x,self.y],self.speed,self.distMax,self.parent,self.direction,self.piercing)
 	
-	## Returns how much experience the player earned.
-	def getExp(self):
-		return self.exp
+	## Returns this objects graphic object.
+	def getGraphicObject(self):
+		return self.graphicObject
 	
-	## Returns the items the player got.
-	def getLoot(self):
-		return self.loot
+	## Returns this projectile's attack box.
+	def getAtkBox(self):
+		return self.atkbox[self.direction].move(self.getGraphicObject().getX(),self.getGraphicObject().getY())
 	
-	## Returns how much gold the player earned.
-	def getGold(self):
-		return self.gold
+	## Returns this projectile's parent.
+	def getParent(self):
+		return self.parent
 	
-	## Returns the player's party
-	def getPlayerParty(self):
-		return self.playerParty
+	## Returns how much base damage this projectile does.
+	def getAtk(self):
+		return self.damage
 	
-	## Returns the graphics.BattleGraphicsEngine.
-	def getGraphicsEngine(self):
-		return self.graphicsEngine
+	## Returns if this projectile can travel through enemies
+	def getPiercing(self):
+		return self.piercing
 	
-	## Updates the battle engine.
+	## Sets this projectile's direction.
+	def setDirection(self,dire):
+		self.direction=dire
+		self.graphicObject.setDirection(dire)
+	
+	## Sets this projectile's position
+	def setPos(self,pos):
+		self.x=pos[0]
+		self.y=pos[1]
+		self.graphicObject.setPos(pos)
+	
+	## Resets how far this projectile has travelled
+	def resetDist(self):
+		self.dist = 0
+	
+	## Sets the actor who shot this projectile.
+	def setParent(self,parent):
+		self.parent = parent
+	
+	## Updates this projectile.
 	def update(self,tick):
-		for ally in self.playerParty:
-			ally.update(tick)
-			if ally.getHP()<=0:
-				if ally.getState() == "Death":
-						pass
-				else:
-					ally.setState("Death")
-				if ally.isPlayer():
-					print "Game Over"
-				self.playerParty.remove(ally)
-				#ally.setState("Dead")
-			
-			ally.updateAI(tick,self.playerParty+self.enemyParty)
-			if ally.isAttacking():
-				for enemy in self.enemyParty:
-					if enemy.getHitBox().colliderect(ally.getAtkBox()):
-						self.graphicsEngine.addDmgVal(enemy.takeDamage(ally.getAtk()),enemy.getGraphicObject().getPos(),(255,255,255))
-						ally.setAttacking(False)
-		
-		for enemy in self.enemyParty:
-			enemy.update(tick)
-			if enemy.getHP()<=0:
-				if enemy.getState() == "Death":
-					if enemy.getGraphicObject().getCurrAnimName()=="Remove":
-						self.enemyParty.remove(enemy)
-						self.graphicsEngine.removeEnemy(enemy.getGraphicObject())
-						self.exp+=enemy.calcExp()
-						self.gold+=enemy.calcGold()
-						for item in enemy.getDrops():
-							if random.random()<item[1]:
-								self.loot.append(item[0]())
-					else:
-						pass
-				else:
-					enemy.setState("Death")
-			else:
-				enemy.updateAI(tick,self.playerParty+self.enemyParty)
-				if enemy.isAttacking():
-					for ally in self.playerParty:
-						if ally.getHitBox().colliderect(enemy.getAtkBox()):
-							self.graphicsEngine.addDmgVal(ally.takeDamage(enemy.getAtk()),ally.getGraphicObject().getPos(),(255,0,0))
-							enemy.setAttacking(False)
-		
-		for projectile in self.projectiles:
-			if projectile.getParent().isAlly():
-				for enemy in self.enemyParty:
-					if enemy.getHitBox().colliderect(projectile.getAtkBox()):
-						if not enemy in projectile.getHitList():
-							self.graphicsEngine.addDmgVal(enemy.takeDamage(projectile.getAtk()),enemy.getGraphicObject().getPos(),(255,255,255))
-							
-							if projectile.getPiercing():
-								projectile.addHit(enemy)
-							else:
-								self.projectiles.remove(projectile)
-								self.graphicsEngine.removeProjectile(projectile.getGraphicObject())
-							
-			elif projectile.getParent().isEnemy():
-				for ally in self.playerParty:
-					if ally.getHitBox().colliderect(projectile.getAtkBox()):
-						if not ally in projectile.getHitList():
-							self.graphicsEngine.addDmgVal(ally.takeDamage(projectile.getAtk()),ally.getGraphicObject().getPos(),(255,0,0))
-							if projectile.getPiercing():
-								projectile.addHit(ally)
-							else:
-								self.projectiles.remove(projectile)
-								self.graphicsEngine.removeProjectile(projectile.getGraphicObject())
-			if projectile.update(tick):
-				self.projectiles.remove(projectile)
-				self.graphicsEngine.removeProjectile(projectile.getGraphicObject())
-		
-		self.graphicsEngine.update(tick)
-		
-		return len(self.enemyParty)==0
-
-## A test battle.
-def BattleTest(screen,players,enemies):
-	testB = players[0]
-	enemy = enemies[0]
-	
-	font = pygame.font.SysFont("Arial",12)
-	clock = pygame.time.Clock()
-	clock.tick()
-
-	graphicsEngine = graphics.BattleGraphicsEngine(screen,True,"Test")
-	inputEngine = Input.InputEngine()
-	battleEngine = BattleEngine(graphicsEngine)
-
-	#testG = graphics.BattleGraphicObject([[[pygame.image.load("Battle/art/idle1.png").convert_alpha(),pygame.image.load("Battle/art/idle2.png").convert_alpha()]],[[pygame.image.load("Battle/art/run1.png").convert_alpha(),pygame.image.load("Battle/art/run2.png").convert_alpha(),pygame.image.load("Battle/art/run3.png").convert_alpha(),pygame.image.load("Battle/art/run4.png").convert_alpha(),pygame.image.load("Battle/art/run5.png").convert_alpha(),pygame.image.load("Battle/art/run6.png").convert_alpha()]]],[0.5,0.15],[0,120],10)
-	#test3=graphics.BattleGraphicObject([[[pygame.image.load("Battle/test2N.png").convert_alpha()],[pygame.image.load("Battle/test2NE.png").convert_alpha()],[pygame.image.load("Battle/test2E.png").convert_alpha()],[pygame.image.load("Battle/test2SE.png").convert_alpha()],[pygame.image.load("Battle/test2S.png").convert_alpha()],[pygame.image.load("Battle/test2SW.png").convert_alpha()],[pygame.image.load("Battle/test2W.png").convert_alpha()],[pygame.image.load("Battle/test2NW.png").convert_alpha()]]],[0.1])
-
-	#testB=BattleObject(testG,"Mark",1,10,2,4,1,10)
-	
-	for ally in players:
-		battleEngine.addPlayer(ally)
-	battleEngine.addEnemy(enemy)
-
-	debug = graphics.TextObject("",[10,10])
-	debug.layer = 2
-	graphicsEngine.addPlayer(debug)
-	
-	graphicsEngine.setFocus(testB.getGraphicObject())
-	
-	graphicsEngine.getHud().update(battleEngine.PlayerParty)
-
-	running=True
-	zoom = 0
-	
-	fps = []
-	fpsCount = 0
-	while running:
-		tick = clock.tick()/1000.0
-		
-		for event in inputEngine.getInput():
-			if event[0] == "Quit":
-				pygame.quit()
-				exit()
-			elif event[1] == "Down":
-				if event[0] == "Accept":
-					testB.attack()
-				if event[0] == "Cancel":
-					enemy.attack()
-		
-		move=inputEngine.getMove()
-		if move[1]:
-			if testB.getDirection()!=1:
-				testB.setDirection(1)
-			if testB.getState()=="Idle":
-				testB.setState("Run")
-		if move[3]:
-			if testB.getDirection()!=0:
-				testB.setDirection(0)
-			if testB.getState()=="Idle":
-				testB.setState("Run")
-		if (not move[1] and not move[3]) or (move[1] and move[3]):
-			if testB.getState()=="Run":
-				testB.setState("Idle")
-		
-		battleEngine.update(tick)
-		
-		#debug.setText(str(testB.x))
-		#fpsCount += tick
-		#fps.append(clock.get_fps())
-		#if fpsCount>=2:
-		#	fpsCount -= 2
-		#	debug.setText("Avg: "+str(sum(fps)/len(fps))+" Max: "+str(max(fps))+" Min: "+str(min(fps)))
-		#if testB.getState()!="Idle" and testB.getTime()>0 and testB.getTime()<testB.weaponReaction:
-		#	debug.setText("Now!")
-		#else:
-		#	debug.setText(" ")
+		if self.direction == 1:
+			self.x+=self.speed*tick
+		else:
+			self.x-=self.speed*tick
+		self.dist+=self.speed*tick
+		self.graphicObject.setX(int(self.x))
+		if self.dist>=self.distMax:
+			return True
