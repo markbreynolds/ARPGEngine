@@ -1,5 +1,7 @@
 import pygame
 
+import config
+
 ## A window that emulates a smaller python window.
 class ScaledScreen(object):
 	
@@ -17,23 +19,22 @@ class ScaledScreen(object):
 	#         2 = Full smoothing.
 	#
 	#  @endparblock
-	def __init__(self,screen,actualResX,actualResY,smoothing=0):
+	def __init__(self,screen,actualResX,actualResY):
 		self.scaledScreen=screen
 		self.aResX=actualResX
 		self.aResY=actualResY
 		self.screen=pygame.surface.Surface((320,240))
-		self.smoothing=smoothing
-		if self.smoothing==1:
+		if config.Smoothing==1:
 			self.aResX=640
 			self.aResY=480
 	
 	## Updates the pygame screen by scaling the internal screen.
 	def update(self):
-		if self.smoothing==0:
+		if config.Smoothing==0:
 			pygame.transform.scale(self.screen,(self.aResX,self.aResY),self.scaledScreen)
-		elif self.smoothing==1:
+		elif config.Smoothing==1:
 			pygame.transform.scale2x(self.screen,self.scaledScreen)
-		elif self.smoothing==2:
+		elif config.Smoothing==2:
 			pygame.transform.smoothscale(self.screen,(self.aResX,self.aResY),self.scaledScreen)
 	
 	## Functions the same as pygame.Surface.fill().

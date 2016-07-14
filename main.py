@@ -3,7 +3,7 @@
 #
 #  This module contains the code related to the core and other module integration.
 #
-## Goals: V 0.1.0
+## Goals: V 0.1.0a
 #
 #    -# GUI - Done
 #      - Inventory Tab - Done
@@ -20,7 +20,7 @@
 #      - package documentation for Battle - Done
 #      - All new code must be documented as it is written.
 #
-##<b>Goals: V 0.2.0</b>
+##<b>Goals: V 0.2.0a</b>
 #    -# Player - Done
 #      - Class Objects - Done
 #    -# GUI - Done
@@ -29,45 +29,81 @@
 #    -# Make A Town - Done
 #      - Shop - Done
 #      - Inn - Done
-#    -# <b>Overworld</b>
+#    -# Overworld - Done
 #      - Fix Pushables (Press button for push) - Done
-#      - <b>Random Monster Encounters</b>
+#      - Random Monster Encounters - Done
 #    -# Battle - Done
 #      - Battle Transistion - Done
 #      - Abilities - Done
+#    -# <b>Dialog</b>
+#      - Quest Add - Done
+#      - Quest Update - Done
+#      - <b>Quest Check Branches</b>
+#      - <b>Item Check Branches</b>
+#    -# <b>Quests</b>
+#      - Talk-To Quests - Done
+#      - <b>Fetch Quests</b>
+#	   - <b>Go-To Quests</b>
 #    -# <b>Documentation</b>
-#      - <b>package documentation for Game</b>
+#      - <b>package documentation for Game Engine</b>
 #      - package documentation for Player - Done
-#      - <b>package documentation for Items</b>
 #      - All new code must be documented as it is written.
 #
-##Goals: V 0.3.0
-#    -# <b>Documentation</b>
-#      - <b>package documentation for GUI</b>
-#      - <b>package documentation for NPC</b>
-#      - All new code must be documented as it is written.
-#
-##Goals: Future
-#    -# <b>Battle</b>
-#      - <b>Physics</b>
-#    -# <b>Compositor</b>
-#      - <b>VFX</b>
-#      - <b>Filter</b>
+## Goals: V 0.3.0a
 #    -# <b>Cutscenes</b>
 #      - <b>Actions</b>
 #      - <b>Dialog</b>
 #      - <b>Actions/Dialog Sync</b>
 #    -# <b>Triggers</b>
 #      - <b>Cutscene Trigger</b>
+#    -# <b>Triggers</b>
+#      - <b>Trigger Effect Classes</b>
+#    -# <b>Skills</b>
+#      - <b>Melee Skills</b>
+#      - <b>Passive Skills</b>
+#      - <b>Warrior Skills (5)</b>
+#    -# <b>Battle</b>
+#      - <b>Bow Weapon Style</b>
+#    -# <b>Items</b>
+#      - <b>Swords</b>
 #    -# <b>A Dungeon</b>
 #      - <b>Chests</b>
 #      - <b>Puzzles</b>
 #      - <b>Cutscene</b>
 #      - <b>Boss</b>
+#    -# <b>Documentation</b>
+#      - <b>package documentation for GUI</b>
+#      - <b>package documentation for NPC</b>
+#      - All new code must be documented as it is written.
+#
+## Goals: Future
+#    -# <b>Battle</b>
+#      - <b>Physics</b>
+#    -# <b>Skills</b>
+#      - <b>Buff Skills</b>
+#      - <b>Archer Skills (5)</b>
+#      - <b>Mage Skills (5)</b>
+#    -# <b>Battle</b>
+#      - <b>Staff Weapon Style</b>
+#    -# <b>Items</b>
+#      - <b>Bows</b>
+#      - <b>Staffs</b>
+#    -# <b>Compositor</b>
+#      - <b>VFX</b>
+#      - <b>Filter</b>
 #    -# <b>Level</b>
 #      - <b>Improve load times</b>
 #    -# <b>Saving</b>
+#    -# <b>Unit Tests</b>
+#      - <b>InputEngine?</b>
+#      - <b>GameEngine</b>
+#      - <b>BattleEngine</b>
+#      - <b>Player</b>
+#      - <b>Level</b>
+#      - <b>GraphicsEngine?</b>
+#      - <b>BattleGraphicsEngine?</b>
 #    -# <b>Documentation</b>
+#      - <b>package documentation for Items</b>
 #      - <b>package documentation for Level</b>
 #      - All new code must be documented as it is written.
 #
@@ -91,7 +127,7 @@ from battle.enemies.factory import EnemyFactory
 from graphics import transitions
 from graphics.scaled_screen import ScaledScreen
 from graphics.overworld import GraphicsEngine
-from graphics.battle import BattleGraphicsEngine
+from graphics.battle import BattleGraphicsEngine, BattleGraphicObject
 from graphics.gui import MainMenu, CharacterCreator, Icons
 
 from game import npc
@@ -123,7 +159,7 @@ def loadNewArea(xml,Level):
 	global gameEngine
 	global graphicsEngine
 	global clock
-	
+
 	gameEngine.clearActors()
 	gameEngine.clearNPCs()
 	gameEngine.clearTriggers()
@@ -142,20 +178,21 @@ def battleStart(Enemies,bg,farBG):
 	graphicsEngineB = BattleGraphicsEngine(graphicsEngine.getScreen(),graphicsEngine.getIsScaled(),bg,farBG)
 	battleEngine = BattleEngine(graphicsEngineB)
 	PlayerB = Player.getBattleObject()
-	
+
 	x = len(Player.getParty())*50
 	PlayerB.setX(x)
 	PlayerB.setState("Idle")
 	PlayerB.setDirection(1)
 	PlayerB.playerStatus = True
-	
-	if Player.getInventory().getArm1()!=None and PlayerB.getGraphicObject().weapon!=None:
-		if Player.getInventory().getArm1().getStyle() != PlayerB.getGraphicObject().weapon.getStyle():
-			PlayerB.updateWeapon(Player.getInventory().getArm1(),Player.constructBattleAnimations())
-	else:
-		if Player.getInventory().getArm1() != PlayerB.getGraphicObject().weapon:
-			PlayerB.updateWeapon(Player.getInventory().getArm1(),Player.constructBattleAnimations())
-	
+
+#	if Player.getInventory().getArm1()!=None and PlayerB.getGraphicObject().weapon!=None:
+#		if Player.getInventory().getArm1().getStyle() != PlayerB.getGraphicObject().weapon.getStyle():
+#			PlayerB.updateWeapon(Player.getInventory().getArm1(),Player.constructBattleAnimations())
+#	else:
+#		if Player.getInventory().getArm1() != PlayerB.getGraphicObject().weapon:
+#			PlayerB.updateWeapon(Player.getInventory().getArm1(),Player.constructBattleAnimations())
+	PlayerB.updateWeapon(Player.getInventory().getArm1(),Player.constructBattleAnimations())
+
 	battleEngine.addAlly(PlayerB)
 	for ally in Player.getParty():
 		x-=50
@@ -164,27 +201,32 @@ def battleStart(Enemies,bg,farBG):
 		allyb.setState("Idle")
 		allyb.setDirection(1)
 		battleEngine.addAlly(allyb)
-	
+
 	x = 800
 	for enemy in Enemies:
-		lvl = max(PlayerB.getLevel()+random.randint(-4,2),1)
+		if config.Difficulty <= 2:
+			lvl = max(PlayerB.getLevel()+random.randint(-4,2),1)
+		elif config.Difficulty == 3:
+			lvl = max(PlayerB.getLevel()+random.randint(-2,4),1)
+		elif config.Difficulty >= 4:
+			lvl = max(PlayerB.getLevel()+random.randint(0,6),1)
 		print lvl
 		temp = EnemyFactory.createEnemy(enemy,lvl,x)
 		battleEngine.addEnemy(temp)
 		x-= 50
-	
+
 	graphicsEngineB.setFocus(PlayerB.getGraphicObject())
 	graphicsEngineB.getHud().update(battleEngine.playerParty)
 
 	BATTLING = True
-	
+
 	oldScreen = screen.screen.copy()
 	battleEngine.update(0)
 	newScreen = screen.screen.copy()
 	transitions.blurTrans(clock,screen,oldScreen,newScreen)
 
-screen = ScaledScreen(pygame.display.set_mode((640,480)),640,480,smoothing=0)
-#screen = ScaledScreen(pygame.display.set_mode((320,240)),320,240,smoothing=0)
+screen = ScaledScreen(pygame.display.set_mode((640,480)),640,480)
+#screen = ScaledScreen(pygame.display.set_mode((320,240)),320,240)
 font = pygame.font.SysFont("Arial",12)
 clock = pygame.time.Clock()
 clock.tick()
@@ -192,7 +234,7 @@ clock.tick()
 gameEngine = GameEngine(loadNewArea,battleStart)
 graphicsEngine = GraphicsEngine(screen,True)
 inputEngine = Input.InputEngine()
-errors.ErrorEngine(screen,level=config.LogVerbosity,quiet=False)
+errors.init(screen,level=config.LogVerbosity,quiet=False)
 
 pygame.key.set_repeat(250,100)
 
@@ -204,9 +246,11 @@ Icons.load()
 
 options = [["Levels/TestArea/Test.xml","Test1"],["Levels/TestArea/Test.xml","Test3"],["Levels/TestArea/TestVillage.xml","VillageMain"]]
 choice = random.choice(options)
-#choice = ["Levels/TestArea/TestVillage.xml","VillageMain"]
-choice = ["Levels/TestArea/Test.xml","Test1"]
+choice = ["Levels/TestArea/TestVillage.xml","VillageMain"]
+#choice = ["Levels/TestArea/Test.xml","Test1"]
 level.load(choice[0],choice[1],gameEngine,graphicsEngine)
+
+transitions.fadeFromColor(screen,screen.screen.copy(),[0,0,0],.5)
 
 menu = MainMenu()
 while menu:
@@ -219,7 +263,7 @@ while menu:
 				menu.Select()
 			elif inp[0] == "Cancel":
 				menu.Cancel()
-	
+
 	move = inputEngine.getMove()
 	if move[0]:
 		menu.SelUp()
@@ -229,7 +273,7 @@ while menu:
 		menu.SelDown()
 	if move[3]:
 		menu.SelLeft()
-	
+
 	tick = clock.tick()/1000.0
 	for item in gameEngine.actors:
 		item.update(tick,gameEngine.moveCheck)
@@ -240,7 +284,7 @@ while menu:
 		item.update(tick)
 		screen.blit(item.getSprite(),item.getPos())
 	menu.update(screen,tick)
-	
+
 	if menu.closed():
 		val = menu.getValue()
 		if val == "Play":
@@ -253,8 +297,8 @@ while menu:
 			exit()
 		elif val == "Main":
 			menu = MainMenu()
-		
-	
+
+
 	screen.update()
 	pygame.display.update()
 
@@ -299,14 +343,17 @@ while PLAYING:
 						PlayerB.attack()
 				elif event[0] == "Cancel":
 					if PlayerB.getGraphicObject().currentAnimation.getNextAnimation() != None:
-						errors.getLogger().info(PlayerB.getGraphicObject().currentAnimation.getName()+", "+PlayerB.getGraphicObject().currentAnimation.getNextAnimation().getName())
+						errors.info(PlayerB.getGraphicObject().currentAnimation.getName()+", "+PlayerB.getGraphicObject().currentAnimation.getNextAnimation().getName())
 					else:
-						errors.getLogger().info(PlayerB.getGraphicObject().currentAnimation.getName()+", "+PlayerB.getGraphicObject().currentAnimation.getNextAnimation())
+						errors.info(PlayerB.getGraphicObject().currentAnimation.getName()+", "+PlayerB.getGraphicObject().currentAnimation.getNextAnimation())
 				elif event[0].startswith("S1"):
 					if Player.getSkill(event[0])!=None and Player.getSkill(event[0]).getType()=="Projectile":
 						proj = Player.getSkill(event[0]).use(PlayerB)
 						if proj:
 							battleEngine.addProjectile(proj)
+			elif event[1] == "Up":
+				if event[0] == "Accept":
+					PlayerB.release(BattleGraphicObject)
 		move=inputEngine.getMove()
 		if move[1]:
 			if PlayerB.getDirection()!=1:
@@ -321,7 +368,7 @@ while PLAYING:
 		if (not move[1] and not move[3]) or (move[1] and move[3]):
 			if PlayerB.getState()=="Run":
 				PlayerB.setState("Idle")
-		
+
 		if battleEngine.update(tick):
 			BATTLING = False
 			loot = []
@@ -369,16 +416,16 @@ while PLAYING:
 					if inp[0] == "Pause":
 						graphicsEngine.togglePause()
 
-		
+
 		#tmp = None
 		#for actor in gameEngine.Actors:
 		#	if actor.ID == "Gate":
 		#		tmp = actor
 		#gui.debugInfo.setText(str(tmp.graphicObject.state)+":"+str(tmp.graphicObject.getFrame()))
-		
+
 		#gui.debugInfo.setText(str(Player.getGraphicObject().getPos()))
 		#gui.debugInfo.setText(str(gameEngine.actors))
-		
+
 		#Average Framerate:
 		#fpsCount -= tick
 		#if fpsCount >0:
@@ -387,7 +434,7 @@ while PLAYING:
 		#	fpsCount = 1.0
 		#	gui.debugInfo.setText(str(sum(fps)/len(fps)))
 		#	fps = []
-		
+
 		move = inputEngine.getMove()
 		if graphicsEngine.getTalking():
 			if move[0]:
@@ -430,10 +477,10 @@ while PLAYING:
 				Player.setDirection(1)
 			if move[3]:
 				Player.setDirection(3)
-			
+
 			dire = inputEngine.getDirection()
 			Player.getGameObject().setDirection(dire)
-			
+
 		if sum(move)!=0 and not Player.getGameObject().getMoving() and not graphicsEngine.getTalking() and not graphicsEngine.getInven() and not graphicsEngine.getPause() and not graphicsEngine.getShop():
 			Player.setState("Walk")
 			Player.getGraphicObject().setFrame(1)
@@ -441,30 +488,41 @@ while PLAYING:
 		elif (sum(move)==0 and Player.getGameObject().getMoving()) or graphicsEngine.getTalking() or graphicsEngine.getInven() or graphicsEngine.getPause() or graphicsEngine.getShop():
 			Player.setState("Idle")
 			Player.getGameObject().setMoving(False)
-		
-		
+
+
 		#tick = clock.tick()/1000.0
-		
+
 		if graphicsEngine.getTalking()==None and Player.getTalking():
 			graphicsEngine.setTalking(Player.getTalking())
 		elif graphicsEngine.getTalking()==False and Player.getTalking():
 			graphicsEngine.resetTalking()
 			Player.setTalking(False)
-		
+
 		if graphicsEngine.getPause():
 			if graphicsEngine.getPause().closed():
 				if graphicsEngine.getPause().getValue() == "Exit":
 					PLAYING = False
 				elif graphicsEngine.getPause().getValue() == "Resume":
 					graphicsEngine.togglePause()
-		
+
 		if graphicsEngine.getSleep():
 			gameEngine.sleep()
 			graphicsEngine.resetSleep()
-		
+
+		if graphicsEngine.getTrigger():
+			gameEngine.trigger(graphicsEngine.getTrigger())
+			graphicsEngine.resetTrigger()
+
+		if graphicsEngine.getQuest():
+			gameEngine.questAction(graphicsEngine.getQuest())
+			graphicsEngine.resetQuest()
+
+		if graphicsEngine.getBranch():
+			graphicsEngine.dialogBranch(gameEngine.branchCheck(graphicsEngine.getBranch()))
+
 		gameEngine.update(tick)
 		graphicsEngine.update(tick)
 
-#Exit code:		
+#Exit code:
 pygame.quit()
 exit()

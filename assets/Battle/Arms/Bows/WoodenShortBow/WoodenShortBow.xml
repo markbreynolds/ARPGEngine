@@ -1,0 +1,49 @@
+<Animation Idle>
+	<delay>.5</delay>
+	<Frame>
+		<image>Battle/Arms/Bows/WoodenShortBow/Idle1.png</image>
+	</Frame>
+</Animation>
+
+<Animation Walk>
+	<delay>.17</delay>
+	<Frame>
+		<image>Battle/Arms/Bows/WoodenShortBow/Walk1.png</image>
+	</Frame>
+	<Frame>
+		<image>Battle/Arms/Bows/WoodenShortBow/Walk2.png</image>
+	</Frame>
+	<Frame>
+		<image>Battle/Arms/Bows/WoodenShortBow/Walk3.png</image>
+	</Frame>
+	<Frame>
+		<image>Battle/Arms/Bows/WoodenShortBow/Walk4.png</image>
+	</Frame>
+</Animation>
+
+<Animation Attack>
+	<delay>.35</delay>
+	<Frame>
+		<image>Battle/Arms/Bows/WoodenShortBow/Attack1.png</image>
+	</Frame>
+	<Frame>
+		<image>Battle/Arms/Bows/WoodenShortBow/Attack2.png</image>
+	</Frame>
+	<Frame>
+		<image>Battle/Arms/Bows/WoodenShortBow/Attack3.png</image>
+	</Frame>
+	<Frame>
+		<image>Battle/Arms/Bows/WoodenShortBow/Attack4.png</image>
+	</Frame>
+	<Frame>
+		<image>Battle/Arms/Bows/WoodenShortBow/Attack5.png</image>
+		<delay>10</delay>
+	</Frame>
+</Animation>
+
+<Animation Death>
+	<Frame>
+		<delay>.5</delay>
+		<image>Battle/Arms/Bows/WoodenShortBow/Attack6.png</image>
+	</Frame>
+</Animation>

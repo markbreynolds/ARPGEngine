@@ -1,0 +1,14 @@
+{
+"Text": ["Hi! I'm Kevin."],
+"Options": ["Hi Kevin!"],
+"Actions": ["Branch NotQuestStart Levels/TestArea/Quests.xml Tutorial"],
+"Links": [
+  {
+    "Text": ["I'm really tired, can you find somewhere I can","take a nap?"],
+    "Options": ["Sure!"],
+    "Actions": ["Quest Complete Levels/TestArea/Quests.xml Tutorial Kevin"],
+    "Links": [null]
+  }
+],
+"Branches": [null]
+}

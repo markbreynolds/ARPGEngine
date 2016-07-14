@@ -26,11 +26,11 @@ ColorDisable = (127,127,127)
 
 ## How hard the game will be on a scale from 1-5 (easy to hard).
 #
-# Affects various factors including:
-#  + How often random battles occur. (Not implemented)
-#  + How much stronger enemies will be than you. (Not implemented)
+#  Affects various factors including:
+#   + How often random battles occur. (Not implemented)
+#   + How much stronger enemies will be than you. (Not implemented)
 #
-# A difficulty of 0 can be used for test to make random battles not occur.
+#  A difficulty of 0 can be used for test to make random battles not occur.
 Difficulty = 1
 
 ## How much information should be put into logs.
@@ -44,3 +44,11 @@ Difficulty = 1
 # NOTSET = 0
 #
 LogVerbosity = 30
+
+## The size of the actual window.
+ScreenSize = [640,480]
+
+## Smoothing mode to use.
+#
+#  See ScaledScreen for more information.
+Smoothing = 0

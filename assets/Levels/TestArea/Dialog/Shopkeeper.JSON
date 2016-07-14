@@ -2,8 +2,8 @@
 "Text": ["Hi, would you like to buy something?"],
 "Options": ["Buy","Sell","Bye"],
 "Links": [
-	"$BUY",
-	"$SELL",
+	"@BUY",
+	"@SELL",
 	null
 ]
 }

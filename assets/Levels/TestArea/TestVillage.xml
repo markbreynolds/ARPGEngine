@@ -4,10 +4,34 @@
 	<BattleBG>["Backgrounds/Battle/TestArea/TestC.png","Backgrounds/Battle/TestArea/TestG.png"]</BattleBG>
 	<Mask>Backgrounds/Overworld/TestArea/Masks/VillageMain.png</Mask>
 	<NPC>
-		<Name>"Joey"</Name>
-		<ID>"Joey"</ID>
+		<Name>null</Name>
+		<Id>"Joey"</Id>
 		<Pos>[530,450]</Pos>
-		<Dialog>Levels/TestArea/Dialog/TestDialog.JSON</Dialog>
+		<Dialog>Levels/TestArea/Dialog/Bystander2.JSON</Dialog>
+		<ClothingType>null</ClothingType>
+		<ClothingColor>null</ClothingColor>
+		<HairType>null</HairType>
+		<HairColor>null</HairColor>
+		<Icon>null</Icon>
+		<Wander>true</Wander>
+	</NPC>
+	<NPC>
+		<Name>"Kevin"</Name>
+		<Id>"Kevin"</Id>
+		<Pos>[530,450]</Pos>
+		<Dialog>Levels/TestArea/Dialog/Kevin.JSON</Dialog>
+		<ClothingType>null</ClothingType>
+		<ClothingColor>null</ClothingColor>
+		<HairType>null</HairType>
+		<HairColor>null</HairColor>
+		<Icon>null</Icon>
+		<Wander>true</Wander>
+	</NPC>
+	<NPC>
+		<Name>null</Name>
+		<Id>"Citizen1"</Id>
+		<Pos>[530,250]</Pos>
+		<Dialog>Levels/TestArea/Dialog/Bystander.JSON</Dialog>
 		<ClothingType>null</ClothingType>
 		<ClothingColor>null</ClothingColor>
 		<HairType>null</HairType>
@@ -17,10 +41,10 @@
 	</NPC>
 	<NPC>
 		<Name>"Shopkeeper"</Name>
-		<ID>"Shopkeeper"</ID>
+		<Id>"Shopkeeper"</Id>
 		<Pos>[405,394]</Pos>
 		<Dialog>Levels/TestArea/Dialog/Shopkeeper.JSON</Dialog>
-		<Shop>["HealthPotion","ManaPotion","ElixirPotion","IronShortSword","IronChestplate"]</Shop>
+		<Shop>["HealthPotion","ManaPotion","ElixirPotion","EmptyPotion","IronShortSword","IronChestplate"]</Shop>
 		<ClothingType>null</ClothingType>
 		<ClothingColor>3</ClothingColor>
 		<HairType>1</HairType>
@@ -29,9 +53,53 @@
 		<Wander>false</Wander>
 		<Direction>2</Direction>
 	</NPC>
+	<NPC>
+		<Name>"Guard"</Name>
+		<Id>"Guard1"</Id>
+		<Pos>[535,119]</Pos>
+		<Dialog>null</Dialog>
+		<AnimeXML>NPCs/Guards/BasicGuard/Animations.xml</AnimeXML>
+		<Icon>null</Icon>
+		<Wander>false</Wander>
+		<Direction>2</Direction>
+	</NPC>
+	<NPC>
+		<Name>"Guard"</Name>
+		<Id>"Guard2"</Id>
+		<Pos>[584,119]</Pos>
+		<Dialog>null</Dialog>
+		<AnimeXML>NPCs/Guards/BasicGuard/Animations.xml</AnimeXML>
+		<Icon>null</Icon>
+		<Wander>false</Wander>
+		<Direction>2</Direction>
+	</NPC>
+	<NPC>
+		<Name>"Guard"</Name>
+		<Id>"Guard3"</Id>
+		<Pos>[456,739]</Pos>
+		<Dialog>null</Dialog>
+		<AnimeXML>NPCs/Guards/BasicGuard/Animations.xml</AnimeXML>
+		<Icon>null</Icon>
+		<Wander>false</Wander>
+		<Direction>2</Direction>
+	</NPC>
+	<NPC>
+		<Name>"Guard"</Name>
+		<Id>"Guard4"</Id>
+		<Pos>[510,739]</Pos>
+		<Dialog>null</Dialog>
+		<AnimeXML>NPCs/Guards/BasicGuard/Animations.xml</AnimeXML>
+		<Icon>null</Icon>
+		<Wander>false</Wander>
+		<Direction>2</Direction>
+	</NPC>
 	<GameObject Objects/Doors.xml IronGate>
 		<Pos>[551,108]</Pos>
-		<Id>"Top Gate"</Id>
+		<Id>"TopGate"</Id>
+		<State>"Open"</State>
+		<GraphicObject>
+			<state>"Open"</state>
+		</GraphicObject>
 	</GameObject>
 	<GameObject Objects/Buildings.xml WoodHouse1>
 		<Pos>[193,150]</Pos>
@@ -78,6 +146,7 @@
 		<Id>"Gate"</Id>
 	</GameObject>
 	<Trigger>
+		<Id>"toInn"</Id>
 		<Type>"Position"</Type>
 		<Area>[210,244,19,20]</Area>
 		<Effect>"Area Change"</Effect>
@@ -86,6 +155,7 @@
 			<PlayerPos>[44,212]</PlayerPos>
 	</Trigger>
 	<Trigger>
+		<Id>"toWell"</Id>
 		<Type>"Action"</Type>
 		<Area>[657,315,44,50]</Area>
 		<Effect>"Area Change"</Effect>
@@ -93,16 +163,24 @@
 			<NewAreaXML>"Levels/TestArea/Test.xml"</NewAreaXML>
 			<PlayerPos>[257,178]</PlayerPos>
 	</Trigger>
+	<Trigger>
+		<Id>"OpenNGate"</Id>
+		<Type>"Dialog"</Type>
+		<Area>[657,315,44,50]</Area>
+		<Effect>"State Set"</Effect>
+			<Target>"TopGate"</Target>
+			<NewState>"Open"</NewState>
+	</Trigger>
 </Level>
 
 <Level VillageShop>
 	<LevelName>Test Village Shop</LevelName>
 	<NPC>
 		<Name>"Shopkeeper"</Name>
-		<ID>"Shopkeeper"</ID>
+		<Id>"Shopkeeper"</Id>
 		<Pos>[109,81]</Pos>
 		<Dialog>Levels/TestArea/Dialog/Innkeeper.JSON</Dialog>
-		<Shop>["HealthPotion","ManaPotion","ElixirPotion","IronShortSword","IronChestplate"]</Shop>
+		<Shop>["HealthPotion","ManaPotion","ElixirPotion","EmptyPotion","IronShortSword","IronChestplate"]</Shop>
 		<ClothingType>null</ClothingType>
 		<ClothingColor>3</ClothingColor>
 		<HairType>1</HairType>
@@ -126,12 +204,12 @@
 </Level>
 
 <Level VillageInn>
-	<LevelName>Test Village Shop</LevelName>
+	<LevelName>Test Village Inn</LevelName>
 	<Background>Backgrounds/Overworld/TestArea/VillageInn.png</Background>
 	<Mask>Backgrounds/Overworld/TestArea/Masks/VillageInn.png</Mask>
 	<NPC>
 		<Name>"Innkeeper"</Name>
-		<ID>"Innkeeper"</ID>
+		<Id>"Innkeeper"</Id>
 		<Pos>[109,81]</Pos>
 		<Dialog>Levels/TestArea/Dialog/Innkeeper.JSON</Dialog>
 		<ClothingType>null</ClothingType>
@@ -142,11 +220,24 @@
 		<Wander>false</Wander>
 		<Direction>2</Direction>
 	</NPC>
+	<NPC>
+		<Name>"Sketchy Looking Witch"</Name>
+		<Id>"Witch"</Id>
+		<Pos>[250,125]</Pos>
+		<Dialog>Levels/TestArea/Dialog/Witch.JSON</Dialog>
+		<ClothingType>null</ClothingType>
+		<ClothingColor>null</ClothingColor>
+		<HairType>3</HairType>
+		<HairColor>10</HairColor>
+		<Icon>null</Icon>
+		<Wander>false</Wander>
+	</NPC>
 	<GameObject Objects/Scenery.xml Counter>
 		<Pos>[6,98]</Pos>
 		<Id>"Counter"</Id>
 	</GameObject>
 	<Trigger>
+		<Id>"toVillage"</Id>
 		<Type>"Position"</Type>
 		<Area>[34,230,36,7]</Area>
 		<Effect>"Area Change"</Effect>

@@ -13,34 +13,60 @@ import config
 from game.engine import GameObject
 from game.items.factory import ItemFactory
 from battle.engine import BattleObject
-from graphics.animation import Animation, AnimationFrame
+from graphics.animation import Animation, AnimationFrame, loadAnimation
 from graphics.overworld import GraphicObject
 from graphics.battle import BattleGraphicObject
 
+## A linked list node represeting part of a conversation.
+#
+# @note Branches require a link other than None.
 class Dialog(object):
-	def __init__(self,Text,Options,Links):
-		self.Text=Text
-		self.Options=Options
-		self.Links=Links
-	
+	def __init__(self,Text,Options,Links,Actions=None,Branches=None,PreAction=None,PreBranch=None):
+		self.text=Text
+		self.options=Options
+		self.links=Links
+		if Actions == None:
+			self.actions=[None]*len(Links)
+		else:
+			self.actions=Actions
+		if Branches == None:
+			self.branches = [None]*len(Links)
+		else:
+			self.branches = Branches
+		self.preAction = PreAction
+		self.preBranch = PreBranch
+
 	def getText(self):
-		return self.Text
-	
+		return self.text
+
 	def getOptions(self):
-		return self.Options
-	
+		return self.options
+
 	def getLinks(self):
-		return self.Links
+		return self.links
+
+	def getActions(self):
+		return self.actions
+
+	def getPreAction(self):
+		return self.preAction
+
+	def getBranches(self):
+		return self.branches
+
+	def getPreBranch(self):
+		return self.preBranch
+
 
 class NPC(player.Player):
-	def __init__(self,Name,ID,Pos,Dialog,ClothingType,ClothingColor,HairType,HairColor,Icon=None,Wander=True,Shop=None,State="Idle",Direction=0):
+	def __init__(self,Name,Id,Pos,Dialog,ClothingType,ClothingColor,HairType,HairColor,Icon=None,Wander=True,Shop=None,State="Idle",Direction=0):
 		self.name=Name
-		self.ID = ID
+		self.ID = Id
 		self.icon=Icon
 		self.dialog=Dialog
 		self.wander=Wander
 		self.wanderCount=0.0
-		
+
 		self.talking=False
 		if Shop != None:
 			self.shop = []
@@ -48,7 +74,7 @@ class NPC(player.Player):
 				self.shop.append(ItemFactory.createItem(item))
 		else:
 			self.shop=Shop
-		
+
 		if ClothingType==None:
 			ClothingType=random.randint(1,player.ClothingTypes)
 		if ClothingColor==None:
@@ -61,15 +87,15 @@ class NPC(player.Player):
 			HairColor=random.choice(player.Colors)
 		else:
 			HairColor=player.Colors[HairColor]
-		
+
 		mask = pygame.mask.Mask((17,25))
 		for x in range(6,11):
 			for y in range(19,25):
 				mask.set_at((x,y),1)
-		
+
 		self.graphicObject = GraphicObject(self.constructAnimations({"Idle":[Animation(None,None,"IdleN"),Animation(None,None,"IdleE"),Animation(None,None,"IdleS"),Animation(None,None,"IdleW")],"Run":[Animation(None,None,"RunN"),Animation(None,None,"RunE"),Animation(None,None,"RunS"),Animation(None,None,"RunW")]},ClothingType,ClothingColor,HairType,HairColor),[0.1,0.25],State,Direction)
-		self.gameObject = GameObject([Pos[0],Pos[1]],{"Idle":mask},30,self.graphicObject,ID)
-	
+		self.gameObject = GameObject([Pos[0],Pos[1]],{"Idle":mask},30,self.graphicObject,Id)
+
 	def constructAnimations(self,animations,ClothingType,ClothingColor,HairType,HairColor):
 		for dire in ["W","S","N"]:
 			if dire == "W":
@@ -78,13 +104,13 @@ class NPC(player.Player):
 				direI = 2
 			elif dire == "N":
 				direI = 0
-			hair = pygame.image.load(config.AssetPath+"Player/Overworld/Hair/Hair"+str(HairType)+dire+".png").convert_alpha()
-			hair.fill(HairColor,special_flags=BLEND_MULT)
 			for frame in range(1,4):
 				temp = pygame.surface.Surface((17,25),flags=SRCALPHA)
-				clothes = pygame.image.load(config.AssetPath+"Player/Overworld/Clothes/Clothes"+str(ClothingType)+"Walk"+dire+str(frame)+".png").convert_alpha()
+				clothes = pygame.image.load(config.AssetPath+"Player/Overworld/Clothes/Type"+str(ClothingType)+"/Walk"+dire+str(frame)+".png").convert_alpha()
 				clothes.fill(ClothingColor,special_flags=BLEND_MULT)
-				body = pygame.image.load(config.AssetPath+"Player/Overworld/Body/Walk"+dire+str(frame)+".png").convert_alpha()
+				body = pygame.image.load(config.AssetPath+"Player/Overworld/Body/Type"+str(ClothingType)+"/Walk"+dire+str(frame)+".png").convert_alpha()
+				hair = pygame.image.load(config.AssetPath+"Player/Overworld/Hair/Type"+str(HairType)+"/Walk"+dire+str(frame)+".png").convert_alpha()
+				hair.fill(HairColor,special_flags=BLEND_MULT)
 				temp.blit(clothes,(0,0))
 				temp.blit(body,(0,0))
 				temp.blit(hair,(0,0))
@@ -103,19 +129,19 @@ class NPC(player.Player):
 		animations["Idle"][2].addFrame(AnimationFrame(animations["Run"][2].getSprite(),.1,None,0))
 		animations["Idle"][3].addFrame(AnimationFrame(animations["Run"][3].getSprite(),.1,None,0))
 		return animations
-	
+
 	def getShop(self):
 		return self.shop
-	
+
 	def getIcon(self):
 		return self.icon
-	
+
 	def getDialog(self):
 		return self.dialog
-	
+
 	def setTalking(self,Talking):
 		self.talking=Talking
-	
+
 	def lookAt(self,Target):
 		if abs(Target.getY()-self.gameObject.getY())>abs(Target.getX()-self.gameObject.getX()):
 			if Target.getY()>self.gameObject.getY():
@@ -127,7 +153,7 @@ class NPC(player.Player):
 				self.setDirection(1)
 			else:
 				self.setDirection(3)
-	
+
 	def update(self,tick,moveCheck):
 		if self.wander and self.talking==False:
 			if self.wanderCount <=0:
@@ -157,41 +183,72 @@ class NPC(player.Player):
 
 ## A NPC that can battle, usually party members.
 class BattleNPC(player.Player):
-	
+
 	## Constructor
 	def __init__(self,Name,Job,ClothingType,ClothingColor,HairType,HairColor):
 		self.name = Name
 		self.job = Job
 		self.state = 0
 		self.direction = 0
-		
+
 		self.inventory = Inventory()
-		
+
 		#For saving:
 		self.clothingType=ClothingType
 		self.clothingColor=ClothingColor
 		self.hairType=HairType
 		self.hairColor=HairColor
-		
+
 		self.icon=None
-		
+
 		mask = pygame.mask.Mask((17,25))
 		for x in range(6,11):
 			for y in range(19,25):
 				mask.set_at((x,y),1)
-		
+
 		animations = self.constructAnimations(ClothingType,ClothingColor,HairType,HairColor,False)
 		self.graphicObject = GraphicObject(animations,parent=self)
 		self.gameObject = GameObject([0,0],{"Idle":mask},60,self.graphicObject,"Player",parent=self)
-		
+
 		animations = self.constructBattleAnimations(False)
 		hitbox = [pygame.rect.Rect([16,7,28,61]),pygame.rect.Rect([7,8,28,60])]
 		self.battleGraphicObject = BattleGraphicObject(animations,[10,145],20,weapon=self.getInventory().getArm1())
 		self.battleObject = BattleObject(self.battleGraphicObject,hitbox,10,self.name,self.getInventory().getArm1(),level=1,exp=15,**self.job.getStartStats())
-	
+
 	## Returns if this is the player.
 	def isPlayer(self):
 		return False
+
+## Special Non-Player Character.
+#
+#  Like an NPC, but rather than looking like a regular character,
+#  their animations are loaded from a file.
+class sNPC(NPC):
+	def __init__(self,Name,Id,Pos,Dialog,AnimeXML,Icon=None,Wander=True,Shop=None,State="Idle",Direction=0):
+		self.name=Name
+		self.ID = Id
+		self.icon=Icon
+		self.dialog=Dialog
+		self.wander=Wander
+		self.wanderCount=0.0
+
+		self.talking=False
+		if Shop != None:
+			self.shop = []
+			for item in Shop:
+				self.shop.append(ItemFactory.createItem(item))
+		else:
+			self.shop=Shop
+
+
+		mask = pygame.mask.Mask((17,25))
+		for x in range(6,11):
+			for y in range(19,25):
+				mask.set_at((x,y),1)
+
+		animations = {"Idle":[loadAnimation(AnimeXML,"IdleN"),loadAnimation(AnimeXML,"IdleE"),loadAnimation(AnimeXML,"IdleS"),loadAnimation(AnimeXML,"IdleW")],"Run":[loadAnimation(AnimeXML,"RunN"),loadAnimation(AnimeXML,"RunE"),loadAnimation(AnimeXML,"RunS"),loadAnimation(AnimeXML,"RunW")]}
+		self.graphicObject = GraphicObject(animations,[0.1,0.25],State,Direction)
+		self.gameObject = GameObject([Pos[0],Pos[1]],{"Idle":mask},30,self.graphicObject,Id)
 
 class Inventory(object):
 	def __init__(self):
@@ -201,31 +258,31 @@ class Inventory(object):
 		self.body=None
 		self.legs=None
 		self.boot=None
-	
+
 	## Returns what is equipped on the player's head.
 	def getHead(self):
 		return self.head
-	
+
 	## Returns what weapon is equipped.
 	def getArm1(self):
 		return self.arm1
-	
+
 	## Returns what shield is equipped.
 	def getArm2(self):
 		return self.arm2
-	
+
 	## Returns what is equipped on the player's body.
 	def getBody(self):
 		return self.body
-	
+
 	## Returns what is equipped on the player's legs.
 	def getLegs(self):
 		return self.legs
-	
+
 	## Returns what is equipped on the player's body.
 	def getBoot(self):
 		return self.boot
-	
+
 	def equip(self,item):
 		if item.getSlot()=="Head":
 			if self.head==None:
@@ -267,7 +324,7 @@ class Inventory(object):
 				self.boot.equip()
 				self.boot=item
 				self.boot.equip()
-	
+
 	def unequip(self,item):
 		if item.getSlot()=="Head":
 			if self.head==None:

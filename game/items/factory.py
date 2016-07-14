@@ -1,15 +1,16 @@
 from game.items.item import *
 from game.items.potion import *
 from game.items.equipment import *
+from game.items.brewing import *
 import errors
 
 class ItemFactory(object):
 	items = {}
-	
+
 	@staticmethod
 	def addItem(item,factory):
 		ItemFactory.items[item] = factory
-	
+
 	@staticmethod
 	def createItem(item,*args,**kwargs):
 		if item not in ItemFactory.items:
@@ -20,6 +21,6 @@ class ItemFactory(object):
 				else:
 					ItemFactory.items[item] = eval(item)
 			except NameError:
-				errors.getLogger().error("Undefined item: "+item)
+				errors.error("Undefined item: "+item)
 				return None
 		return ItemFactory.items[item](*args,**kwargs)

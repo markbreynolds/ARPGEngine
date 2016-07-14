@@ -21,6 +21,7 @@
 		<Id>"Rope"<Id>
 	</GameObject>
 	<Trigger>
+		<Id>"Lever2Flip"</Id>
 		<Type>"Action"</Type>
 		<Area>[150,10,20,20]</Area>
 		<Effect>"State Toggle"</Effect>
@@ -28,15 +29,25 @@
 			<PrimaryState>"Up"</PrimaryState>
 			<SecondaryState>"Down"</SecondaryState>
 	</Trigger>
+#	<Trigger>
+#		<Id>"Battle"</Id>
+#		<Type>"Action"</Type>
+#		<Area>[150,10,20,20]</Area>
+#		<Effect>"Battle"</Effect>
+#			<Enemies>["GreenSlime","GreenSlime"]</Enemies>
+#			<BG>"Backgrounds/Battle/TestArea/Test"</BG>
+#			<AutoReset>true</AutoReset>
+#	</Trigger>
 	<Trigger>
+		<Id>"ItemGive"</Id>
 		<Type>"Action"</Type>
 		<Area>[150,10,20,20]</Area>
-		<Effect>"Battle"</Effect>
-			<Enemies>["GreenSlime","GreenSlime"]</Enemies>
-			<BG>"Backgrounds/Battle/TestArea/Test"</BG>
+		<Effect>"Item"</Effect>
+			<Item>["Test",50]</Item>
 			<AutoReset>true</AutoReset>
 	</Trigger>
 	<Trigger>
+		<Id>"Lever1Flip"</Id>
 		<Type>"Action"</Type>
 		<Area>[50,10,20,20]</Area>
 		<Effect>"State Toggle"</Effect>
@@ -45,6 +56,7 @@
 			<SecondaryState>"Down"</SecondaryState>
 	</Trigger>
 	<Trigger>
+		<Id>"GateOpen"</Id>
 		<Type>"Action"</Type>
 		<Area>[50,10,20,20]</Area>
 		<Effect>"State Toggle"</Effect>
@@ -53,6 +65,7 @@
 			<SecondaryState>"Open"</SecondaryState>
 	</Trigger>
 	<Trigger>
+		<Id>"toNextRoom"</Id>
 		<Type>"Position"</Type>
 		<Area>[109,8,34,8]</Area>
 		<Effect>"Area Change"</Effect>
@@ -61,6 +74,7 @@
 			<PlayerPos>[119,215]</PlayerPos>
 	</Trigger>
 	<Trigger>
+		<Id>"toVillage"</Id>
 		<Type>"Action"</Type>
 		<Area>[255,180,25,15]</Area>
 		<Effect>"Area Change"</Effect>
@@ -103,6 +117,7 @@
 		</GraphicObject>
 	</GameObject>
 	<Trigger>
+		<Id>"LeftTorch"</Id>
 		<Type>"Action"</Type>
 		<Area>[0,100,20,20]</Area>
 		<Effect>"State Toggle"</Effect>
@@ -111,6 +126,7 @@
 			<SecondaryState>"On"</SecondaryState>
 	</Trigger>
 	<Trigger>
+		<Id>"RightTorch"</Id>
 		<Type>"Action"</Type>
 		<Area>[300,100,20,20]</Area>
 		<Effect>"State Toggle"</Effect>
@@ -119,6 +135,7 @@
 			<SecondaryState>"On"</SecondaryState>
 	</Trigger>
 	<Trigger>
+		<Id>"LeverRFlip"</Id>
 		<Type>"Action"</Type>
 		<Area>[300,100,20,20]</Area>
 		<Effect>"State Toggle"</Effect>
@@ -127,6 +144,7 @@
 			<SecondaryState>"Down"</SecondaryState>
 	</Trigger>
 	<Trigger>
+		<Id>"LeverLFlip"</Id>
 		<Type>"Action"</Type>
 		<Area>[0,100,20,20]</Area>
 		<Effect>"State Toggle"</Effect>
@@ -135,6 +153,7 @@
 			<SecondaryState>"Down"</SecondaryState>
 	</Trigger>
 	<Trigger>
+		<Id>"toLastRoom"</Id>
 		<Type>"Position"</Type>
 		<Area>[109,228,32,12]</Area>
 		<Effect>"Area Change"</Effect>
@@ -143,6 +162,7 @@
 			<PlayerPos>[119,14]</PlayerPos>
 	</Trigger>
 	<Trigger>
+		<Id>"GateOpen"</Id>
 		<Effect>"SBSC"</Effect>
 		<NeededStates>["leftTorch","rightTorch"]</NeededStates>
 		<State>"On"</State>
@@ -150,6 +170,7 @@
 		<NewState>"Open"</NewState>
 	</Trigger>
 	<Trigger>
+		<Id>"toNextRoom"</Id>
 		<Type>"Position"</Type>
 		<Area>[177,8,32,8]</Area>
 		<Effect>"Area Change"</Effect>
@@ -202,6 +223,7 @@
 		</GraphicObject>
 	</GameObject>
 	<Trigger>
+		<Id>"LightSwitchDown"</Id>
 		<Type>"Position"</Type>
 		<Area>[250,183,11,14]</Area>
 		<Effect>"State Set"</Effect>
@@ -209,6 +231,7 @@
 			<NewState>"Down"</NewState>
 	</Trigger>
 	<Trigger>
+		<Id>"LightSwitchUp"</Id>
 		<Type>"Position"</Type>
 		<Area>[250,183,11,14]</Area>
 		<Effect>"TBSC"</Effect>
@@ -217,6 +240,7 @@
 			<NewState>"Up"</NewState>
 	</Trigger>
 	<Trigger>
+		<Id>"LightPathOn"</Id>
 		<Type>"Position"</Type>
 		<Area>[250,183,11,14]</Area>
 		<Effect>"State Set"</Effect>
@@ -224,6 +248,7 @@
 			<NewState>"Light"</NewState>
 	</Trigger>
 	<Trigger>
+		<Id>"LightPathOff"</Id>
 		<Type>"Position"</Type>
 		<Area>[250,183,11,14]</Area>
 		<Effect>"TBSC"</Effect>
@@ -233,6 +258,7 @@
 	</Trigger>
 	
 	<Trigger>
+		<Id>"GateSwitchDown"</Id>
 		<Type>"Position"</Type>
 		<Area>[200,183,11,14]</Area>
 		<Effect>"State Set"</Effect>
@@ -240,6 +266,7 @@
 			<NewState>"Down"</NewState>
 	</Trigger>
 	<Trigger>
+		<Id>"GateSwitchUp"</Id>
 		<Type>"Position"</Type>
 		<Area>[200,183,11,14]</Area>
 		<Effect>"TBSC"</Effect>
@@ -248,6 +275,7 @@
 			<NewState>"Up"</NewState>
 	</Trigger>
 	<Trigger>
+		<Id>"GateUp"</Id>
 		<Type>"Position"</Type>
 		<Area>[200,183,11,14]</Area>
 		<Effect>"State Set"</Effect>
@@ -255,6 +283,7 @@
 			<NewState>"Open"</NewState>
 	</Trigger>
 	<Trigger>
+		<Id>"GateDown"</Id>
 		<Type>"Position"</Type>
 		<Area>[200,183,11,14]</Area>
 		<Effect>"TBSC"</Effect>
@@ -264,6 +293,7 @@
 	</Trigger>
 	
 	<Trigger>
+		<Id>"toLastRoom"</Id>
 		<Type>"Position"</Type>
 		<Area>[495,228,32,12]</Area>
 		<Effect>"Area Change"</Effect>
@@ -272,6 +302,7 @@
 			<PlayerPos>[185,14]</PlayerPos>
 	</Trigger>
 	<Trigger>
+		<Id>"toNextRoom"</Id>
 		<Type>"Position"</Type>
 		<Area>[461,8,32,8]</Area>
 		<Effect>"Area Change"</Effect>
@@ -322,6 +353,7 @@
 		<Id>"Gate"</Id>
 	</GameObject>
 	<Trigger>
+		<Id>"GateOpen"</Id>
 		<Type>"Object Position"</Type>
 		<Area>[129,142,10,10]</Area>
 		<AutoReset>false</AutoReset>
@@ -330,6 +362,7 @@
 			<NewState>"Open"</NewState>
 	</Trigger>
 	<Trigger>
+		<Id>"toLastRoom"</Id>
 		<Type>"Position"</Type>
 		<Area>[109,228,32,12]</Area>
 		<Effect>"Area Change"</Effect>
@@ -338,6 +371,7 @@
 			<PlayerPos>[473,14]</PlayerPos>
 	</Trigger>
 	<Trigger>
+		<Id>"toNextRoom"</Id>
 		<Type>"Position"</Type>
 		<Area>[177,8,34,8]</Area>
 		<Effect>"Area Change"</Effect>

@@ -49,3 +49,36 @@ def fadeBlackTrans(screen,oldScreen,newScreen,fadeTime,pauseTime):
 			pygame.display.update()
 		else:
 			trans = False
+
+def fadeToColor(screen,oldScreen,color,fadeTime):
+	time = 0
+	trans = True
+	clock = pygame.time.Clock()
+	
+	while trans:
+		tick = clock.tick()/1000.0
+		if time < fadeTime:
+			screen.blit(oldScreen,[0,0])
+			screen.fill([color[0],color[1],color[2],(255*(time/fadeTime))])
+			time+=tick
+			screen.update()
+			pygame.display.update()
+		else:
+			trans = False
+
+def fadeFromColor(screen,newScreen,color,fadeTime):
+	time = 0
+	trans = True
+	clock = pygame.time.Clock()
+	
+	while trans:
+		tick = clock.tick()/1000.0
+		if time < fadeTime:
+			screen.fill(color)
+			newScreen.set_alpha((255*(time/fadeTime)))
+			screen.blit(newScreen,[0,0])
+			time+=tick
+			screen.update()
+			pygame.display.update()
+		else:
+			trans = False

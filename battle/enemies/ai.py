@@ -2,7 +2,7 @@ import random
 
 ## Base class for all %AI.
 class AI(object):
-	
+
 	## Constructor
 	#  @param senseRange Defines the area in which the %AI is aware of other entities
 	#  @param reactionTime How long it takes before the %AI updates its state.
@@ -15,24 +15,24 @@ class AI(object):
 		self.reactionTime = reactionTime
 		self.time = 0
 		self.target = None
-	
+
 	## Returns the entity the %AI is currently targeting.
 	def getTarget(self):
 		return self.target
-	
+
 	## Returns the %AI's external state
 	def getExtState(self):
 		return self.extState
-	
+
 	## Returns the %AI's internal state
 	def getIntState(self):
 		return self.intState
-	
+
 	## Triggers an internal state change.
 	#  @param state The new state the %AI will assume.
 	def trigger(self,state):
 		self.intState = state
-	
+
 	## Reacts to sensed objects and changes internal state.
 	#
 	#  This should be overridden by each different %AI.
@@ -40,14 +40,14 @@ class AI(object):
 	#  @param xPos The centered X position of the parent of this %AI.
 	def react(self,sensedObjects,xPos):
 		pass
-	
+
 	## Applies internal state externally to parent.
 	#
 	#  This should be overridden by each different %AI.
 	#  @param parent The parent object to this %AI.
 	def act(self,parent):
 		pass
-	
+
 	## Returns a list of objects that the %AI can sense
 	#
 	#  Should not be overridden without good reason. This way all %AIs sense things the same way.
@@ -59,7 +59,7 @@ class AI(object):
 			if abs(object.getCX()-xPos) <= self.senseRange:
 				ret.append(object)
 		return ret
-	
+
 	## Update the %AI's internals
 	#
 	#  Should not be overriden without good reason. This way all %AIs work the same general way.
@@ -78,7 +78,7 @@ class AI(object):
 #
 #  A weak %AI that does not try very hard to attack the player.
 class FeebleAI(AI):
-	
+
 	## Constructor
 	#  @param atkRange From how far away the entity can attack.
 	#  @param senseRange Defines the area in which the %AI is aware of other entities
@@ -86,7 +86,7 @@ class FeebleAI(AI):
 	def __init__(self,atkRange,senseRange,reactionTime=1.0):
 		AI.__init__(self,senseRange,reactionTime)
 		self.atkRange = atkRange
-	
+
 	## See AI.react()
 	def react(self,sensedObjects,xPos):
 		if self.intState == "Idle":
@@ -110,7 +110,7 @@ class FeebleAI(AI):
 			else:
 				self.intState = "Idle"
 				self.extState = "Idle"
-	
+
 	## See AI.act()
 	def act(self,parent):
 		if self.intState=="Idle":
@@ -118,13 +118,13 @@ class FeebleAI(AI):
 				parent.setDirection(random.randint(0,1))
 			if parent.getState() != self.extState:
 				parent.setState(self.extState)
-				
+
 		elif self.intState=="Attack":
 			if self.target.getCX()-parent.getCX()<0:
 				parent.setDirection(0)
 			else:
 				parent.setDirection(1)
-			
+
 			if self.extState=="Attack":
 				parent.attack()
 			else:
@@ -135,7 +135,7 @@ class FeebleAI(AI):
 #
 #  A weak %AI that does not try very hard to attack enemies.
 class WandererAI(AI):
-	
+
 	## Constructor
 	#  @param atkRange From how far away the entity can attack.
 	#  @param senseRange Defines the area in which the %AI is aware of other entities
@@ -143,7 +143,7 @@ class WandererAI(AI):
 	def __init__(self,atkRange,senseRange,reactionTime=0.5):
 		AI.__init__(self,senseRange,reactionTime)
 		self.atkRange = atkRange
-	
+
 	## See AI.react()
 	def react(self,sensedObjects,xPos):
 		if self.intState == "Idle":
@@ -167,7 +167,7 @@ class WandererAI(AI):
 			else:
 				self.intState = "Idle"
 				self.extState = "Idle"
-	
+
 	## See AI.act()
 	def act(self,parent):
 		if self.intState=="Idle":
@@ -175,13 +175,13 @@ class WandererAI(AI):
 				parent.setDirection(random.randint(0,1))
 			if parent.getState() != self.extState:
 				parent.setState(self.extState)
-				
+
 		elif self.intState=="Attack":
 			if self.target.getCX()-parent.getCX()<0:
 				parent.setDirection(0)
 			else:
 				parent.setDirection(1)
-			
+
 			if self.extState=="Attack":
 				parent.attack()
 			else:

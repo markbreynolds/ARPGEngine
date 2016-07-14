@@ -14,7 +14,7 @@ import config
 #  ground, baseNameC for "close objects", and baseNameF for "far objects". The "far objects" image will move slower
 #  than the "close objects" image to give a sense of depth.
 class BattleGraphicsEngine(object):
-	
+
 	## Constructor.
 	#  @param screen A reference to either a Pygame screen object or a scaledScreen.
 	#  @param isScaled If @c screen is a scaledScreen, then should be @c True.
@@ -23,32 +23,32 @@ class BattleGraphicsEngine(object):
 	def __init__(self,screen,isScaled,bg,farBG=False):
 		self.screen=screen
 		self.isScaled=isScaled
-		
+
 		self.allies=[]
 		self.enemies=[]
 		self.projectiles=[]
-		
+
 		self.focus=None
 		self.x=0
 		self.y=0
-		
+
 		self.dmgVals = []
 		self.hud = gui.BattleHUD([])
-		
+
 		self.bgG=pygame.image.load(config.AssetPath+bg+"G.png").convert()	#Ground
 		self.bgC=pygame.image.load(config.AssetPath+bg+"C.png").convert_alpha()	#Close Objects
 		if farBG:
 			self.bgF=pygame.image.load(config.AssetPath+"Backgrounds/Battle/"+bg+"F.png").convert()	#Far Objects
 		else:
 			self.bgF=None
-		
+
 		self.compEffect=None
 		self.compValue=[0,0,0]
-	
+
 	## Returns the Battle HUD.
 	def getHud(self):
 		return self.hud
-	
+
 	## Adds a damage value to be displayed on the screen.
 	#
 	#  The last number represents the age of the text
@@ -59,15 +59,15 @@ class BattleGraphicsEngine(object):
 			if abs(dmg[1][1]-pos[1])<=10 and abs(dmg[1][0]-pos[0])<=15:
 				pos[0]+=20
 		self.dmgVals.append([val,pos,color,0])
-	
+
 	## Returns the x component of the camera's position.
 	def getX(self):
 		return int(self.x)
-	
+
 	## Returns the y component of the camera's position.
 	def getY(self):
 		return int(self.y)
-	
+
 	## Sets the x component of the camera's position.
 	def setX(self,x):
 		if x>0:
@@ -76,27 +76,27 @@ class BattleGraphicsEngine(object):
 			x=-640
 		else:
 			self.x = x
-	
+
 	## Sets the y component of the camera's position.
 	def setY(self,y):
 		self.y = y
-	
+
 	## Adds a character to the player's team.
 	def addAlly(self,ally):
 		self.allies.append(ally)
-	
+
 	## Adds a character to the enemies's team.
 	def addEnemy(self,player):
 		self.enemies.append(player)
-	
+
 	## Adds a projectile to the projectile list.
 	def addProjectile(self,projectile):
 		self.projectiles.append(projectile)
-	
+
 	## Sets what the camera will follow and focus on.
 	def setFocus(self,focus):
 		self.focus=focus
-	
+
 	## Moves the camera along the x axis by @c amt.
 	def scrollX(self,amt):
 		if self.x-amt>0:
@@ -105,7 +105,7 @@ class BattleGraphicsEngine(object):
 			self.x=-640
 		else:
 			self.x-=amt
-	
+
 	## Uses composite effects to create visual effects.
 	#
 	#  May not work?
@@ -116,19 +116,19 @@ class BattleGraphicsEngine(object):
 			return
 		else:
 			self.screen.fill(self.compValue,special_flags=self.compEffect)
-	
+
 	## Remove an actor from the enemies team.
 	def removeEnemy(self,enemy):
 		self.enemies.remove(enemy)
-	
+
 	## Remove an actor from the players team.
 	def removeAlly(self,ally):
 		self.allies.remove(ally)
-	
+
 	## Remove a projectile from the projectiles list.
 	def removeProjectile(self,proj):
 		self.projectiles.remove(proj)
-	
+
 	## Displays the victory screen.
 	def victoryScreen(self,clock,Input,players,gold,exp,items):
 		temp = 0
@@ -151,7 +151,7 @@ class BattleGraphicsEngine(object):
 			width = (26*(len(items)))+8
 		if gold > 1000 and len(items)<=2:
 			width+=5
-		
+
 		while showing:
 			tick = clock.tick()/1000.0
 			blink -= tick
@@ -268,13 +268,13 @@ class BattleGraphicsEngine(object):
 			if self.isScaled:
 				self.screen.update()
 			pygame.display.flip()
-	
+
 	## Updates objects
 	#
 	#  Updates all objects, draws them in the correct order and in the correct place in relation to the camera.
 	#  @param tick Time that has passed since last clock cycle, in seconds.
 	def update(self,tick):
-		
+
 		if self.focus != None:
 			if self.focus.getX()+self.getX()+(self.focus.getWidth()/2)<158:
 				self.scrollX(-self.focus.getSpd()*10*tick)
@@ -285,37 +285,37 @@ class BattleGraphicsEngine(object):
 
 			#Perfect tracking with no scroll:
 			self.setX(160-(self.focus.getWidth()/2) - self.focus.getX())
-		
+
 		if self.bgF!=None:
 			self.screen.blit(self.bgF,[int(self.x*.5),int(self.y*.5)])
 		#self.screen.blit(self.bgC,[int(self.x*.9),int(self.y*.9)])
 		self.screen.blit(self.bgC,[self.getX(),self.getY()])
 		self.screen.blit(self.bgG,[self.getX(),self.getY()+180])
-		
+
 		for enemy in self.enemies:
 			enemy.update(tick)
 			if enemy!=self.focus:
 				enemy.draw(self.screen,self.getX(),self.getY())
-		
+
 		for ally in self.allies:
 			ally.update(tick)
 			if ally!=self.focus:
 				ally.draw(self.screen,self.getX(),self.getY())
 				#self.screen.blit(ally.getSprite(),[ally.getX()+self.getX(),ally.getY()+self.getY()])
-		
+
 		for projectile in self.projectiles:
 			projectile.update(tick)
 			if projectile!=self.focus:
 				projectile.draw(self.screen,self.getX(),self.getY())
-		
+
 		self.composite()
-		
+
 		if self.focus!=None:
 			self.focus.draw(self.screen,self.getX(),self.getY())
 			#self.screen.blit(self.focus.getSprite(),[self.focus.getX()+self.getX(),self.focus.getY()+self.getY()])
-		
+
 		self.hud.draw(self.screen)
-		
+
 		for dmg in self.dmgVals:
 			if dmg[3]<=1:
 				self.screen.blit(gui.font.render(str(dmg[0]),True,dmg[2]),(dmg[1][0]+self.getX(),int(dmg[1][1])+self.getY()))
@@ -327,14 +327,14 @@ class BattleGraphicsEngine(object):
 			dmg[3]+=tick
 			if dmg[3]>4:
 				self.dmgVals.remove(dmg)
-		
+
 		if self.isScaled:
 			self.screen.update()
 		pygame.display.flip()
 
 ## An object that contains graphics information for battles.
 class BattleGraphicObject(object):
-	
+
 	## Constructor.
 	#  @param animations A dictionary of Animation objects.
 	#  @param pos Starting position of object.
@@ -345,37 +345,42 @@ class BattleGraphicObject(object):
 	def __init__(self,animations,pos,spd,direction=1,state="Idle",weapon=None):
 		self.animations=animations
 		self.currentAnimation = self.animations[state][direction]
-		
+
 		#for i in range(len(self.animations)):
 		#	self.animations[i].append([])
 		#	for k in range(len(self.animations[i][0])):
 		#		self.animations[i][0][k]=pygame.transform.smoothscale(self.animations[i][0][k],(100,100))
 		#		self.animations[i][1].append(pygame.transform.flip(pygame.transform.smoothscale(self.animations[i][0][k],(100,100)),True,False))
-		
+
 		self.x=pos[0]
 		self.y=pos[1]
 		self.direction=direction
 		self.spd=spd
-		
+
 		self.state=state
 		self.weapon = weapon
 		self.genWeaponAnim()
 		if self.weapon != None:
 			self.weaponAnimCurr = self.weaponAnim[state][direction]
-	
+
 	def getCopy(self):
 		return BattleGraphicObject(self.animations,self.getPos(),self.spd,self.direction,self.state,self.weapon)
-	
+
 	## Generates the weapons animation data.
 	def genWeaponAnim(self):
 		if self.weapon != None:
 			self.weaponAnim = {}
 			self.weaponAnim["Idle"] = [Animation(None,None,"IdleW"),loadAnimation(self.weapon.getAnimationPath(),"Idle")]
 			self.weaponAnim["Run"] = [Animation(None,None,"WalkW"),loadAnimation(self.weapon.getAnimationPath(),"Walk")]
-			for i in range(1,self.weapon.getStyle().getChain()+1):
-				self.weaponAnim["Attack"+str(i)] = [Animation(None,None,"AttackW"+str(i)),loadAnimation(self.weapon.getAnimationPath(),"Attack"+str(i))]
+
+			if self.weapon.getStyle().getType() == "Chain":
+				for i in range(1,self.weapon.getStyle().getChain()+1):
+					self.weaponAnim["Attack"+str(i)] = [Animation(None,None,"AttackW"+str(i)),loadAnimation(self.weapon.getAnimationPath(),"Attack"+str(i))]
+			elif self.weapon.getStyle().getType() == "Charge":
+				self.weaponAnim["Attack"] = [Animation(None,None,"AttackW"),loadAnimation(self.weapon.getAnimationPath(),"Attack")]
+
 			self.weaponAnim["Death"] = [Animation(None,None,"DeathW"),loadAnimation(self.weapon.getAnimationPath(),"Death")]
-			
+
 			#Mirroring
 			temp = self.weaponAnim["Idle"][1].getFrames()
 			i=0
@@ -389,57 +394,65 @@ class BattleGraphicObject(object):
 				self.weaponAnim["Run"][0].addFrame(AnimationFrame(pygame.transform.flip(frame.getImage(),True,False),frame.getDelay(),None,i))
 				i+=1
 			#Attack
-			for i in range(1,self.weapon.getStyle().getChain()+1):
-				temp = self.weaponAnim["Attack"+str(i)][1].getFrames()
-				j = 0
+			if self.weapon.getStyle().getType() == "Chain":
+				for i in range(1,self.weapon.getStyle().getChain()+1):
+					temp = self.weaponAnim["Attack"+str(i)][1].getFrames()
+					j = 0
+					for frame in temp:
+						self.weaponAnim["Attack"+str(i)][0].addFrame(AnimationFrame(pygame.transform.flip(frame.getImage(),True,False),frame.getDelay(),None,j))
+						j+=1
+			elif self.weapon.getStyle().getType() == "Charge":
+				temp = self.weaponAnim["Attack"][1].getFrames()
+				i=0
 				for frame in temp:
-					self.weaponAnim["Attack"+str(i)][0].addFrame(AnimationFrame(pygame.transform.flip(frame.getImage(),True,False),frame.getDelay(),None,j))
-					j+=1
+					self.weaponAnim["Attack"][0].addFrame(AnimationFrame(pygame.transform.flip(frame.getImage(),True,False),frame.getDelay(),None,i))
+					i+=1
 			#Death
 			temp = self.weaponAnim["Death"][1].getFrames()
 			i=0
 			for frame in temp:
 				self.weaponAnim["Death"][0].addFrame(AnimationFrame(pygame.transform.flip(frame.getImage(),True,False),frame.getDelay(),None,i))
 				i+=1
-			
+
 			#Linking
-			for i in range(1,self.weapon.getStyle().getChain()+1):
-				self.weaponAnim["Attack"+str(i)][0].setNextAnimation(self.weaponAnim["Idle"][0])
-				self.weaponAnim["Attack"+str(i)][1].setNextAnimation(self.weaponAnim["Idle"][1])
-	
+			if self.weapon.getStyle().getType() == "Chain":
+				for i in range(1,self.weapon.getStyle().getChain()+1):
+					self.weaponAnim["Attack"+str(i)][0].setNextAnimation(self.weaponAnim["Idle"][0])
+					self.weaponAnim["Attack"+str(i)][1].setNextAnimation(self.weaponAnim["Idle"][1])
+
 	## Sets object's position.
 	def setPos(self,pos):
 		self.x=pos[0]
 		self.y=pos[1]
-	
+
 	## Returns the width of the current sprite.
 	def getWidth(self):
 		return self.getSprite().get_width()
-	
+
 	## Returns the height of the current sprite.
 	def getHeight(self):
 		return self.getSprite().get_height()
-	
+
 	## Returns the x component of position.
 	def getX(self):
 		return self.x
-	
+
 	## Returns the y component of position.
 	def getY(self):
 		return self.y
-	
+
 	## Returns a list containing [x,y].
 	def getPos(self):
 		return [self.x,self.y]
-	
+
 	## Sets the x component of position.
 	def setX(self,x):
 		self.x=x
-	
+
 	## Sets the y component of position.
 	def setY(self,y):
 		self.y=y
-	
+
 	## Sets the current state of this object.
 	def setState(self,state):
 		self.state=state
@@ -448,7 +461,7 @@ class BattleGraphicObject(object):
 		if self.weapon != None:
 			self.weaponAnimCurr.reset()
 			self.weaponAnimCurr = self.weaponAnim[self.state][self.direction]
-	
+
 	## Sets the direction this object is facing.
 	def setDirection(self,direction):
 		self.direction=direction
@@ -459,53 +472,53 @@ class BattleGraphicObject(object):
 			self.weaponAnimCurr.reset()
 			self.weaponAnimCurr = self.weaponAnim[self.state][self.direction]
 		#self.currentAnimation.setFrame(f)
-	
+
 	## Sets the Frame of this object.
 	def setFrame(self,frame):
 		self.currentAnimation.setFrame(frame)
 		if self.weapon != None:
 			self.weaponAnimCurr.setFrame(frame)
-	
+
 	## Returns the current state for this object.
 	def getState(self):
 		return self.state
-	
+
 	## Returns the current animation's name.
 	#
 	#  Useful for finding out the state of the animation.
 	def getCurrAnimName(self):
 		return self.currentAnimation.getName()
-	
+
 	## Returns the current sprite for this object.
 	def getSprite(self):
 		return self.currentAnimation.getSprite()
-	
+
 	## Returns the current frame in the current animation this object is at.
 	def getFrame(self):
 		return self.currentAnimation.getFrame()
-	
+
 	## Returns the movement speed for this object.
 	def getSpd(self):
 		return self.spd
-	
+
 	def setWeapon(self,weapon):
 		self.weapon=weapon
 		self.genWeaponAnim()
 		if self.weapon != None:
 			self.weaponAnimCurr = self.weaponAnim[self.state][self.direction]
-	
+
 	## Updates animations, to be used when equipping a new weapon.
 	def updateAnimations(self,animations):
 		self.animations=animations
 		self.currentAnimation = self.animations[self.state][self.direction]
-	
+
 	## Updates this object.
 	#  @param tick Time that has passed since last clock cycle, in seconds.
 	def update(self,tick):
 		self.currentAnimation = self.currentAnimation.update(tick)
 		if self.weapon != None:
 			self.weaponAnimCurr = self.weaponAnimCurr.update(tick)
-	
+
 	## Draws this object to @c screen.
 	#
 	#  @param screen A reference to either a Pygame screen object or a scaledScreen.

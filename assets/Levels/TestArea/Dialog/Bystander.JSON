@@ -1,0 +1,19 @@
+{
+"Text": ["I overheard two of the fort guards talking about a supply caravan that got attacked by monsters."],
+"Options": ["Monsters?"],
+"Links": [
+	{
+		"Text":["It's pretty scary, the caravaners said it looked like a giant blue blob. With all the recent attacks, I hear the captain is looking for volunteers to protect future caravans."],
+		"Options": ["Maybe I should volunteer!","Good luck with that!"],
+		"Links": [
+		{
+			"Text": ["Well, if you want to find the captain, he is usually in the fort headquarters on the <b>northern end</b> of the town."],
+			"Options": ["I'll go find him now."],
+			"Actions": ["Quest Add Levels/TestArea/Quests.xml Caravan1"],
+			"Links": [null]
+		},
+		null
+		]
+	}
+	]
+}

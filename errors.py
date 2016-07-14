@@ -6,52 +6,75 @@
 
 import logging
 
-## This variable ensures that only one ErrorEngine is created.
-errorEngineSingleton = None
-
 CRITICAL = logging.CRITICAL
 ERROR = logging.ERROR
 WARNING = logging.WARNING
 INFO = logging.INFO
 DEBUG = logging.DEBUG
 
-def getLogger():
-	return errorEngineSingleton.getLogger()
+Logger = None
+Screen = None
 
-## This class handles all errors and warnings.
+def genericError(msg,*args,**kwargs):
+	print "Generic Error: "+msg
+
+critical = genericError
+error = genericError
+warning = genericError
+info = genericError
+debug = genericError
+
+
+## Initialization code
 #
-#  It will also ensure that all errors and warnings logged to their appropiate destinations.
-class ErrorEngine(object):
-	
-	## Constructor
-	#
-	#  @param screen A reference to the screen to be used in case of a fatal error.
-	def __init__(self,screen,level=logging.WARNING,logToFile=False,quiet=True):
-		global errorEngineSingleton
-		if errorEngineSingleton != None:
-			errorEngineSingleton.error("Attempted to create more than one ErrorEngine.",level="Warning")
-			return errorEngineSingleton
-		errorEngineSingleton = self
-		self.screen = screen
-		self.logger = logging.getLogger("GameLogger")
-		if not quiet:
-			self.sHandler=logging.StreamHandler()
-			self.sHandler.setFormatter(logging.Formatter(fmt="File '%(filename)s', line %(lineno)s, in %(funcName)s\n  %(levelname)s: %(msg)s"))
-			self.logger.addHandler(self.sHandler)
-		else:
-			self.sHandler = logging.NullHandler()
-		if logToFile:
-			self.fHandler=logging.StreamHandler()
-			self.fHandler.setFormatter(logging.Formatter(fmt="%(levelname)s: %(msg)s at %(filename)s:%(funcName)s: %(lineno)s"))
-			self.logger.addHandler(self.fHandler)
-		else:
-			self.fHandler = logging.NullHandler()
-		self.logger.setLevel(level)
-	
-	def getLogger(self):
-		return self.logger
-	
-#	def criticalGameError(self):
+#  @param screen A reference to the screen to be used in case of a fatal error.
+def init(screen,level=logging.WARNING,logToFile=False,quiet=True):
+	global Screen, Logger
+	Screen = screen
+	Logger = logging.getLogger("GameLogger")
+	if not quiet:
+		sHandler=logging.StreamHandler()
+		#sHandler.setFormatter(logging.Formatter(fmt="File '%(filename)s', line %(lineno)s, in %(funcName)s\n  %(levelname)s: %(msg)s"))
+		sHandler.setFormatter(logging.Formatter(fmt="%(levelname)s: %(msg)s"))
+		Logger.addHandler(sHandler)
+	else:
+		sHandler = logging.NullHandler()
+	if logToFile:
+		fHandler=logging.StreamHandler()
+		#fHandler.setFormatter(logging.Formatter(fmt="File '%(filename)s', line %(lineno)s, in %(funcName)s\n  %(levelname)s: %(msg)s"))
+		fHandler.setFormatter(logging.Formatter(fmt="%(levelname)s: %(msg)s"))
+		Logger.addHandler(fHandler)
+	else:
+		fHandler = logging.NullHandler()
+	Logger.setLevel(level)
+
+	global critical, error, warning, info, debug
+	critical = Logger.critical
+	error = Logger.error
+	warning = Logger.warning
+	info = Logger.info
+	debug = Logger.debug
+
+#def getLogger():
+#	return Logger
+
+#	def criticalGameError():
 #		while True:
 #			self.screen.fill((0,0,0))
-			
+
+"""
+def critical(msg,*args,**kwargs):
+	Logger.critical(msg,*args,**kwargs)
+
+def error(msg,*args,**kwargs):
+	Logger.error(msg,*args,**kwargs)
+
+def warning(msg,*args,**kwargs):
+	Logger.warning(msg,*args,**kwargs)
+
+def info(msg,*args,**kwargs):
+	Logger.info(msg,*args,**kwargs)
+
+def debug(msg,*args,**kwargs):
+	Logger.debug(msg,*args,**kwargs)
+"""

@@ -2,7 +2,7 @@
 "Text": ["Would you like to spend the night? It only costs 25","gold."],
 "Options": ["Yes","No"],
 "Links": [
-	"$SLEEP",
+	"@SLEEP",
 	null
 ]
 }

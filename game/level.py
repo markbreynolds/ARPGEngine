@@ -13,29 +13,29 @@ from game.engine import GameObject, Pushable
 from game.mask import maskFromSurface
 from graphics.animation import Animation, AnimationFrame, loadAnimation
 from graphics.overworld import GraphicObject
-from game.npc import NPC,Dialog
+from game.npc import NPC,sNPC,Dialog
 from game import triggers
 import errors
 import config
 
 def loadXML(xmlPath,level,GameEngine,GraphicEngine):
-	errors.getLogger().info("Loading level: "+level)
+	errors.info("Loading level: "+level)
 
 	try:
 		filer = open(xmlPath,"r")
 	except IOError:
-		errors.getLogger().critical("Level file not found.")
+		errors.critical("Level file not found.")
 		exit()
-	
+
 	lines = filer.readlines()
-	
+
 	started=False
-	
+
 	levelData = []
-	
+
 	for i in range(len(lines)):	#Strip Tabs and New Lines
 		lines[i] = lines[i].lstrip("\t").rstrip("\n")
-	
+
 	for line in lines:	#Extract Level Data
 		if not started:
 			if line == "<Level "+level+">":
@@ -44,7 +44,7 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 		if line == "</Level>":
 			break
 		levelData.append(line)
-	
+
 	Name=None
 	BG = None
 	Mask=None
@@ -55,7 +55,7 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 	GameObjects = []
 	NPCs = []
 	i = 0
-	
+
 	while i < len(levelData):	#Isolate Triggers, NPCs, and GameObjects (GraphicObjects must be dealt with immediately because they are contained within GameObjects)
 		temp = {}
 		if levelData[i].startswith("<LevelName>"):
@@ -97,10 +97,10 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 						break
 					levelData.insert(i+j,line)
 					j+=1
-					
+
 				#for line in levelData:
 				#	print line
-				
+
 			temp["graphicObject"] = {}
 			n=1
 			while levelData[i+n]!="</GameObject>":
@@ -168,19 +168,24 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 						break
 					levelData.insert(i+j,line)
 					j+=1
-				
+
 			n=1
 			while levelData[i+n]!="</NPC>":
 				key = levelData[i+n][1:levelData[i+n].find(">")]
 				value = levelData[i+n][levelData[i+n].find(">")+1:levelData[i+n].find("<",levelData[i+n].find(">"))]
 				if key == "Dialog":
-					dialog=open(config.AssetPath+value,"r")
-					lines=dialog.readlines()
-					dialog=""
-					for line in lines:
-						dialog+=line.rstrip("\n")
-					dialog.replace("\t","")
-					temp["Dialog"]=json.loads(dialog)
+					if value != "null":
+						dialog=open(config.AssetPath+value,"r")
+						lines=dialog.readlines()
+						dialog=""
+						for line in lines:
+							dialog+=line.rstrip("\n")
+						dialog.replace("\t","")
+						temp["Dialog"]=json.loads(dialog)
+					else:
+						temp["Dialog"]=None
+				elif key == "AnimeXML":
+					temp["AnimeXML"]=value
 				elif key == "Icon":
 					if value=="null":
 						temp["Icon"]=None
@@ -193,26 +198,26 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 			i+=1
 		i+=1
 	if Name == None:
-		errors.getLogger().warning("Level has no Name attribute.")
+		errors.warning("Level has no Name attribute.")
 		Name = "Unknown Area"
 	GraphicEngine.setLevelName(Name)
 	if BG == None:
-		errors.getLogger().error("Level has no Background attribute.")
+		errors.error("Level has no Background attribute.")
 	else:
 		try:
 			GraphicEngine.setBackground(pygame.image.load(config.AssetPath+BG).convert())
 		except pygame.error:
-			errors.getLogger().error("Unable to load level background.")
+			errors.error("Unable to load level background.")
 	if Mask == None:
-		errors.getLogger().info("Level has no Mask attribute.")
+		errors.info("Level has no Mask attribute.")
 	else:
 		try:
 			GameEngine.setMask(pygame.image.load(config.AssetPath+Mask).convert())
 		except pygame.error:
-			errors.getLogger().error("Unable to load level mask.")
+			errors.error("Unable to load level mask.")
 	if Enemies != None and len(Enemies)>0:
 		if BattleBG == None or len(BattleBG) == 0:
-			errors.getLogger().info("No battle backgrounds specified for this level.")
+			errors.info("No battle backgrounds specified for this level.")
 		else:
 #			for i in xrange(len(BattleBG)):
 #				for j in range(len(BattleBG[i])):
@@ -220,16 +225,17 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 #						try:
 #							BattleBG[i][j] = pygame.image.load(BattleBG[i][j]).convert_alpha()
 #						except pygame.error:
-#							errors.getLogger().error("Unable to load battle background for this level.")
+#							errors.error("Unable to load battle background for this level.")
 #							BattleBG[i][j] = None
 			GameEngine.setBattleBG(BattleBG)
 			GameEngine.setEnemies(Enemies)
 	else:
 		GameEngine.setBattleBG([])
 		GameEngine.setEnemies([])
-	
+
 	for trigger in Triggers:
-		errors.getLogger().debug("Adding "+trigger["Effect"]+" trigger.")
+		errors.debug("Adding "+trigger["Id"]+" trigger.")
+		# Should probably be using a factory...
 		if "Area" in trigger.keys() and trigger["Area"]!=None:
 			trigger["Area"] = pygame.rect.Rect(trigger["Area"])
 		if trigger["Effect"]=="State Set":
@@ -250,12 +256,15 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 		elif trigger["Effect"]=="Battle":
 			del trigger["Effect"]
 			GameEngine.addTrigger(triggers.BattleTrigger(**trigger))
+		elif trigger["Effect"]=="Item":
+			del trigger["Effect"]
+			GameEngine.addTrigger(triggers.ItemTrigger(**trigger))
 		else:
-			errors.getLogger().error("Undefined Trigger Effect")
-	
+			errors.error("Undefined Trigger Effect")
+
 	for obj in GameObjects:
-		
-		errors.getLogger().debug("Adding "+obj["id"])
+
+		errors.debug("Adding "+obj["id"])
 		#print str(obj["id"])+":"
 		#for key in obj.keys():
 		#	print key,obj[key]
@@ -268,7 +277,7 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 		#		else:
 		#			print key+str(i),None
 		#print "\n"
-		
+
 		for state in obj["mask"].keys():
 			if obj["mask"][state] != None:
 				img = pygame.image.load(config.AssetPath+str(obj["mask"][state]))
@@ -285,7 +294,7 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 					i+=1
 					obj["graphicObject"]["animations"][state][3].addFrame(AnimationFrame(pygame.transform.flip(frame.image,True,False),frame.delay,None,i-1))
 			del obj["graphicObject"]["flipX"]
-		
+
 		#Animation Linker:
 		for state in obj["graphicObject"]["animations"].keys():
 			for dire in range(0,4):
@@ -297,8 +306,8 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 				if obj["graphicObject"]["animations"][nextState.rstrip("NESW")][dire].getName()==nextState:
 					obj["graphicObject"]["animations"][state][dire].nextAnimation = obj["graphicObject"]["animations"][nextState.rstrip("NESW")][dire]
 				else:
-					errors.getLogger().error("Animation linker is officially insufficient. \n(It was already unofficially insufficient, but now things just got worse)\n((Troublemaker: "+state+" -> "+nextState+"))")
-		
+					errors.error("Animation linker is officially insufficient. \n(It was already unofficially insufficient, but now things just got worse)\n((Troublemaker: "+state+" -> "+nextState+"))")
+
 		obj["graphicObject"] = GraphicObject(**obj["graphicObject"])
 		GraphicEngine.addObject(obj["graphicObject"])
 		if obj.keys().__contains__("pushable") and obj["pushable"]==True:
@@ -308,33 +317,65 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 			GameEngine.addActor(Pushable(**obj))
 		else:
 			GameEngine.addActor(GameObject(**obj))
-	
+
 	for npc in NPCs:
-		errors.getLogger().debug("Adding NPC: "+npc["Name"])
-		if npc["Icon"]!=None:
-			npc["Icon"]=pygame.image.load(npc["Icon"]).convert()
-		npc["Dialog"]=loadDialog(npc["Dialog"])
-		#print npc["Dialog"]
-		temp = NPC(**npc)
-		GameEngine.addNPC(temp)
-		GraphicEngine.addObject(temp.getGraphicObject())
-	
+		if "AnimeXML" in npc:
+			errors.debug("Adding sNPC: "+npc["Id"])
+			if npc["Icon"]!=None:
+				npc["Icon"]=pygame.image.load(npc["Icon"]).convert()
+			npc["Dialog"]=loadDialog(npc["Dialog"])
+			#print npc["Dialog"]
+			temp = sNPC(**npc)
+			GameEngine.addNPC(temp)
+			GraphicEngine.addObject(temp.getGraphicObject())
+		else:
+			errors.debug("Adding NPC: "+npc["Id"])
+			if npc["Icon"]!=None:
+				npc["Icon"]=pygame.image.load(npc["Icon"]).convert()
+			npc["Dialog"]=loadDialog(npc["Dialog"])
+			#print npc["Dialog"]
+			temp = NPC(**npc)
+			GameEngine.addNPC(temp)
+			GraphicEngine.addObject(temp.getGraphicObject())
+
 	filer.close()
-	
+
 
 def loadDialog(data):
 	if data==None:
 		return None
-	elif data=="$BUY":
-		return "$BUY"
-	elif data=="$SELL":
-		return "$SELL"
-	elif data=="$SLEEP":
-		return "$SLEEP"
+	elif type(data)==unicode:
+		if data=="@BUY":
+			return "@BUY"
+		elif data=="@SELL":
+			return "@SELL"
+		elif data=="@SLEEP":
+			return "@SLEEP"
+		elif data.startswith("@TRIGGER"):
+			return str(data)
+		elif data.startswith("@QUEST"):
+			return str(data)
 	links=[]
 	for link in data["Links"]:
 		links.append(loadDialog(link))
-	dialog=Dialog(data["Text"],data["Options"],links)
+	if "Branches" in data:
+		branches=[]
+		for branch in data["Branches"]:
+			branches.append(loadDialog(branch))
+		if len(branches)==0:
+			branches = None
+	else:
+		branches = None
+	if "PreBranch" in data:
+		prebranch=loadDialog(data["PreBranch"])
+	else:
+		prebranch=None
+	args={"Text":data["Text"],"Options":data["Options"],"Links":links,"Branches":branches,"PreBranch":prebranch}
+	if "Actions" in data:
+		args["Actions"] = data["Actions"]
+	if "PreAction" in data:
+		args["PreAction"] = data["PreAction"]
+	dialog=Dialog(**args)
 	return dialog
 
 def load(xmlpath,level,GameEngine,GraphicEngine):

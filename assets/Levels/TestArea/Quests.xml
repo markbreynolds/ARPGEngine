@@ -1,0 +1,45 @@
+<Quest Tutorial>
+	<Name>"Kevin's Dilemma"</Name>
+	<Type>"Side"</Type>
+	<Rewards>["Gold 100"]</Rewards>
+	<Objective Kevin>
+		<Name>"Talk to Kevin."</Name>
+		<Description>["Use the action button to talk","to Kevin."]</Description>
+	</Objective>
+	<Objective Inn>
+		<Name>"Find the Inn."</Name>
+		<Description>["Find the Inn so Kevin can take","a nap."]</Description>
+	</Objective>
+</Quest>
+
+<Quest Brewery>
+	<Name>"The Witch's Brew"</Name>
+	<Type>"Side"</Type>
+	<Rewards>["Gold 100"]</Rewards>
+	<Objective Potion>
+		<Name>"Get an Empty Potion."</Name>
+		<Description>["Get an Empty Potion and bring","it back to the witch."]</Description>
+	</Objective>
+	<Objective Slime>
+		<Name>"Collect Slime."</Name>
+		<Description>["Collect 5 Green Slime Balls and","bring them back to the witch."]</Description>
+	</Objective>
+	<Objective Frog>
+		<Name>"Collect Foxglove."</Name>
+		<Description>["Collect 3 Foxglove Flowers and bring","them back to the witch."]</Description>
+	</Objective>
+</Quest>
+
+<Quest Caravan1>
+	<Name>"Mystery Monster"</Name>
+	<Type>"Main"</Type>
+	<RewardHidden>true</RewardHidden>
+	<Objective Captain>
+		<Name>"Talk to the Captain."</Name>
+		<Description>["Talk to the fort captain to","find out more about what","happened to the supply caravan."]</Description>
+	</Objective>
+	<Objective Inspect>
+		<Name>"Inspect the well."</Name>
+		<Description>["Inspect the well to look for clues","about the monster attack"]</Description>
+	</Objective>
+</Quest>

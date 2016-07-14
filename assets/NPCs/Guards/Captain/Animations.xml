@@ -1,0 +1,91 @@
+<Animation IdleN>
+	<delay>.25</delay>
+	<Frame>
+		<image>NPCs/Guards/BasicGuard/WalkN1.png</image>
+	</Frame>
+</Animation>
+
+<Animation IdleE>
+	<delay>.25</delay>
+	<Frame>
+		<image>NPCs/Guards/BasicGuard/WalkE1.png</image>
+	</Frame>
+</Animation>
+
+<Animation IdleS>
+	<delay>.25</delay>
+	<Frame>
+		<image>NPCs/Guards/BasicGuard/WalkS1.png</image>
+	</Frame>
+</Animation>
+
+<Animation IdleW>
+	<delay>.25</delay>
+	<Frame>
+		<image>NPCs/Guards/BasicGuard/WalkW1.png</image>
+	</Frame>
+</Animation>
+
+<Animation RunN>
+	<delay>.25</delay>
+	<Frame>
+		<image>NPCs/Guards/BasicGuard/WalkN1.png</image>
+	</Frame>
+	<Frame>
+		<image>NPCs/Guards/BasicGuard/WalkN2.png</image>
+	</Frame>
+	<Frame>
+		<image>NPCs/Guards/BasicGuard/WalkN1.png</image>
+	</Frame>
+	<Frame>
+		<image>NPCs/Guards/BasicGuard/WalkN3.png</image>
+	</Frame>
+</Animation>
+
+<Animation RunE>
+	<delay>.25</delay>
+	<Frame>
+		<image>NPCs/Guards/BasicGuard/WalkE1.png</image>
+	</Frame>
+	<Frame>
+		<image>NPCs/Guards/BasicGuard/WalkE2.png</image>
+	</Frame>
+	<Frame>
+		<image>NPCs/Guards/BasicGuard/WalkE1.png</image>
+	</Frame>
+	<Frame>
+		<image>NPCs/Guards/BasicGuard/WalkE3.png</image>
+	</Frame>
+</Animation>
+
+<Animation RunS>
+	<delay>.25</delay>
+	<Frame>
+		<image>NPCs/Guards/BasicGuard/WalkS1.png</image>
+	</Frame>
+	<Frame>
+		<image>NPCs/Guards/BasicGuard/WalkS2.png</image>
+	</Frame>
+	<Frame>
+		<image>NPCs/Guards/BasicGuard/WalkS1.png</image>
+	</Frame>
+	<Frame>
+		<image>NPCs/Guards/BasicGuard/WalkS3.png</image>
+	</Frame>
+</Animation>
+
+<Animation RunW>
+	<delay>.25</delay>
+	<Frame>
+		<image>NPCs/Guards/BasicGuard/WalkW1.png</image>
+	</Frame>
+	<Frame>
+		<image>NPCs/Guards/BasicGuard/WalkW2.png</image>
+	</Frame>
+	<Frame>
+		<image>NPCs/Guards/BasicGuard/WalkW1.png</image>
+	</Frame>
+	<Frame>
+		<image>NPCs/Guards/BasicGuard/WalkW3.png</image>
+	</Frame>
+</Animation>

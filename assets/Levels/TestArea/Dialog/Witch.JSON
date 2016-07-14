@@ -1,0 +1,66 @@
+{
+  "Text": ["Excuse me young traveller, but could you help an","old woman with something?"],
+  "Options": ["Sure thing!","I'm busy sorry."],
+  "PreAction": "Branch QuestStart Levels/TestArea/Quests.xml Brewery",
+  "Links": [
+  {
+    "Text": ["I need an <b>Empty Potion</b>, do you think you can manage that?"],
+    "Options": ["Sure!","Nope that's too much to ask for..."],
+    "Actions": ["Quest Add Levels/TestArea/Quests.xml Brewery",null],
+    "Links": [null,null]
+  }, null],
+  "PreBranch" :
+  {
+    "Text": ["Did you get me an <b>Empty Potion</b> yet?"],
+    "Options": ["Yes!","Not yet."],
+    "PreAction": "Branch QuestObjComplete Levels/TestArea/Quests.xml Brewery Potion",
+    "Actions": ["Branch Item 1 EmptyPotion",null],
+    "Links" : [
+      {
+        "Text": ["You must have dropped it on the way here. Go get me another one!"],
+        "Options": ["Okay."],
+        "Links": [null]
+      },
+      null],
+      "Branches": [
+        {
+          "Text": ["Excellent! Now I will need <b>5 Green Slime Balls</b>. Let's see if you can do it faster this time."],
+          "Options": ["Sure, I guess."],
+          "Actions": ["Quest Complete Levels/TestArea/Quests.xml Brewery Potion"],
+          "Links": [null]
+        },
+      null],
+      "PreBranch": {
+        "Text": ["Did you get me <b>5 Green Slime Balls</b> yet?"],
+        "Options": ["Yep!","Still working on it..."],
+        "Actions": ["Branch Item 5 GreenSlimeball",null],
+        "Links": [
+          {
+            "Text": ["It must have slipt through your fingers. Heh heh. Slime does have a way of doing that."],
+            "Options": [],
+            "Links": [null]
+          },
+        null],
+        "Branches":[
+          {
+            "Text": ["Perfect! Now I need <b>3 Foxglove Flowers</b>. You can find some near woods outside the city, if you can get passed the guards that is. They won't let anyone out of the town saying its dangerous because of all of the monsters."],
+            "Options":["How am I supposed to get out then?","What do you even need all of this for?","Okay."],
+            "Actions": ["Quest Complete Levels/TestArea/Quests.xml Brewery Slime","Quest Complete Levels/TestArea/Quests.xml Brewery Slime","Quest Complete Levels/TestArea/Quests.xml Brewery Slime"],
+            "Links": [
+              {
+                "Text": ["I trust you can find a way..."],
+                "Options": ["Okay."],
+                "Links": [null]
+              },
+              {
+                "Text": ["You will see soon enough..."],
+                "Options": ["Okay."],
+                "Links": [null]
+              },
+              null
+            ]
+          },
+        null]
+      }
+  }
+}
