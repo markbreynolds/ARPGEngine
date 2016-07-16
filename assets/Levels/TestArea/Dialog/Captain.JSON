@@ -1,0 +1,19 @@
+{
+  "Text":["I'm sorry but I'm very busy right now. Please come back later if you need to talk to me."],
+  "Options":["Okay."],
+  "PreAction":"Branch QuestObjComplete Levels/TestArea/Quests.xml Caravan1 Fort",
+  "Links":[null],
+  "PreBranch":
+  {
+    "Text":["I'm sorry but I'm very busy right now. Please come back later if you need to talk to me."],
+    "Options":["I hear you are looking for recruits.","Okay."],
+    "Links":[
+      {
+        "Text":["Yes I am. As you have no doubt heard, there has been an alarming number of monster sightings recently. The most recent report suggests someone was getting water from the <b>well</b> and a slime came up instead. I need you to go check that out for me."],
+        "Options":["I'll get right on that","Actually I'm busy right now."],
+        "Links": [null,null],
+        "Actions": ["Quest Complete Levels/TestArea/Quests.xml Caravan1 Captain",null]
+      }, null
+    ]
+  }
+}

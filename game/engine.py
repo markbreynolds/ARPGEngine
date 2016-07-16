@@ -4,11 +4,21 @@ import pygame
 import random
 
 import config
+import errors
 from mask import maskFromSurface
 from items.factory import ItemFactory
 from quests import loadQuest
 
+## The engine that haddles all of the overworld game logic.
 class GameEngine(object):
+
+	## Constructor
+	#
+	#  @param loadNewAreaFunc The function called to load a new area.
+	#  @param battleFunc The function called to start a battle.
+	#  @param player The main player of the game. Set to @c None if on the main menu.
+	#  @param level The current level.
+	#  @param physics Whether or not collisions should be detected.
 	def __init__(self,loadNewAreaFunc,battleFunc,player=None,level=None,physics=True):
 		if level != None:
 			self.loadLevel(level)
@@ -130,6 +140,9 @@ class GameEngine(object):
 					if not trigger.trigger():
 						item = ItemFactory.createItem(*trigger.getItem())
 						self.player.getParent().getInventory().addItem(item)
+				elif trigger.getEffect() == "Quest Complete":
+					if not trigger.trigger():
+						self.questAction(["Complete",trigger.getQuestXML(),trigger.getQuest(),trigger.getObjective()])
 				else:
 					trigger.trigger(self.player,self.actors)
 
@@ -139,7 +152,7 @@ class GameEngine(object):
 	#  + ADD - Adds a new quest to the
 	#  + COMPLETE - Completes the current objective for this quest.
 	#
-	#  @param action A list containing the quest action, the quest XML path, and the quest XML name.
+	#  @param action A list containing the quest action, the quest XML path, the quest XML name, and sometimes an objective.
 	def questAction(self,action):
 		if action[0] == "Add":
 			if action[1]+":"+action[2] not in self.player.getParent().getQuests():
@@ -160,7 +173,7 @@ class GameEngine(object):
 							item = ItemFactory.createItem(val.split(" "))
 							self.player.getParent().getInventory().addItem(item)
 		else:
-			errors.Warning("Unknown Quest Action: "+action[0])
+			errors.warning("Unknown Quest Action: "+action[0])
 
 	## Checks if the branch conditions are true.
 	#
@@ -183,8 +196,11 @@ class GameEngine(object):
 				else:
 					return False
 		else:
-			errors.Warning("Unknown Branch: "+branch[0])
+			errors.warning("Unknown Branch: "+branch[0])
 
+	## Causes an actor to attempt to interact with whatever is around it.
+	#
+	#  @param interactor The actor attempting to interact.
 	def interact(self,interactor):
 		for trigger in self.triggers:
 			if trigger.getType() == "Action":
@@ -199,6 +215,9 @@ class GameEngine(object):
 						if not trigger.trigger():
 							item = ItemFactory.createItem(*trigger.getItem())
 							self.player.getParent().getInventory().addItem(item)
+					elif trigger.getEffect() == "Quest Complete":
+						if not trigger.trigger():
+							self.questAction(["Complete",trigger.getQuestXML(),trigger.getQuest(),trigger.getObjective()])
 					else:
 						trigger.trigger(interactor,self.actors)
 		if interactor.getID()=="Player":
@@ -228,6 +247,13 @@ class GameEngine(object):
 							interactor.setPushing(actor)
 							interactor.setPushDir([False,True])
 
+	## Checks if the actor can move in the directions it is trying to move in.
+	#
+	#  @param mask A bit mask of the actor.
+	#  @param pos The position of the actor.
+	#  @param vel The velocity of the actor.
+	#
+	#  @return Returns a list of booleans representing if that direction can be moved in.
 	def moveCheck(self,mask,pos,vel):
 		ret = [True,True]
 		if mask!=None:
@@ -256,6 +282,13 @@ class GameEngine(object):
 								ret[1]=False
 		return ret
 
+	## Starts a battle.
+	#
+	#  @param enemies A list of enemies to be fought or a list of enemies to be
+	#    randomly choosen from.
+	#  @param bg The background image.
+	#  @param bgFar The far background image if there is one.
+	#  @param Random Whether or not the enemies should be randomly chosen.
 	def battle(self,enemies,bg,bgFar,Random):
 		if Random:
 			num = random.choice([1,1,2,2,2,3])
@@ -264,12 +297,19 @@ class GameEngine(object):
 				enemies.append(random.choice(self.enemies))
 		self.battleFunc(enemies,bg,bgFar)
 
+	## Causes the party to sleep.
+	#
+	#  Recovers HP and cures status ailements. Costs 25 gold.
 	def sleep(self):
 		self.player.getParent().sleep()
 		for char in self.player.getParent().getParty():
 			char.sleep()
 		self.player.getParent().getInventory().spendGold(25)
 
+	## Updates the game engine.
+	#
+	#  @param tick How much time has passed since the last update() call was made.
+	#    In milliseconds.
 	def update(self,tick):
 		if len(self.enemies)>0 and config.Difficulty > 0:
 			if self.timeToBattle >= 0:
@@ -304,6 +344,9 @@ class GameEngine(object):
 						if not trigger.trigger():
 							item = ItemFactory.createItem(*trigger.getItem())
 							self.player.getParent().getInventory().addItem(item)
+					elif trigger.getEffect() == "Quest Complete":
+						if not trigger.trigger():
+							self.questAction(["Complete",trigger.getQuestXML(),trigger.getQuest(),trigger.getObjective()])
 					else:
 						trigger.trigger(self.player,self.actors)
 			elif trigger.getType() == "Object Position":

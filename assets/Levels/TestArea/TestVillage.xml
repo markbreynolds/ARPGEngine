@@ -164,6 +164,15 @@
 			<PlayerPos>[257,178]</PlayerPos>
 	</Trigger>
 	<Trigger>
+		<Id>"toFort"</Id>
+		<Type>"Position"</Type>
+		<Area>[551,118,34,12]</Area>
+		<Effect>"Area Change"</Effect>
+			<NewArea>"VillageFort"</NewArea>
+			<NewAreaXML>"Levels/TestArea/TestVillage.xml"</NewAreaXML>
+			<PlayerPos>[152,210]</PlayerPos>
+	</Trigger>
+	<Trigger>
 		<Id>"OpenNGate"</Id>
 		<Type>"Dialog"</Type>
 		<Area>[657,315,44,50]</Area>
@@ -244,5 +253,79 @@
 			<NewArea>"VillageMain"</NewArea>
 			<NewAreaXML>"Levels/TestArea/TestVillage.xml"</NewAreaXML>
 			<PlayerPos>[211,254]</PlayerPos>
+	</Trigger>
+</Level>
+
+<Level VillageFort>
+	<LevelName>Test Village Fort</LevelName>
+	<Background>Backgrounds/Overworld/TestArea/FortInt.png</Background>
+	<Mask>Backgrounds/Overworld/TestArea/Masks/FortInt.png</Mask>
+	<NPC>
+		<Name>"Captain"</Name>
+		<Id>"Captain"</Id>
+		<Pos>[109,81]</Pos>
+		<Dialog>Levels/TestArea/Dialog/Captain.JSON</Dialog>
+		<AnimeXML>NPCs/Guards/Captain/Animations.xml</AnimeXML>
+		<Icon>null</Icon>
+		<Wander>false</Wander>
+		<Direction>2</Direction>
+	</NPC>
+	<NPC>
+		<Name>"Guard"</Name>
+		<Id>"Guard1"</Id>
+		<Pos>[137,210]</Pos>
+		<Dialog>null</Dialog>
+		<AnimeXML>NPCs/Guards/BasicGuard/Animations.xml</AnimeXML>
+		<Icon>null</Icon>
+		<Wander>false</Wander>
+		<Direction>0</Direction>
+	</NPC>
+	<NPC>
+		<Name>"Guard"</Name>
+		<Id>"Guard2"</Id>
+		<Pos>[167,210]</Pos>
+		<Dialog>null</Dialog>
+		<AnimeXML>NPCs/Guards/BasicGuard/Animations.xml</AnimeXML>
+		<Icon>null</Icon>
+		<Wander>false</Wander>
+		<Direction>0</Direction>
+	</NPC>
+	<NPC>
+		<Name>"Guard"</Name>
+		<Id>"Guard3"</Id>
+		<Pos>[176,100]</Pos>
+		<Dialog>null</Dialog>
+		<AnimeXML>NPCs/Guards/BasicGuard/Animations.xml</AnimeXML>
+		<Icon>null</Icon>
+		<Wander>true</Wander>
+		<Direction>0</Direction>
+	</NPC>
+	<NPC>
+		<Name>"Guard"</Name>
+		<Id>"Guard4"</Id>
+		<Pos>[109,101]</Pos>
+		<Dialog>null</Dialog>
+		<AnimeXML>NPCs/Guards/BasicGuard/Animations.xml</AnimeXML>
+		<Icon>null</Icon>
+		<Wander>false</Wander>
+		<Direction>0</Direction>
+	</NPC>
+	<Trigger>
+		<Id>"toVillage"</Id>
+		<Type>"Position"</Type>
+		<Area>[150,230,20,10]</Area>
+		<Effect>"Area Change"</Effect>
+			<NewArea>"VillageMain"</NewArea>
+			<NewAreaXML>"Levels/TestArea/TestVillage.xml"</NewAreaXML>
+			<PlayerPos>[560,130]</PlayerPos>
+	</Trigger>
+	<Trigger>
+		<Id>"fortQuest"</Id>
+		<Type>"Position"</Type>
+		<Area>[150,190,20,30]</Area>
+		<Effect>"Quest Complete"</Effect>
+			<QuestXML>"Levels/TestArea/Quests.xml"</QuestXML>
+			<Quest>"Caravan1"</Quest>
+			<Objective>"Fort"</Objective>
 	</Trigger>
 </Level>

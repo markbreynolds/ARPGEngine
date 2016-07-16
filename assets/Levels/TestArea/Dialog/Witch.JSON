@@ -24,7 +24,7 @@
       null],
       "Branches": [
         {
-          "Text": ["Excellent! Now I will need <b>5 Green Slime Balls</b>. Let's see if you can do it faster this time."],
+          "Text": ["Excellent! Now I will need <b>5 Green Slime Balls</b>. Heh heh. Let's see if you can do it faster this time."],
           "Options": ["Sure, I guess."],
           "Actions": ["Quest Complete Levels/TestArea/Quests.xml Brewery Potion"],
           "Links": [null]
@@ -43,7 +43,7 @@
         null],
         "Branches":[
           {
-            "Text": ["Perfect! Now I need <b>3 Foxglove Flowers</b>. You can find some near woods outside the city, if you can get passed the guards that is. They won't let anyone out of the town saying its dangerous because of all of the monsters."],
+            "Text": ["Perfect! Now I need <b>3 Foxglove Flowers</b>. You can find some near woods outside the city, if you can get passed the guards that is. They won't let anyone out of the town because of all of the monsters."],
             "Options":["How am I supposed to get out then?","What do you even need all of this for?","Okay."],
             "Actions": ["Quest Complete Levels/TestArea/Quests.xml Brewery Slime","Quest Complete Levels/TestArea/Quests.xml Brewery Slime","Quest Complete Levels/TestArea/Quests.xml Brewery Slime"],
             "Links": [

@@ -20,7 +20,7 @@
 #      - package documentation for Battle - Done
 #      - All new code must be documented as it is written.
 #
-##<b>Goals: V 0.2.0a</b>
+##Goals: V 0.2.0a - Done
 #    -# Player - Done
 #      - Class Objects - Done
 #    -# GUI - Done
@@ -35,17 +35,20 @@
 #    -# Battle - Done
 #      - Battle Transistion - Done
 #      - Abilities - Done
-#    -# <b>Dialog</b>
+#    -# Dialog - Done
 #      - Quest Add - Done
 #      - Quest Update - Done
-#      - <b>Quest Check Branches</b>
-#      - <b>Item Check Branches</b>
+#      - Quest Check Branches - Done
+#      - Item Check Branches - Done
+#      - Predialog Branch - Done
 #    -# <b>Quests</b>
 #      - Talk-To Quests - Done
-#      - <b>Fetch Quests</b>
-#	   - <b>Go-To Quests</b>
-#    -# <b>Documentation</b>
-#      - <b>package documentation for Game Engine</b>
+#      - Fetch Quests - Done
+#	   - Go-To Quests - Done
+#    -# Triggers - Done
+#      - Quest Complete Trigger - Done
+#    -# Documentation - Done
+#      - package documentation for Game Engine - Done
 #      - package documentation for Player - Done
 #      - All new code must be documented as it is written.
 #
@@ -63,16 +66,17 @@
 #      - <b>Passive Skills</b>
 #      - <b>Warrior Skills (5)</b>
 #    -# <b>Battle</b>
-#      - <b>Bow Weapon Style</b>
+#      - Bow Weapon Style - Done
 #    -# <b>Items</b>
 #      - <b>Swords</b>
+#      - <b>Bows</b>
 #    -# <b>A Dungeon</b>
 #      - <b>Chests</b>
 #      - <b>Puzzles</b>
 #      - <b>Cutscene</b>
 #      - <b>Boss</b>
 #    -# <b>Documentation</b>
-#      - <b>package documentation for GUI</b>
+#      - <b>package documentation for Game Object, Pushables, etc.</b>
 #      - <b>package documentation for NPC</b>
 #      - All new code must be documented as it is written.
 #
@@ -86,7 +90,6 @@
 #    -# <b>Battle</b>
 #      - <b>Staff Weapon Style</b>
 #    -# <b>Items</b>
-#      - <b>Bows</b>
 #      - <b>Staffs</b>
 #    -# <b>Compositor</b>
 #      - <b>VFX</b>
@@ -103,6 +106,7 @@
 #      - <b>GraphicsEngine?</b>
 #      - <b>BattleGraphicsEngine?</b>
 #    -# <b>Documentation</b>
+#      - <b>package documentation for GUI</b>
 #      - <b>package documentation for Items</b>
 #      - <b>package documentation for Level</b>
 #      - All new code must be documented as it is written.

@@ -34,12 +34,16 @@
 	<Name>"Mystery Monster"</Name>
 	<Type>"Main"</Type>
 	<RewardHidden>true</RewardHidden>
+	<Objective Fort>
+		<Name>"Find the Fort."</Name>
+		<Description>["Find the Fort. It is rumored to","be on the north side of town."]</Description>
+	</Objective>
 	<Objective Captain>
 		<Name>"Talk to the Captain."</Name>
 		<Description>["Talk to the fort captain to","find out more about what","happened to the supply caravan."]</Description>
 	</Objective>
 	<Objective Inspect>
 		<Name>"Inspect the well."</Name>
-		<Description>["Inspect the well to look for clues","about the monster attack"]</Description>
+		<Description>["Inspect the well to look for","clues about the monster sighting"]</Description>
 	</Objective>
 </Quest>

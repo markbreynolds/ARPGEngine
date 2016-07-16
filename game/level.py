@@ -259,6 +259,9 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 		elif trigger["Effect"]=="Item":
 			del trigger["Effect"]
 			GameEngine.addTrigger(triggers.ItemTrigger(**trigger))
+		elif trigger["Effect"]=="Quest Complete":
+			del trigger["Effect"]
+			GameEngine.addTrigger(triggers.QuestCompleteTrigger(**trigger))
 		else:
 			errors.error("Undefined Trigger Effect")
 

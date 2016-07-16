@@ -19,10 +19,10 @@ import errors
 #
 #  Contains basic information about triggers.
 class Trigger(object):
-	
+
 	## Constructor.
 	#
-	#  @param Type 
+	#  @param Type
 	#  @parblock
 	#  Category or type of trigger:
 	#
@@ -36,7 +36,7 @@ class Trigger(object):
 	#  @endparblock
 	#  @param Area The area that this trigger can be activated from.
 	#  @param Id This trigger's ID.
-	#  @param Effect 
+	#  @param Effect
 	#  @parblock
 	#  What this trigger does.
 	#
@@ -57,7 +57,7 @@ class Trigger(object):
 	#    Effects:
 	#    + "Cutscene"
 	#  @endparblock
-	
+
 	def __init__(self,Type,Area,Id,Effect,AutoReset=False,Active=True):
 		self.cat = Type		#Category
 		self.area = Area
@@ -66,33 +66,33 @@ class Trigger(object):
 		self.triggered = False
 		self.autoReset = AutoReset
 		self.active = Active
-	
+
 	## Resets the current trigger.
 	#
 	#  Only needed if @c AutoReset is set to @c False.
 	def reset(self):
 		self.triggered = False
-	
+
 	## Returns the type of this trigger.
 	def getType(self):
 		return self.cat
-	
+
 	## Returns the area in which this trigger can be activated.
 	def getArea(self):
 		return self.area
-	
+
 	## Returns the effect of this trigger.
 	def getEffect(self):
 		return self.effect
-	
+
 	## Returns whether or not this trigger auto resets.
 	def getAutoReset(self):
 		return self.autoReset
-	
+
 	## Returns this trigger's ID.
 	def getID(self):
 		return self.ID
-	
+
 	## Checks if this trigger has been triggered and if it is active.
 	#
 	#  Returns True if trigger can be triggered.
@@ -103,7 +103,7 @@ class Trigger(object):
 		if not self.active:
 			return False
 		return True
-	
+
 	## Activates this trigger.
 	#
 	#  This trigger is just the base class, it should be overwritten by any subclasses for custom triggering code.
@@ -114,7 +114,7 @@ class Trigger(object):
 		if self.triggerCheck():
 			errors.info(self.cat+" Triggered")
 			self.triggered = True
-			
+
 
 ## State Set %Trigger
 #
@@ -131,15 +131,15 @@ class StateSetTrigger(Trigger):
 		Trigger.__init__(self,Type,Area,Id,"State Set",AutoReset,Active)
 		self.target = Target
 		self.newState = NewState
-	
+
 	## Returns the target of this trigger.
 	def getTarget(self):
 		return self.target
-	
+
 	## Returns the state that @c Target will be set to for this trigger.
 	def getNewState(self):
 		return self.newState
-	
+
 	## Activates this trigger.
 	#
 	#  This changes the state of @c Target to @c NewState
@@ -170,7 +170,7 @@ class StateToggleTrigger(Trigger):
 		self.target = Target
 		self.primaryState = PrimaryState
 		self.secondaryState = SecondaryState
-	
+
 	## Activates this trigger.
 	#
 	#  This toggles the state of @c Target between @c PrimaryState and @c SecondaryState.
@@ -207,15 +207,15 @@ class AreaChangeTrigger(Trigger):
 		self.newArea = NewArea
 		self.newAreaXML = NewAreaXML
 		self.playerPos = PlayerPos
-	
+
 	## Returns the name of the new area.
 	def getNewArea(self):
 		return self.newArea
-	
+
 	## Returns the path to the XML describing the new area.
 	def getNewAreaXML(self):
 		return self.newAreaXML
-	
+
 	## Returns the position the player should start at.
 	def getPlayerPos(self):
 		return self.playerPos
@@ -223,10 +223,10 @@ class AreaChangeTrigger(Trigger):
 ## State Based State Change (SBSC) %Trigger
 #
 #  This trigger changes the state of a target based on the state of other objects in the current area.
-class SBSCTrigger(Trigger):		
+class SBSCTrigger(Trigger):
 	## Constructor.
 	#
-	#  @param NeededStates A list of actor ids which will be 
+	#  @param NeededStates A list of actor ids which will be
 	#  @param Target The target whose state will be set.
 	#  @param NewState The new state to set the target's state to.
 	#  @param AutoReset Determines whether or not this trigger must be manually reset with a call to reset().
@@ -236,13 +236,13 @@ class SBSCTrigger(Trigger):
 		self.state = State
 		self.target = Target
 		self.newState = NewState
-	
+
 	def getNeededStates(self):
 		return self.neededStates
-	
+
 	def getState(self):
 		return self.state
-	
+
 	## Activates this trigger.
 	#
 	#  This sets the state of @c Target when all objects in @c NeededStates in the @c State state.
@@ -274,7 +274,7 @@ class TBSCTrigger(Trigger):		#Time Based State Change (TBSC)
 		self.target = Target
 		self.newState = NewState
 		self.timeLeft = Time
-	
+
 	## Updates the timer.
 	#
 	#  Updates the timer and eventually causes the state change.
@@ -289,7 +289,7 @@ class TBSCTrigger(Trigger):		#Time Based State Change (TBSC)
 						Object.setState(self.newState)
 						if self.autoReset:
 							self.reset()
-	
+
 	## Activates this trigger.
 	#
 	#  Starts the timer until the state of @c Target is changed..
@@ -321,23 +321,23 @@ class BattleTrigger(Trigger):
 		self.bgFar = BGFar
 		self.enemies = Enemies
 		self.random = Random
-	
+
 	## Returns the background.
 	def getBG(self):
 		return self.bg
-	
+
 	## Returns whether or not there is a far background.
 	def getBGFar(self):
 		return self.bgFar
-	
+
 	## Returns the enemies to be fought.
 	def getEnemies(self):
 		return self.enemies
-	
+
 	## Returns whether or not the enemies should be randomized.
 	def getRandom(self):
 		return self.random
-	
+
 	## Activates this trigger.
 	def trigger(self):
 		if self.triggerCheck():
@@ -350,15 +350,48 @@ class BattleTrigger(Trigger):
 ## %Item %Trigger
 #
 #  Gives the player an item.
+#
+#  @todo Add ability to give random item?
 class ItemTrigger(Trigger):
-	def __init__(self,Type,Area,Id,Item,Random=False,AutoReset=False,Active=True):
+	def __init__(self,Type,Area,Id,Item,AutoReset=False,Active=True):
 		Trigger.__init__(self,Type,Area,Id,"Item",AutoReset,Active)
 		self.item = Item
-	
+
 	## Returns the item this trigger gives the player.
 	def getItem(self):
 		return self.item
-	
+
+	## Activates this trigger.
+	def trigger(self):
+		if self.triggerCheck():
+			self.triggered = True
+			errors.debug(self.getID()+" triggered.")
+			return False
+		else:
+			return True
+
+## %Quest %Trigger
+#
+#  Completes an objective for a quest.
+class QuestCompleteTrigger(Trigger):
+	def __init__(self,Type,Area,Id,QuestXML,Quest,Objective,AutoReset=False,Active=True):
+		Trigger.__init__(self,Type,Area,Id,"Quest Complete",AutoReset,Active)
+		self.questXML = QuestXML
+		self.quest = Quest
+		self.objective = Objective
+
+	## Returns the path to the XML containing the quest.
+	def getQuestXML(self):
+		return self.questXML
+
+	## Returns the quest the objective is in that this trigger completes..
+	def getQuest(self):
+		return self.quest
+
+	## Returns the objective this trigger completes.
+	def getObjective(self):
+		return self.objective
+
 	## Activates this trigger.
 	def trigger(self):
 		if self.triggerCheck():
