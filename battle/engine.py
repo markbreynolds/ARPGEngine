@@ -117,9 +117,10 @@ class BattleEngine(object):
 							if projectile.getPiercing():
 								projectile.addHit(enemy)
 							else:
-								self.projectiles.remove(projectile)
-								self.graphicsEngine.removeProjectile(projectile.getGraphicObject())
-								removed = True
+								if not removed:
+									self.projectiles.remove(projectile)
+									self.graphicsEngine.removeProjectile(projectile.getGraphicObject())
+									removed = True
 
 			elif projectile.getParent().isEnemy():
 				for ally in self.playerParty:
@@ -509,12 +510,15 @@ class BattleObject(object):
 				proj["pos"] = [self.x,self.graphicObject.getY()+proj["pos"][1]]
 				if self.direction == 1:
 					proj["pos"][0] += self.graphicObject.getWidth()
+				else:
+					proj["direction"] = 0
 				proj["damage"] = int(self.getAtk()*scale)		# Should this be trucated? Are decimal damages bad?
 				proj["speed"] *= scale
 				proj["dist"] *= scale
 				img = pygame.image.load(config.AssetPath+proj["graphicObject"]).convert_alpha()
 				animR = Animation(AnimationFrame(img,.5,None,"Idle"),None,"Idle")
-				proj["graphicObject"] = graphicObject({"Idle":[None,animR]},proj["pos"],proj["speed"])
+				animL = Animation(AnimationFrame(pygame.transform.flip(img,True,False),.5,None,"Idle"),None,"Idle")
+				proj["graphicObject"] = graphicObject({"Idle":[animL,animR]},proj["pos"],proj["speed"])
 				self.projectile = Projectile(**proj)
 
 	## Levels up this actor.
@@ -549,6 +553,7 @@ class BattleObject(object):
 				self.weaponRecovery = weapon.getRecoveryTime()
 				self.weaponPreStages = weapon.getStyle().getPreStages()
 				self.weaponStages = weapon.getStyle().getStages()
+			self.weaponProj = weapon.getProjectile()
 		else:
 			delay = [[.15,.25],[.15,.15,.25],[.15,.25]]
 			self.weaponReaction = .20
@@ -560,8 +565,6 @@ class BattleObject(object):
 			self.weaponDelay = []
 			for item in delay:
 				self.weaponDelay.append(sum(item))
-
-		self.weaponProj = weapon.getProjectile()
 
 		self.graphicObject.setWeapon(weapon)
 		self.graphicObject.updateAnimations(animations)
