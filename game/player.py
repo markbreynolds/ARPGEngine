@@ -25,15 +25,16 @@ from battle.engine import BattleObject
 from graphics.animation import Animation, AnimationFrame
 from graphics.overworld import GraphicObject
 from graphics.battle import BattleGraphicObject
-from battle.jobs.job import Warrior
+from battle.jobs.job import Warrior, Archer
 import config
+import errors
 #Temporary for testing inventory.
 from game.items.factory import ItemFactory
 
 HairTypes=3
 ClothingTypes=1
 Colors = [[255,0,0],[255,127,0],[255,255,0],[127,255,0],[0,255,0],[0,255,127],[0,255,255],[0,127,255],[0,0,255],[255,255,255],[127,127,127],[100,50,0]]
-Classes = ["Warrior","Archer","Mage","Unarmed"]
+Classes = ["Warrior","Archer","Mage"]
 
 ## Object that contains all of the information for the player's character.
 class Player(object):
@@ -46,9 +47,16 @@ class Player(object):
 	#  @param hairType What style of hair to use. (see Player/Overworld/Hair/Type#)
 	#  @param hairColor What color the hair should be.
 	#  @param preview Whether or not this Player is being used in the character creator. If @c True not all animations will be generated.
-	def __init__(self,name,clothingType,clothingColor,hairType,hairColor,preview=False):
+	def __init__(self,name,clothingType,clothingColor,hairType,hairColor,job="Warrior",preview=False):
 		self.name = name
-		self.job = Warrior(1)
+		if job == "Warrior":
+			self.job = Warrior(1)
+		elif job == "Archer":
+			self.job = Archer(1)
+		else:
+			errors.warning("Invalid job: "+job)
+			errors.info("Setting job to Warrior.")
+			self.job = Warrior(1)
 		self.state = 0
 		self.direction = 0
 
@@ -87,7 +95,7 @@ class Player(object):
 		animations = self.constructBattleAnimations(preview)
 		hitbox = [pygame.rect.Rect([16,7,28,61]),pygame.rect.Rect([7,8,28,60])]
 		self.battleGraphicObject = BattleGraphicObject(animations,[10,145],20,weapon=self.getInventory().getArm1())
-		self.battleObject = BattleObject(self.battleGraphicObject,hitbox,10,self.name,self.getInventory().getArm1(),level=1,exp=15,**self.job.getStartStats())
+		self.battleObject = BattleObject(self.battleGraphicObject,hitbox,10,self.name,self.getInventory().getArm1(),level=1,exp=15,job=self.job,**self.job.getStartStats())
 
 	## Constructs the overworld animations for this character.
 	#
@@ -340,6 +348,34 @@ class Player(object):
 		for frame in temp:
 			animations["Dead"][0].addFrame(AnimationFrame(pygame.transform.flip(frame.getImage(),True,False),frame.getDelay(),None,i))
 			i+=1
+
+		if self.getJob().getName()=="Warrior" and style != "Unarmed":
+			#Thrust
+			animations["Thrust"] = [Animation(None,None,"ThrustW"),Animation(None,None,"ThrustE")]
+			frameDelay = [.1,.20,.40]
+
+			for i in range(1,4):
+				temp = pygame.surface.Surface((52,70),flags=SRCALPHA)
+
+				body = pygame.image.load(config.AssetPath+"Player/Battle/"+styleName+"/Body/Type"+str(self.clothingType)+"/Thrust"+str(i)+".png").convert_alpha()
+				hair = pygame.image.load(config.AssetPath+"Player/Battle/"+styleName+"/Hair/Type"+str(self.hairType)+"/Thrust"+str(i)+".png").convert_alpha()
+				hair.fill(self.hairColor,special_flags=BLEND_MULT)
+				shirt= pygame.image.load(config.AssetPath+"Player/Battle/"+styleName+"/Shirt/Type"+str(self.clothingType)+"/Thrust"+str(i)+".png").convert_alpha()
+				shirt.fill(self.clothingColor,special_flags=BLEND_MULT)
+
+				temp.blit(shirt,(0,0))
+				temp.blit(body,(0,0))
+				temp.blit(hair,(0,0))
+				animations["Thrust"][1].addFrame(AnimationFrame(temp,frameDelay[i-1],None,i))
+
+			temp = animations["Thrust"][1].getFrames()
+			i=0
+			for frame in temp:
+				animations["Thrust"][0].addFrame(AnimationFrame(pygame.transform.flip(frame.getImage(),True,False),frame.getDelay(),None,i))
+				i+=1
+
+			animations["Thrust"][0].setNextAnimation(animations["Idle"][0])
+			animations["Thrust"][1].setNextAnimation(animations["Idle"][1])
 
 		##And linking...
 		if style == "Unarmed" or style.getType() == "Combo":

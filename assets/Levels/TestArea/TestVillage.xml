@@ -1,5 +1,5 @@
 <Level VillageMain>
-	<LevelName>Test Village</LevelName>
+	<LevelName>Kangor</LevelName>
 	<Background>Backgrounds/Overworld/TestArea/VillageMainTestPaths.png</Background>
 	<BattleBG>["Backgrounds/Battle/TestArea/TestC.png","Backgrounds/Battle/TestArea/TestG.png"]</BattleBG>
 	<Mask>Backgrounds/Overworld/TestArea/Masks/VillageMain.png</Mask>
@@ -183,7 +183,7 @@
 </Level>
 
 <Level VillageShop>
-	<LevelName>Test Village Shop</LevelName>
+	<LevelName>Kangor Shop</LevelName>
 	<NPC>
 		<Name>"Shopkeeper"</Name>
 		<Id>"Shopkeeper"</Id>
@@ -213,7 +213,7 @@
 </Level>
 
 <Level VillageInn>
-	<LevelName>Test Village Inn</LevelName>
+	<LevelName>Kangor Inn</LevelName>
 	<Background>Backgrounds/Overworld/TestArea/VillageInn.png</Background>
 	<Mask>Backgrounds/Overworld/TestArea/Masks/VillageInn.png</Mask>
 	<NPC>
@@ -246,6 +246,20 @@
 		<Id>"Counter"</Id>
 	</GameObject>
 	<Trigger>
+		<Id>"LosePotion"</Id>
+		<Type>"Dialog"</Type>
+		<Area>null</Area>
+		<Effect>"Item"</Effect>
+			<Item>["EmptyPotion",-1]</Item>
+	</Trigger>
+	<Trigger>
+		<Id>"LoseSlime"</Id>
+		<Type>"Dialog"</Type>
+		<Area>null</Area>
+		<Effect>"Item"</Effect>
+			<Item>["GreenSlimeball",-5]</Item>
+	</Trigger>
+	<Trigger>
 		<Id>"toVillage"</Id>
 		<Type>"Position"</Type>
 		<Area>[34,230,36,7]</Area>
@@ -257,7 +271,7 @@
 </Level>
 
 <Level VillageFort>
-	<LevelName>Test Village Fort</LevelName>
+	<LevelName>Kangor Fort</LevelName>
 	<Background>Backgrounds/Overworld/TestArea/FortInt.png</Background>
 	<Mask>Backgrounds/Overworld/TestArea/Masks/FortInt.png</Mask>
 	<NPC>

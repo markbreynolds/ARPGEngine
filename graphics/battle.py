@@ -45,6 +45,12 @@ class BattleGraphicsEngine(object):
 		self.compEffect=None
 		self.compValue=[0,0,0]
 
+		self.debugInfo = ""
+
+	## Sets the debug text to be shown at the bottom of the screen.
+	def setDebugInfo(self,info):
+		self.debugInfo=info
+
 	## Returns the Battle HUD.
 	def getHud(self):
 		return self.hud
@@ -328,6 +334,8 @@ class BattleGraphicsEngine(object):
 			if dmg[3]>4:
 				self.dmgVals.remove(dmg)
 
+		self.screen.blit(gui.font.render(self.debugInfo,True,[255,255,255]),[0,228])
+
 		if self.isScaled:
 			self.screen.update()
 		pygame.display.flip()
@@ -367,13 +375,13 @@ class BattleGraphicObject(object):
 		return BattleGraphicObject(self.animations,self.getPos(),self.spd,self.direction,self.state,self.weapon)
 
 	## Generates the weapons animation data.
-	def genWeaponAnim(self):
+	def genWeaponAnim(self,skills=[]):
 		if self.weapon != None:
 			self.weaponAnim = {}
 			self.weaponAnim["Idle"] = [Animation(None,None,"IdleW"),loadAnimation(self.weapon.getAnimationPath(),"Idle")]
 			self.weaponAnim["Run"] = [Animation(None,None,"WalkW"),loadAnimation(self.weapon.getAnimationPath(),"Walk")]
 
-			if self.weapon.getStyle().getType() == "Chain":
+			if self.weapon.getStyle().getType() == "Combo":
 				for i in range(1,self.weapon.getStyle().getChain()+1):
 					self.weaponAnim["Attack"+str(i)] = [Animation(None,None,"AttackW"+str(i)),loadAnimation(self.weapon.getAnimationPath(),"Attack"+str(i))]
 			elif self.weapon.getStyle().getType() == "Charge":
@@ -394,7 +402,7 @@ class BattleGraphicObject(object):
 				self.weaponAnim["Run"][0].addFrame(AnimationFrame(pygame.transform.flip(frame.getImage(),True,False),frame.getDelay(),None,i))
 				i+=1
 			#Attack
-			if self.weapon.getStyle().getType() == "Chain":
+			if self.weapon.getStyle().getType() == "Combo":
 				for i in range(1,self.weapon.getStyle().getChain()+1):
 					temp = self.weaponAnim["Attack"+str(i)][1].getFrames()
 					j = 0
@@ -414,8 +422,20 @@ class BattleGraphicObject(object):
 				self.weaponAnim["Death"][0].addFrame(AnimationFrame(pygame.transform.flip(frame.getImage(),True,False),frame.getDelay(),None,i))
 				i+=1
 
+			#Skills:
+			for skill in skills:
+				print skill
+				self.weaponAnim[skill] = [Animation(None,None,skill+"W"),loadAnimation(self.weapon.getAnimationPath(),skill)]
+				temp = self.weaponAnim[skill][1].getFrames()
+				i=0
+				for frame in temp:
+					self.weaponAnim[skill][0].addFrame(AnimationFrame(pygame.transform.flip(frame.getImage(),True,False),frame.getDelay(),None,i,offset=frame.getOffset()))
+					i+=1
+				self.weaponAnim[skill][0].setNextAnimation(self.weaponAnim["Idle"][0])
+				self.weaponAnim[skill][1].setNextAnimation(self.weaponAnim["Idle"][1])
+
 			#Linking
-			if self.weapon.getStyle().getType() == "Chain":
+			if self.weapon.getStyle().getType() == "Combo":
 				for i in range(1,self.weapon.getStyle().getChain()+1):
 					self.weaponAnim["Attack"+str(i)][0].setNextAnimation(self.weaponAnim["Idle"][0])
 					self.weaponAnim["Attack"+str(i)][1].setNextAnimation(self.weaponAnim["Idle"][1])
@@ -501,9 +521,9 @@ class BattleGraphicObject(object):
 	def getSpd(self):
 		return self.spd
 
-	def setWeapon(self,weapon):
+	def setWeapon(self,weapon,skills=[]):
 		self.weapon=weapon
-		self.genWeaponAnim()
+		self.genWeaponAnim(skills)
 		if self.weapon != None:
 			self.weaponAnimCurr = self.weaponAnim[self.state][self.direction]
 
@@ -526,10 +546,17 @@ class BattleGraphicObject(object):
 	#  @param offsetY The y offset from the camera
 	def draw(self,screen,offsetX,offsetY):
 		if self.weapon == None:
-			screen.blit(self.getSprite(),[self.x+offsetX,self.y+offsetY])
+			if self.direction == 0:
+				screen.blit(self.getSprite(),[self.x-self.currentAnimation.getOffset()[0]+offsetX,self.y+self.currentAnimation.getOffset()[1]+offsetY])
+			else:
+				screen.blit(self.getSprite(),[self.x+self.currentAnimation.getOffset()[0]+offsetX,self.y+self.currentAnimation.getOffset()[1]+offsetY])
 		else:
-			screen.blit(self.getSprite(),[self.x+offsetX,self.y+offsetY])
+			if self.direction == 0:
+				screen.blit(self.getSprite(),[self.x-self.currentAnimation.getOffset()[0]+offsetX,self.y+self.currentAnimation.getOffset()[1]+offsetY])
+				screen.blit(self.weaponAnimCurr.getSprite(),[self.x+(self.weaponAnimCurr.getOffset()[0])+offsetX-self.weapon.getOffset()[0],self.y+self.weaponAnimCurr.getOffset()[1]+offsetY+self.weapon.getOffset()[1]])
+			else:
+				screen.blit(self.getSprite(),[self.x+self.currentAnimation.getOffset()[0]+offsetX,self.y+self.currentAnimation.getOffset()[1]+offsetY])
+				screen.blit(self.weaponAnimCurr.getSprite(),[self.x+self.weaponAnimCurr.getOffset()[0]+offsetX+self.weapon.getOffset()[0],self.y+self.weaponAnimCurr.getOffset()[1]+offsetY+self.weapon.getOffset()[1]])
 			#if self.direction == 1:
-			screen.blit(self.weaponAnimCurr.getSprite(),[self.x+offsetX+self.weapon.getOffset()[0],self.y+offsetY+self.weapon.getOffset()[1]])
 			#else:
 			#	screen.blit(self.weaponAnimCurr.getSprite(),[self.x+offsetX-self.weapon.getOffset()[0],self.y+offsetY+self.weapon.getOffset()[1]])

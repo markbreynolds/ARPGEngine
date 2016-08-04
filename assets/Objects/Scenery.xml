@@ -45,3 +45,15 @@
 		</State>
 	</GraphicObject>
 </GameObject>
+
+<GameObject FloorDrain>
+	<Mask>
+		<State Idle>null</State>
+	</Mask>
+	<Spd>0</Spd>
+	<GraphicObject>
+		<State Idle>
+			<Direction 0>Objects/Scenery/FloorDrain.xml</Direction>
+		</State>
+	</GraphicObject>
+</GameObject>

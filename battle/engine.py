@@ -76,7 +76,7 @@ class BattleEngine(object):
 			if ally.isAttacking():
 				for enemy in self.enemyParty:
 					if enemy.getHitBox().colliderect(ally.getAtkBox()):
-						self.graphicsEngine.addDmgVal(enemy.takeDamage(ally.getAtk()),enemy.getGraphicObject().getPos(),(255,255,255))
+						self.graphicsEngine.addDmgVal(enemy.takeDamage(ally.getDmg()),enemy.getGraphicObject().getPos(),(255,255,255))
 						ally.setAttacking(False)
 			if ally.getProjectile() != None:
 				self.addProjectile(ally.getProjectile())
@@ -103,7 +103,7 @@ class BattleEngine(object):
 				if enemy.isAttacking():
 					for ally in self.playerParty:
 						if ally.getHitBox().colliderect(enemy.getAtkBox()):
-							self.graphicsEngine.addDmgVal(ally.takeDamage(enemy.getAtk()),ally.getGraphicObject().getPos(),(255,0,0))
+							self.graphicsEngine.addDmgVal(ally.takeDamage(enemy.getDmg()),ally.getGraphicObject().getPos(),(255,0,0))
 							enemy.setAttacking(False)
 
 		for projectile in self.projectiles:
@@ -166,7 +166,7 @@ class BattleObject(object):
 	#  @param Res How resistant this character is to magic. (Resistance)
 	#  @param Con How easily this character's spells can be broken (stopped mid cast). (Concentration)
 	#  @param Mnd How strong this character's mind is. (Mind)
-	def __init__(self,graphicObject,hitBox,pos,name,weapon,level=0,exp=0,HP=1,MP=1,Atk=0,Def=0,Spd=20,Vit=0,Mag=0,Res=0,Con=0,Mnd=0):
+	def __init__(self,graphicObject,hitBox,pos,name,weapon,level=0,exp=0,HP=1,MP=1,Atk=0,Def=0,Spd=20,Vit=0,Mag=0,Res=0,Con=0,Mnd=0,job=None):
 		self.graphicObject=graphicObject
 		self.hitBox = hitBox
 
@@ -226,9 +226,10 @@ class BattleObject(object):
 		self.playerStatus = False
 		self.attacking = False
 		self.projectile = None
+		self.skillDmgMult = 1
 
 		self.abilities=[]
-		self.job=None
+		self.job=job
 		self.ai = None
 
 	## Gives this actor experience.
@@ -255,10 +256,28 @@ class BattleObject(object):
 
 	## Uses a skill
 	def useSkill(self,skill):
-		self.state = "Skill"
-		self.Mp-=skill.getCost()
-		self.getGraphicObject().setState(skill.getState())
-		self.setTime(skill.getCooldown())
+		if skill.isActiveSkill() and self.getMP()>=skill.getCost() and (self.getState()=="Idle" or self.getState()=="Run"):
+			if skill.getType()=="Projectile":
+				proj = skill.getProjectile()
+				proj.setPos([self.getGraphicObject().getX(),self.getGraphicObject().getY()])
+				if skill.getDmgType() == "Physical":
+					proj.setDamage(skill.getDmgMult()*self.getAtk())
+				proj.setDirection(self.getDirection())
+				proj.resetDist()
+				proj.setParent(self)
+				self.projectile = proj
+			elif skill.getType()=="Melee":
+				self.velX, self.velY = skill.getVel()
+				if self.getDirection()==0:
+					self.velX=-self.velX
+				self.skillDmgMult = skill.getDmgMult()
+				self.skillHitBox = skill.getHitBox()[self.getDirection()]
+				self.attacking = True
+
+			self.state = "Skill"
+			self.Mp-=skill.getCost()
+			self.getGraphicObject().setState(skill.getState())
+			self.setTime(skill.getCooldown())
 
 	## Sets whether or not this actor is attacking
 	def setAttacking(self,val):
@@ -457,13 +476,24 @@ class BattleObject(object):
 	def getHitBox(self):
 		return self.hitBox[self.getDirection()].move(self.getGraphicObject().getX(),self.getGraphicObject().getY())
 
+
 	## Returns this actor's attack box.
 	def getAtkBox(self):
-		return self.atkBox[self.getDirection()].move(self.getGraphicObject().getX(),self.getGraphicObject().getY())
+		if self.state != "Skill":
+			return self.atkBox[self.getDirection()].move(self.getGraphicObject().getX(),self.getGraphicObject().getY())
+		else:
+			return self.skillHitBox.move(self.getGraphicObject().getX(),self.getGraphicObject().getY())
 
 	## Returns this actor's center x.
 	def getCX(self):
 		return self.x+(self.getGraphicObject().getWidth()/2)
+
+	## Returns how much damage this actor does.
+	def getDmg(self):
+		if self.state != "Skill":
+			return self.getAtk()
+		else:
+			return int(round(self.getAtk()*self.skillDmgMult))		# Should this be rounded? Trucated? Are decimal damages bad?
 
 	## Returns whether this actor is spawning a projectile.
 	#
@@ -512,7 +542,7 @@ class BattleObject(object):
 					proj["pos"][0] += self.graphicObject.getWidth()
 				else:
 					proj["direction"] = 0
-				proj["damage"] = int(self.getAtk()*scale)		# Should this be trucated? Are decimal damages bad?
+				proj["damage"] = int(round(self.getAtk()*scale))		# Should this be rounded? Trucated? Are decimal damages bad?
 				proj["speed"] *= scale
 				proj["dist"] *= scale
 				img = pygame.image.load(config.AssetPath+proj["graphicObject"]).convert_alpha()
@@ -566,7 +596,12 @@ class BattleObject(object):
 			for item in delay:
 				self.weaponDelay.append(sum(item))
 
-		self.graphicObject.setWeapon(weapon)
+		skills=[]
+		if self.isPlayer():
+			if self.job.getName() == "Warrior":
+				skills=["Thrust"]
+
+		self.graphicObject.setWeapon(weapon,skills)
 		self.graphicObject.updateAnimations(animations)
 
 	## Code for AI calls
@@ -609,10 +644,11 @@ class BattleObject(object):
 				pass
 		elif self.state == "Skill":
 			if self.time<=0:
+				self.setAttacking(False)
 				self.setState("Idle")
 		self.x+=self.velX*tick
 		self.graphicObject.setX(int(self.x))
-		if self.velX >= .05:
+		if abs(self.velX) >= 1:
 			self.velX += 100*tick*(-abs(self.velX)/self.velX)
 		else:
 			self.velX = 0

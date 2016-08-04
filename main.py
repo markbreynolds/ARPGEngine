@@ -58,18 +58,22 @@
 #      - <b>Dialog</b>
 #      - <b>Actions/Dialog Sync</b>
 #    -# <b>Triggers</b>
+#      - <b>Dialog Trigger</b>
 #      - <b>Cutscene Trigger</b>
-#    -# <b>Triggers</b>
-#      - <b>Trigger Effect Classes</b>
+#      - <b>QuestStateChange Trigger</b>
 #    -# <b>Skills</b>
-#      - <b>Melee Skills</b>
-#      - <b>Passive Skills</b>
+#      - Melee Skills - Done
+#      - <b>Stat Skills</b>
+#      - <b>Buff Skills</b>
 #      - <b>Warrior Skills (5)</b>
+#      - <b>Archer Skills (5)</b>
 #    -# <b>Battle</b>
 #      - Bow Weapon Style - Done
+#      - <b>Staff Weapon Style</b>
 #    -# <b>Items</b>
 #      - <b>Swords</b>
 #      - <b>Bows</b>
+#      - <b>Staffs</b>
 #    -# <b>A Dungeon</b>
 #      - <b>Chests</b>
 #      - <b>Puzzles</b>
@@ -84,19 +88,19 @@
 #    -# <b>Battle</b>
 #      - <b>Physics</b>
 #    -# <b>Skills</b>
-#      - <b>Buff Skills</b>
-#      - <b>Archer Skills (5)</b>
+#      - <b>Passive Skills</b>
 #      - <b>Mage Skills (5)</b>
-#    -# <b>Battle</b>
-#      - <b>Staff Weapon Style</b>
-#    -# <b>Items</b>
-#      - <b>Staffs</b>
 #    -# <b>Compositor</b>
 #      - <b>VFX</b>
 #      - <b>Filter</b>
 #    -# <b>Level</b>
 #      - <b>Improve load times</b>
+#    -# <b>GUI</b>
+#      - <b>Add Options</b>
+#      - <b>Quiting Warning</b>
 #    -# <b>Saving</b>
+#    -# <b>Triggers</b>
+#      - <b>Trigger Effect Classes</b>
 #    -# <b>Unit Tests</b>
 #      - <b>InputEngine?</b>
 #      - <b>GameEngine</b>
@@ -309,7 +313,7 @@ while menu:
 
 #loadNewArea("Levels/TestArea/TestVillage.xml","VillageMain");Player.getGameObject().setPos([400,550])
 #loadNewArea("Levels/TestArea/TestVillage.xml","VillageInn");Player.getGameObject().setPos([100,100])
-loadNewArea("Levels/TestArea/Test.xml","Test1");Player.getGameObject().setPos([100,100])
+loadNewArea("Levels/TestArea/Test.xml","Test4");Player.getGameObject().setPos([100,100])
 graphicsEngine.setPlayer(Player.getGraphicObject())
 gameEngine.setPlayer(Player.getGameObject())
 
@@ -351,10 +355,12 @@ while PLAYING:
 					else:
 						errors.info(PlayerB.getGraphicObject().currentAnimation.getName()+", "+PlayerB.getGraphicObject().currentAnimation.getNextAnimation())
 				elif event[0].startswith("S1"):
-					if Player.getSkill(event[0])!=None and Player.getSkill(event[0]).getType()=="Projectile":
-						proj = Player.getSkill(event[0]).use(PlayerB)
-						if proj:
-							battleEngine.addProjectile(proj)
+					if Player.getSkill(event[0])!=None:
+						PlayerB.useSkill(Player.getSkill(event[0]))
+#					if Player.getSkill(event[0])!=None and Player.getSkill(event[0]).getType()=="Projectile":
+#						proj = Player.getSkill(event[0]).use(PlayerB)
+#						if proj:
+#							battleEngine.addProjectile(proj)
 			elif event[1] == "Up":
 				if event[0] == "Accept":
 					PlayerB.release(BattleGraphicObject)
@@ -372,6 +378,9 @@ while PLAYING:
 		if (not move[1] and not move[3]) or (move[1] and move[3]):
 			if PlayerB.getState()=="Run":
 				PlayerB.setState("Idle")
+
+		#battleEngine.getGraphicsEngine().setDebugInfo(str(PlayerB.graphicObject.state)+":"+str(PlayerB.graphicObject.getFrame()))
+		battleEngine.getGraphicsEngine().setDebugInfo(PlayerB.state+":"+str(PlayerB.isAttacking()))
 
 		if battleEngine.update(tick):
 			BATTLING = False

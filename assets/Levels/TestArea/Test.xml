@@ -29,22 +29,12 @@
 			<PrimaryState>"Up"</PrimaryState>
 			<SecondaryState>"Down"</SecondaryState>
 	</Trigger>
-#	<Trigger>
-#		<Id>"Battle"</Id>
-#		<Type>"Action"</Type>
-#		<Area>[150,10,20,20]</Area>
-#		<Effect>"Battle"</Effect>
-#			<Enemies>["GreenSlime","GreenSlime"]</Enemies>
-#			<BG>"Backgrounds/Battle/TestArea/Test"</BG>
-#			<AutoReset>true</AutoReset>
-#	</Trigger>
 	<Trigger>
-		<Id>"ItemGive"</Id>
+		<Id>"Lever2Dialog"<Id>
 		<Type>"Action"</Type>
 		<Area>[150,10,20,20]</Area>
-		<Effect>"Item"</Effect>
-			<Item>["Test",50]</Item>
-			<AutoReset>true</AutoReset>
+		<Effect>"Dialog"</Effect>
+			<Dialog>{"Text":"Nothing happened...","Options":[],"Links":[null]}</Dialog>
 	</Trigger>
 	<Trigger>
 		<Id>"Lever1Flip"</Id>
@@ -81,6 +71,15 @@
 			<NewArea>"VillageMain"</NewArea>
 			<NewAreaXML>"Levels/TestArea/TestVillage.xml"</NewAreaXML>
 			<PlayerPos>[670,345]</PlayerPos>
+	</Trigger>
+	<Trigger>
+		<Id>"inspectQuest"</Id>
+		<Type>"Position"</Type>
+		<Area>[255,180,25,15]</Area>
+		<Effect>"Quest Complete"</Effect>
+			<QuestXML>"Levels/TestArea/Quests.xml"</QuestXML>
+			<Quest>"Caravan1"</Quest>
+			<Objective>"Inspect"</Objective>
 	</Trigger>
 </Level>
 
@@ -270,7 +269,7 @@
 		<Type>"Position"</Type>
 		<Area>[200,183,11,14]</Area>
 		<Effect>"TBSC"</Effect>
-			<Time>12</Time>
+			<Time>13</Time>
 			<Target>"GateSwitch"</Target>
 			<NewState>"Up"</NewState>
 	</Trigger>
@@ -287,7 +286,7 @@
 		<Type>"Position"</Type>
 		<Area>[200,183,11,14]</Area>
 		<Effect>"TBSC"</Effect>
-			<Time>12</Time>
+			<Time>13</Time>
 			<Target>"Gate"</Target>
 			<NewState>"Close"</NewState>
 	</Trigger>
@@ -375,8 +374,42 @@
 		<Type>"Position"</Type>
 		<Area>[177,8,34,8]</Area>
 		<Effect>"Area Change"</Effect>
-			<NewArea>"Test1"</NewArea>
+			<NewArea>"Test5"</NewArea>
 			<NewAreaXML>"Levels/TestArea/Test.xml"</NewAreaXML>
-			<PlayerPos>[119,215]</PlayerPos>
+			<PlayerPos>[152,210]</PlayerPos>
+	</Trigger>
+</Level>
+
+<Level Test5>
+	<LevelName>Test Chamber 5</LevelName>
+	<Background>Backgrounds/Overworld/TestArea/Test5.png</Background>
+	<Mask>Backgrounds/Overworld/TestArea/Masks/Test5.png</Mask>
+	<GameObject Objects/Doors.xml IronGate>
+		<Pos>[143,1]</Pos>
+		<Id>"Gate"</Id>
+	</GameObject>
+	<GameObject Objects/Lighting.xml TorchStand>
+		<Pos>[100,19]</Pos>
+		<Id>"leftTorch"</Id>
+	</GameObject>
+	<GameObject Objects/Lighting.xml TorchStand>
+		<Pos>[208,19]</Pos>
+		<Id>"rightTorch"</Id>
+	</GameObject>
+	<GameObject Objects/Scenery.xml FloorDrain>
+		<Pos>[160,120]</Pos>
+		<Id>"Drain"</Id>
+		<GraphicObject>
+			<layer>-1</Layer>
+		</GraphicObject>
+	</GameObject>
+	<Trigger>
+		<Id>"toLastRoom"</Id>
+		<Type>"Position"</Type>
+		<Area>[144,228,32,12]</Area>
+		<Effect>"Area Change"</Effect>
+			<NewArea>"Test4"</NewArea>
+			<NewAreaXML>"Levels/TestArea/Test.xml"</NewAreaXML>
+			<PlayerPos>[185,14]</PlayerPos>
 	</Trigger>
 </Level>

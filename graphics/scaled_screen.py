@@ -4,7 +4,7 @@ import config
 
 ## A window that emulates a smaller python window.
 class ScaledScreen(object):
-	
+
 	## Constructor.
 	#  @param screen Reference to pygame screen object.
 	#  @param actualResX Horizontal resolution of pygame window.
@@ -27,7 +27,7 @@ class ScaledScreen(object):
 		if config.Smoothing==1:
 			self.aResX=640
 			self.aResY=480
-	
+
 	## Updates the pygame screen by scaling the internal screen.
 	def update(self):
 		if config.Smoothing==0:
@@ -36,7 +36,7 @@ class ScaledScreen(object):
 			pygame.transform.scale2x(self.screen,self.scaledScreen)
 		elif config.Smoothing==2:
 			pygame.transform.smoothscale(self.screen,(self.aResX,self.aResY),self.scaledScreen)
-	
+
 	## Functions the same as pygame.Surface.fill().
 	#  @param color Color to fill screen.
 	#  @param rect Rectangle to fill within, if @c None then fill entire screen.
@@ -48,7 +48,7 @@ class ScaledScreen(object):
 			if rect[1]<0:
 				rect[3]-=abs(rect[1])
 		self.screen.fill(color,rect,special_flags)
-	
+
 	## Functions the same as pygame.Surface.fill().
 	#  @param source Source image to copy
 	#  @param dest Destination location to copy image to on screen.
@@ -56,7 +56,15 @@ class ScaledScreen(object):
 	#  @param special_flags Copy mode, see Pygame documentation.
 	def blit(self,source,dest,area=None,special_flags=0):
 		self.screen.blit(source,dest,area,special_flags)
-	
+
 	## Functions the same as pygame.Surface.copy().
 	def copy(self,*args):
 		return self.screen.copy(*args)
+
+	## Returns a surface representing the screen after it has been scaled.
+	def getScaledScreen(self):
+		return self.scaledScreen
+
+	## Returns a surface representing the screen before it has been scaled.
+	def getScreen(self):
+		return self.screen

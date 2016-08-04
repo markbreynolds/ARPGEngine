@@ -1,37 +1,46 @@
+import json
+
 import pygame
+
 import config
 
 ## Container for a single frame in an animation.
 class AnimationFrame(object):
-	
+
 	## Constructor.
 	#  @param image Image data.
 	#  @param delay Delay before proceeding to next frame, in seconds.
 	#  @param nextFrame Reference to next AnimationFrame.
 	#  @param number Frame number.
-	def __init__(self,image,delay,nextFrame,number):
+	#  @param offset This frames [x,y] offset to be drawn at.
+	def __init__(self,image,delay,nextFrame,number,offset=[0,0]):
 		self.image = image
 		self.delay = delay
 		self.nextFrame = nextFrame
 		self.number = number
+		self.offset = offset
 		self.count = 0
-	
+
 	## Returns this frame's image data
 	def getImage(self):
 		return self.image
-	
+
 	## Returns the delay before proceeding to the next frame, in seconds.
 	def getDelay(self):
 		return self.delay
-	
+
 	## Returns the next frame.
 	def getNextFrame(self):
 		return self.nextFrame
-	
+
 	## Returns this frame's frame number.
 	def getNumber(self):
 		return self.number
-	
+
+	## Returns this frame's offset from it's parent/object's location.
+	def getOffset(self):
+		return self.offset
+
 	## Updates this frame and returns the current frame.
 	#  @param tick Time that has passed since last clock cycle in seconds.
 	def update(self,tick):
@@ -41,14 +50,14 @@ class AnimationFrame(object):
 			return self.nextFrame
 		else:
 			return self
-	
+
 	## Resets frame to original state.
 	def reset(self):
 		self.count = 0
 
 ## Container for a sequence of frames.
 class Animation(object):
-	
+
 	## Constructor.
 	#  @param firstFrame First AnimationFrame in the sequence.
 	#  @param nextAnimation Reference to next Animation.
@@ -58,7 +67,7 @@ class Animation(object):
 		self.nextAnimation = nextAnimation
 		self.frame = self.firstFrame
 		self.name = name
-	
+
 	## Adds a frame to the animation.
 	#  @param frame Frame to be added.
 	def addFrame(self,frame):
@@ -70,7 +79,7 @@ class Animation(object):
 			while temp.nextFrame != None:
 				temp = temp.nextFrame
 			temp.nextFrame = frame
-	
+
 	## Returns a list of AnimationFrame objects in the animation.
 	def getFrames(self):
 		temp = self.firstFrame
@@ -82,19 +91,19 @@ class Animation(object):
 				temp = temp.nextFrame
 				ret.append(temp)
 			return ret
-	
+
 	## Returns the current frame number.
 	def getFrame(self):
 		return self.frame.number + (float(self.frame.count)/self.frame.delay)
-	
+
 	## Returns the next animation.
 	def getNextAnimation(self):
 		return self.nextAnimation
-	
+
 	## Returns this animation's name.
 	def getName(self):
 		return self.name
-	
+
 	## Sets the current frame number.
 	def setFrame(self,frame):
 		temp = self.firstFrame
@@ -106,11 +115,11 @@ class Animation(object):
 			temp = temp.nextFrame
 		self.frame = temp
 		self.frame.count = (frame-int(frame))*self.frame.delay
-	
+
 	## Sets the next animation, useful for manual linking.
 	def setNextAnimation(self,animation):
 		self.nextAnimation = animation
-	
+
 	## Updates this animation and returns the current animation.
 	#
 	#  Also updates the current frame.
@@ -125,17 +134,21 @@ class Animation(object):
 				return self.nextAnimation
 		else:
 			return self
-	
+
 	## Resets animation to original state.
 	#
 	#  Also resets current frame to original state.
 	def reset(self):
 		self.frame.reset()
 		self.frame = self.firstFrame
-	
+
 	## Returns the current frame's image.
 	def getSprite(self):
-		return self.frame.image
+		return self.frame.getImage()
+
+	## Returns the current frame's offset.
+	def getOffset(self):
+		return self.frame.getOffset()
 
 ## Loads an animation from a file and returns an Animation object
 #
@@ -143,11 +156,13 @@ class Animation(object):
 #  + @c delay - Sets the default delay between frames for this animation, in seconds.
 #  + @c nextAnimation - Sets the animation which should occur after this animation, given no change in state.
 #  + @c Frame - Subobject which contains AnimationFrame data.
+#  + @c offset - The offset for all frames in this animation.
 #
 #  The @c Frame subobject supports:
 #  + @c image - Sets the image or sprite for this frame.
 #  + @c number - Sets the frame number.  Auto numbers if not defined.
 #  + @c delay - Sets the delay between this frame and the next, in seconds.
+#  + @c offset - The offset for this frame to be drawn at from its parent's position.
 #
 #  @note
 #  @parblock
@@ -161,13 +176,13 @@ class Animation(object):
 def loadAnimation(xmlPath,animation):
 	filer = open(config.AssetPath+xmlPath,"r")
 	lines = filer.readlines()
-	
+
 	started=False
 	animData = []
-	
+
 	for i in range(len(lines)):	#Strip Tabs and New Lines
 		lines[i] = lines[i].lstrip("\t").rstrip("\n")
-	
+
 	for line in lines:	#Extract Level Data
 		if not started:
 			if line == "<Animation "+animation+">":
@@ -177,24 +192,28 @@ def loadAnimation(xmlPath,animation):
 			animData.append(line)
 			break
 		animData.append(line)
-	
+
 	frames = []
 	i = 0
 	globalDelay = None
+	globalOffset =None
 	nextAnimation=None
-	
+
 	while animData[i]!="</Animation>":
 		if animData[i].startswith("<delay>"):
 			globalDelay = float(animData[i][7:-8])
-		if animData[i].startswith("<nextAnimation>"):
+		elif animData[i].startswith("<offset>"):
+			globalOffset = json.loads(animData[i][8:-9])
+		elif animData[i].startswith("<nextAnimation>"):
 			nextAnimation = animData[i][15:-16]
 		elif animData[i] == "<Frame>":
 			i+=1
-			
+
 			image =None
 			number=len(frames)
 			delay = globalDelay
-			
+			offset = globalOffset
+
 			while animData[i] != "</Frame>":
 				if animData[i].startswith("<image>"):
 					image = pygame.image.load(config.AssetPath+animData[i][7:-8]).convert_alpha()
@@ -202,12 +221,17 @@ def loadAnimation(xmlPath,animation):
 					number = int(animData[i][8:-9])
 				elif animData[i].startswith("<delay>"):
 					delay = float(animData[i][7:-8])
+				elif animData[i].startswith("<offset>"):
+					offset = json.loads(animData[i][8:-9])
 				i+=1
-			
-			frames.append(AnimationFrame(image,delay,None,number))
+
+			if offset != None:
+				frames.append(AnimationFrame(image,delay,None,number,offset))
+			else:
+				frames.append(AnimationFrame(image,delay,None,number))
 		i+=1
-	
+
 	for i in range(len(frames)-1):
 		frames[i].nextFrame = frames[i+1]
-	
+
 	return Animation(frames[0],nextAnimation,animation)

@@ -26,7 +26,7 @@
 	</Objective>
 	<Objective Frog>
 		<Name>"Collect Foxglove."</Name>
-		<Description>["Collect 3 Foxglove Flowers and bring","them back to the witch."]</Description>
+		<Description>["Collect 3 Foxglove Flowers and","bring them back to the witch."]</Description>
 	</Objective>
 </Quest>
 

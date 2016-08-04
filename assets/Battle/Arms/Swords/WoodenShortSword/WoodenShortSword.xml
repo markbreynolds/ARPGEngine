@@ -66,6 +66,23 @@
 	</Frame>
 </Animation>
 
+<Animation Thrust>
+	<Frame>
+		<delay>.10</delay>
+		<image>Battle/Arms/Swords/WoodenShortSword/Thrust1.png</image>
+	</Frame>
+	<Frame>
+		<delay>.20</delay>
+		<image>Battle/Arms/Swords/WoodenShortSword/Thrust2.png</image>
+		<offset>[-4,0]</offset>
+	</Frame>
+	<Frame>
+		<delay>.40</delay>
+		<image>Battle/Arms/Swords/WoodenShortSword/Thrust3.png</image>
+		<offset>[-4,0]</offset>
+	</Frame>
+</Animation>
+
 <Animation Death>
 	<Frame>
 		<delay>.5</delay>

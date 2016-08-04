@@ -158,6 +158,7 @@ class GameEngine(object):
 			if action[1]+":"+action[2] not in self.player.getParent().getQuests():
 				quest = loadQuest(config.AssetPath+action[1],action[2])
 				self.player.getParent().getQuests()[action[1]+":"+action[2]] = quest
+				errors.debug("Added quest: "+action[2])
 		elif action[0] == "Complete":
 			if action[1]+":"+action[2] in self.player.getParent().getQuests():
 				quest = self.player.getParent().getQuests()[action[1]+":"+action[2]]
@@ -172,6 +173,9 @@ class GameEngine(object):
 						elif key == "Item":
 							item = ItemFactory.createItem(val.split(" "))
 							self.player.getParent().getInventory().addItem(item)
+					errors.info("Completed quest: "+action[2])
+				else:
+					errors.debug("Completed "+action[3]+" in "+action[2])
 		else:
 			errors.warning("Unknown Quest Action: "+action[0])
 

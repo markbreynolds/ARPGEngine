@@ -47,6 +47,7 @@ class Trigger(object):
 	#    + "SBSC" - Changes the state of an object based on the states of other objects in this area. See SBSCTrigger().
 	#    + "TBSC" - Changes the state of an object after an amount of time has passed. See TBSCTrigger().
 	#    + "Battle" - Starts a battle.
+	#    + "Item" - Gives the player an item.
 	#
 	#  @endparblock
 	#  @param AutoReset Determines whether or not this trigger must be manually reset with a call to reset().

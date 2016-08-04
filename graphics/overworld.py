@@ -356,11 +356,11 @@ class GraphicObject(object):
 
 	## Returns the x portion of position.
 	def getX(self):
-		return self.x
+		return self.x + self.currentAnimation.getOffset()[0]
 
 	## Returns the y portion of position.
 	def getY(self):
-		return self.y
+		return self.y + self.currentAnimation.getOffset()[1]
 
 	## Sets the current state of the object.
 	def setState(self,state):

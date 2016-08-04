@@ -827,6 +827,7 @@ class Dialog(object):
 				self.branch = self.action.split(" ")[1:]
 			else:
 				errors.warning("Undefined Action: "+self.action)
+			self.action=None
 		else:
 			self.shop=False
 			self.sleep=False
@@ -1856,8 +1857,9 @@ class InvenMenu(Menu):
 					colorB= config.ColorDisable
 				screen.blit(titleFont.render(skill.getName(),False,colorB),[self.winX+7,32])
 				screen.blit(font.render(str(skill.getType()),False,color),[self.winX+7,43])
-				screen.blit(font.render("Cost: "+str(skill.getCost())+" MP",False,color),[self.winX+7,55])
-				screen.blit(font.render("Level: "+str(skill.getLevel())+"",False,color),[self.winX+(self.winSizeX/2)+9,55])
+				screen.blit(font.render("Level: "+str(skill.getLevel())+"",False,color),[self.winX+7,55])
+				if skill.isActiveSkill():
+					screen.blit(font.render("Cost: "+str(skill.getCost())+" MP",False,color),[self.winX+(self.winSizeX/2)+9,55])
 				y=68
 				for line in skill.getDescription():
 					screen.blit(font.render(line,False,color),[self.winX+7,y])
@@ -1984,8 +1986,9 @@ class InvenMenu(Menu):
 			skill = self.sel.getJob().getUnlockedSkills()[self.subPos]
 			screen.blit(titleFont.render(skill.getName(),False,config.ColorSel),[self.winX+7,32])
 			screen.blit(font.render(str(skill.getType()),False,config.ColorFont),[self.winX+7,43])
-			screen.blit(font.render("Cost: "+str(skill.getNextCost())+" MP",False,config.ColorFont),[self.winX+7,55])
-			screen.blit(font.render("Level: "+str(skill.getLevel()+1)+"",False,config.ColorFont),[self.winX+(self.winSizeX/2)+9,55])
+			screen.blit(font.render("Level: "+str(skill.getLevel()+1)+"",False,config.ColorFont),[self.winX+7,55])
+			if skill.isActiveSkill():
+				screen.blit(font.render("Cost: "+str(skill.getNextCost())+" MP",False,config.ColorFont),[self.winX+(self.winSizeX/2)+9,55])
 			y=68
 			for line in skill.getDescription():
 				screen.blit(font.render(line,False,config.ColorFont),[self.winX+7,y])
@@ -2137,7 +2140,7 @@ class InvenMenu(Menu):
 
 class CharacterCreator(Menu):
 	def __init__(self,player,inputDump):
-		Menu.__init__(self,5,1)
+		Menu.__init__(self,6,1)
 
 		self.playerClass = player
 		self.inputDump = inputDump
@@ -2147,19 +2150,19 @@ class CharacterCreator(Menu):
 		self.timer = 0
 
 		self.name = "Markus Calarkus"	#Change to ""
-		#self.Class = 0
+		self.job = 0
 		self.clothingType=1
 		self.clothingColor=0
 		self.hairType=1
 		self.hairColor=0
 
-		#self.classes = 2	#Refers to last index in class list
+		self.jobs = ["Warrior","Archer"]
 		self.colors = [[255,0,0],[255,127,0],[255,255,0],[127,255,0],[0,255,0],[0,255,127],[0,255,255],[0,127,255],[0,0,255],[255,255,255],[127,127,127],[100,50,0]]
 		#self.hairTypes=3
 		self.hairTypes=1
 		self.clothingTypes=1
 
-		self.preview = self.playerClass("Null",self.clothingType,self.colors[self.clothingColor],self.hairType,self.colors[self.hairColor],True)
+		self.preview = self.playerClass("Null",self.clothingType,self.colors[self.clothingColor],self.hairType,self.colors[self.hairColor],job=self.jobs[self.job],preview=True)
 		self.preview.setState("Walk")
 		self.preview.setDirection(2)
 
@@ -2186,10 +2189,15 @@ class CharacterCreator(Menu):
 				else:
 					self.hairColor+=1
 			elif self.pos[1] == 5:
+				if self.job >= len(self.jobs)-1:
+					self.job = 0
+				else:
+					self.job+=1
+			elif self.pos[1] == 6:
 				self.pos[0] = abs(self.pos[0]-1)
 			d = self.preview.getDirection()
 			f = self.preview.getGraphicObject().getFrame()
-			self.preview = self.playerClass("Null",self.clothingType,self.colors[self.clothingColor],self.hairType,self.colors[self.hairColor],True)
+			self.preview = self.playerClass("Null",self.clothingType,self.colors[self.clothingColor],self.hairType,self.colors[self.hairColor],job=self.jobs[self.job],preview=True)
 			self.preview.setState("Walk")
 			self.preview.setDirection(d)
 			self.preview.getGraphicObject().setFrame(f)
@@ -2216,12 +2224,17 @@ class CharacterCreator(Menu):
 				if self.hairColor == 0:
 					self.hairColor = len(self.colors)-1
 				else:
-					self.hairColor-=1
+					self.hairColor-= 1
 			elif self.pos[1] == 5:
+				if self.job == 0:
+					self.job = len(self.jobs)-1
+				else:
+					self.job-= 1
+			elif self.pos[1] == 6:
 				self.pos[0] = abs(self.pos[0]-1)
 			d = self.preview.getDirection()
 			f = self.preview.getGraphicObject().getFrame()
-			self.preview = self.playerClass("Null",self.clothingType,self.colors[self.clothingColor],self.hairType,self.colors[self.hairColor],True)
+			self.preview = self.playerClass("Null",self.clothingType,self.colors[self.clothingColor],self.hairType,self.colors[self.hairColor],job=self.jobs[self.job],preview=True)
 			self.preview.setState("Walk")
 			self.preview.setDirection(d)
 			self.preview.getGraphicObject().setFrame(f)
@@ -2259,13 +2272,13 @@ class CharacterCreator(Menu):
 		if self.pos[1] == 0:
 			self.editingName = not self.editingName
 			self.inputDump.clear()
-		elif self.pos[1] == 5:
+		elif self.pos[1] == 6:
 			self.close = True
 			if self.pos[0] == 0:
 				self.value = "Main"
 			elif self.pos[0] == 1:
 				self.value = "Play"
-				self.player=self.playerClass(self.name,self.clothingType,self.colors[self.clothingColor],self.hairType,self.colors[self.hairColor])
+				self.player=self.playerClass(self.name,self.clothingType,self.colors[self.clothingColor],self.hairType,self.colors[self.hairColor],job=self.jobs[self.job])
 		else:
 			self.move=0.25
 			self.SelRight()
@@ -2308,6 +2321,10 @@ class CharacterCreator(Menu):
 		else:
 			screen.blit(font.render("Color: "+str(self.hairColor),False,config.ColorFont,config.Color),(10,66))
 		if self.pos[1] == 5:
+			screen.blit(font.render("Class: "+self.jobs[self.job],False,config.ColorSel,config.Color),(10,82))
+		else:
+			screen.blit(font.render("Class: "+self.jobs[self.job],False,config.ColorFont,config.Color),(10,82))
+		if self.pos[1] == 6:
 			if self.pos[0] == 0:
 				screen.blit(font.render("Back",False,config.ColorSel,config.Color),(10,138))
 				screen.blit(font.render("Ok",False,config.ColorFont,config.Color),(50,138))

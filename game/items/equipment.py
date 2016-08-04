@@ -5,11 +5,12 @@ from item import Item
 import config
 
 class Equipment(Item):
-	def __init__(self,Name,Sprite,Slot,Stats,value,Amount=1):
+	def __init__(self,Name,Sprite,Slot,Stats,value,Reqs={},Amount=1):
 		Item.__init__(self,Name,Sprite,"Equipment",value,Amount)
 		self.slot=Slot
 		self.stats=Stats
-		self.equiped = False
+		self.reqs=Reqs
+		self.equiped=False
 
 	def equip(self):
 		self.equiped = not self.equiped
@@ -22,6 +23,9 @@ class Equipment(Item):
 
 	def getStats(self):
 		return self.stats
+
+	def getReqs(self):
+		return self.reqs
 
 	def getDescription(self):
 		ret = ""
@@ -37,8 +41,8 @@ class Equipment(Item):
 		return False
 
 class Body(Equipment):
-	def __init__(self,name,sprite,stats,value,amount=1):
-		Equipment.__init__(self,name,sprite,"Body",stats,value,amount)
+	def __init__(self,name,sprite,stats,value,reqs={},amount=1):
+		Equipment.__init__(self,name,sprite,"Body",stats,value,reqs,amount)
 
 ## %Weapon Archtype
 #
@@ -59,8 +63,8 @@ class Weapon(Equipment):
 	#  @param amount How many of this weapon the player has.
 	#  @param offset At what offset to draw the weapon in battle.
 	#  @param projectile A dictionary that provides arguements for a Projectile that will be launched when this weapon is used. If does not launch a projectile set to @c None.
-	def __init__(self,name,sprite,stats,atkBox,knockback,hands,style,animationPath,value,recoveryTime=.25,amount=1,offset=[0,0],projectile=None):
-		Equipment.__init__(self,name,sprite,"Arms",stats,value,amount)
+	def __init__(self,name,sprite,stats,atkBox,knockback,hands,style,animationPath,value,recoveryTime=.25,reqs={},amount=1,offset=[0,0],projectile=None):
+		Equipment.__init__(self,name,sprite,"Arms",stats,value,reqs,amount)
 		self.style = style
 		self.atkBox = atkBox
 		self.knockback = knockback
@@ -110,10 +114,10 @@ class OHSword(Weapon):
 	## Constructor
 	#
 	#  See Weapon for parameter descriptions.
-	def __init__(self,name,sprite,stats,atkBox,knockback,animationPath,value,recoveryTime=.25,amount=1,offset=[0,-7]):
+	def __init__(self,name,sprite,stats,atkBox,knockback,animationPath,value,recoveryTime=.25,reqs={},amount=1,offset=[0,-7]):
 		#Style:				Name,Chain,reactionTime,frameOrder,frameDelay
 		style = ComboWeaponStyle("OHSword",3,.20,[["Attack1.png","Attack2.png","Attack3.png"],["Attack4.png","Attack5.png","Attack6.png"],["Attack1.png","Attack2.png","Attack3.png"]],[[.05,.15,.25],[.05,.15,.25],[.05,.15,.25]])
-		Weapon.__init__(self,name,sprite,stats,atkBox,knockback,1,style,animationPath,value,recoveryTime,amount,offset)
+		Weapon.__init__(self,name,sprite,stats,atkBox,knockback,1,style,animationPath,value,recoveryTime,reqs,amount,offset)
 
 ## Bow Parent Class
 #
@@ -123,10 +127,10 @@ class Bow(Weapon):
 	## Constructor
 	#
 	#  See Weapon for parameter descriptions.
-	def __init__(self,name,sprite,stats,knockback,animationPath,value,recoveryTime=.25,amount=1,offset=[0,0]):
+	def __init__(self,name,sprite,stats,knockback,animationPath,value,recoveryTime=.25,reqs={},amount=1,offset=[0,0]):
 		style = ChargeWeaponStyle("Bow",5,2,.35,["Attack1.png","Attack2.png","Attack3.png","Attack4.png","Attack5.png"])
 		proj = {"graphicObject":"Battle/Projectiles/WoodArrow.png","atkbox":[pygame.rect.Rect([0,0,14,25]),pygame.rect.Rect([0,0,14,25])],"damage":stats["Atk"],"pos":[0,20],"speed":500,"dist":400,"parent":None}
-		Weapon.__init__(self,name,sprite,stats,None,knockback,2,style,animationPath,value,recoveryTime,amount,offset,projectile=proj)
+		Weapon.__init__(self,name,sprite,stats,None,knockback,2,style,animationPath,value,recoveryTime,reqs,amount,offset,projectile=proj)
 
 #One Handed Swords:
 
@@ -138,7 +142,7 @@ class IronShortSword(OHSword):
 	#  @param amount Amount of the item in this stack/inventory.
 	def __init__(self):
 		hitbox = [pygame.rect.Rect([-2,0,31,67]),pygame.rect.Rect([24,0,31,67])]
-		OHSword.__init__(self,"Iron Short Sword",pygame.image.load(config.AssetPath+"Icons/Items/Weapons/IronShortSword.png"),{"Atk":10},hitbox,5,"Battle/Arms/Swords/IronShortSword/IronShortSword.xml",1000)
+		OHSword.__init__(self,"Iron Short Sword",pygame.image.load(config.AssetPath+"Icons/Items/Weapons/IronShortSword.png"),{"Atk":10},hitbox,5,"Battle/Arms/Swords/IronShortSword/IronShortSword.xml",1000,reqs={"Class":["Warrior"]})
 
 ##Wooden Short Sword
 class WoodenShortSword(OHSword):
@@ -148,7 +152,7 @@ class WoodenShortSword(OHSword):
 	#  @param amount Amount of the item in this stack/inventory.
 	def __init__(self):
 		hitbox = [pygame.rect.Rect([-2,0,31,67]),pygame.rect.Rect([24,0,31,67])]
-		OHSword.__init__(self,"Wooden Short Sword",pygame.image.load(config.AssetPath+"Icons/Items/Weapons/WoodenShortSword.png"),{"Atk":1},hitbox,5,"Battle/Arms/Swords/WoodenShortSword/WoodenShortSword.xml",100)
+		OHSword.__init__(self,"Wooden Short Sword",pygame.image.load(config.AssetPath+"Icons/Items/Weapons/WoodenShortSword.png"),{"Atk":1},hitbox,5,"Battle/Arms/Swords/WoodenShortSword/WoodenShortSword.xml",100,reqs={"Class":["Warrior"]})
 
 #Bows:
 
@@ -157,7 +161,7 @@ class WoodenShortBow(Bow):
 
 	## Constructor
 	def __init__(self):
-		Bow.__init__(self,"Wooden Short Bow",pygame.image.load(config.AssetPath+"Icons/Items/Weapons/WoodenShortBow.png"),{"Atk":1},2,"Battle/Arms/Bows/WoodenShortBow/WoodenShortBow.xml",100)
+		Bow.__init__(self,"Wooden Short Bow",pygame.image.load(config.AssetPath+"Icons/Items/Weapons/WoodenShortBow.png"),{"Atk":1},2,"Battle/Arms/Bows/WoodenShortBow/WoodenShortBow.xml",100,reqs={"Class":["Archer"]})
 
 #Armor (Chest):
 class LeatherTunic(Body):
