@@ -4,13 +4,13 @@
 # Caching things like object images and level backgrounds would probably be a good idea.
 
 import json
+import time
 
 import pygame
 
 #from graphics import GraphicObject,Animation,AnimationFrame,loadAnimation
 #from game import GameObject,Pushable,maskFromSurface
 from game.engine import GameObject, Pushable
-from game.mask import maskFromSurface
 from graphics.animation import Animation, AnimationFrame, loadAnimation
 from graphics.overworld import GraphicObject
 from game.npc import NPC,sNPC,Dialog
@@ -20,6 +20,7 @@ import config
 
 def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 	errors.info("Loading level: "+level)
+	totalStart = time.time()
 
 	try:
 		filer = open(xmlPath,"r")
@@ -56,6 +57,7 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 	NPCs = []
 	i = 0
 
+	start = time.time()
 	while i < len(levelData):	#Isolate Triggers, NPCs, and GameObjects (GraphicObjects must be dealt with immediately because they are contained within GameObjects)
 		temp = {}
 		if levelData[i].startswith("<LevelName>"):
@@ -101,53 +103,10 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 				#for line in levelData:
 				#	print line
 
-			temp["graphicObject"] = {}
-			n=1
-			while levelData[i+n]!="</GameObject>":
-				key = levelData[i+n][1:levelData[i+n].find(">")]
-				if key == "Mask":
-					n+=1
-					temp["mask"] = {}
-					while levelData[i+n]!="</Mask>":
-						state = levelData[i+n][7:levelData[i+n].find(">")]
-						temp["mask"][state] = json.loads(levelData[i+n][levelData[i+n].find(">")+1:levelData[i+n].rfind("<")])
-						n+=1
-					n+=1
-				elif key == "GraphicObject":
-					if "animations" not in temp["graphicObject"]:
-						temp["graphicObject"]["animations"] = {}
-					n+=1
-					while levelData[i+n]!="</GraphicObject>":
-						if levelData[i+n].startswith("<State"):
-							state = levelData[i+n][7:levelData[i+n].find(">")]
-							temp["graphicObject"]["animations"][state] = [None,None,None,None]
-							n+=1
-							while levelData[i+n]!="</State>":
-								#Retrieve Direction
-								dire = int(levelData[i+n][11:levelData[i+n].find(">")])
-								xml = levelData[i+n][levelData[i+n].find(">")+1:levelData[i+n].rfind("<")]
-								if dire == 0:
-									temp["graphicObject"]["animations"][state][dire] = loadAnimation(xml,state+"N")
-								elif dire == 1:
-									temp["graphicObject"]["animations"][state][dire] = loadAnimation(xml,state+"E")
-								elif dire == 2:
-									temp["graphicObject"]["animations"][state][dire] = loadAnimation(xml,state+"S")
-								elif dire == 3:
-									temp["graphicObject"]["animations"][state][dire] = loadAnimation(xml,state+"W")
-								n+=1
-							n+=1
-						else:
-							key = levelData[i+n][levelData[i+n].find("<")+1:levelData[i+n].find(">")]
-							value = levelData[i+n][levelData[i+n].find(">")+1:levelData[i+n].rfind("<")]
-							temp["graphicObject"][key] = json.loads(value)
-							n+=1
-					n+=1
-				else:
-					value = levelData[i+n][levelData[i+n].find(">")+1:levelData[i+n].find("<",levelData[i+n].find(">"))]
-					temp[key[0].lower()+key[1:]]=json.loads(value)
-					n+=1
+			i += loadGameObject(temp,levelData,i)
+
 			GameObjects.append(temp)
-			i+=n
+			#i+=n
 		elif levelData[i].startswith("<NPC"):
 			path = levelData[i].lstrip("<NPC").rstrip(">").lstrip(" ").split(" ")[0]
 			if len(levelData[i].lstrip("<NPC").rstrip(">").lstrip(" ").split(" "))>1:
@@ -169,38 +128,17 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 					levelData.insert(i+j,line)
 					j+=1
 
-			n=1
-			while levelData[i+n]!="</NPC>":
-				key = levelData[i+n][1:levelData[i+n].find(">")]
-				value = levelData[i+n][levelData[i+n].find(">")+1:levelData[i+n].find("<",levelData[i+n].find(">"))]
-				if key == "Dialog":
-					if value != "null":
-						dialog=open(config.AssetPath+value,"r")
-						lines=dialog.readlines()
-						dialog=""
-						for line in lines:
-							dialog+=line.rstrip("\n")
-						dialog.replace("\t","")
-						temp["Dialog"]=json.loads(dialog)
-					else:
-						temp["Dialog"]=None
-				elif key == "AnimeXML":
-					temp["AnimeXML"]=value
-				elif key == "Icon":
-					if value=="null":
-						temp["Icon"]=None
-					else:
-						temp["Icon"]=value
-				else:
-					temp[key]=json.loads(value)
-				n+=1
+			i += loadNPC(temp,levelData,i)
+
 			NPCs.append(temp)
-			i+=1
 		i+=1
+	end = time.time()
+	errors.debug("Took "+str(end-start)+" seconds to parse file.")
 	if Name == None:
 		errors.warning("Level has no Name attribute.")
 		Name = "Unknown Area"
 	GraphicEngine.setLevelName(Name)
+	start = time.time()
 	if BG == None:
 		errors.error("Level has no Background attribute.")
 	else:
@@ -208,6 +146,10 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 			GraphicEngine.setBackground(pygame.image.load(config.AssetPath+BG).convert())
 		except pygame.error:
 			errors.error("Unable to load level background.")
+	end = time.time()
+	errors.debug("Took "+str(end-start)+" seconds to load background.")
+
+	start = time.time()
 	if Mask == None:
 		errors.info("Level has no Mask attribute.")
 	else:
@@ -215,6 +157,8 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 			GameEngine.setMask(pygame.image.load(config.AssetPath+Mask).convert())
 		except pygame.error:
 			errors.error("Unable to load level mask.")
+	end = time.time()
+	errors.debug("Took "+str(end-start)+" seconds to load mask.")
 	if Enemies != None and len(Enemies)>0:
 		if BattleBG == None or len(BattleBG) == 0:
 			errors.info("No battle backgrounds specified for this level.")
@@ -233,6 +177,7 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 		GameEngine.setBattleBG([])
 		GameEngine.setEnemies([])
 
+	start = time.time()
 	for trigger in Triggers:
 		errors.debug("Adding "+trigger["Id"]+" trigger.")
 		# Should probably be using a factory...
@@ -268,7 +213,10 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 			GameEngine.addTrigger(triggers.DialogTrigger(**trigger))
 		else:
 			errors.error("Undefined Trigger Effect")
+	end = time.time()
+	errors.debug("Took "+str(end-start)+" seconds to create triggers.")
 
+	start = time.time()
 	for obj in GameObjects:
 
 		errors.debug("Adding "+obj["id"])
@@ -288,7 +236,7 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 		for state in obj["mask"].keys():
 			if obj["mask"][state] != None:
 				img = pygame.image.load(config.AssetPath+str(obj["mask"][state]))
-				obj["mask"][state] = maskFromSurface(img)
+				obj["mask"][state] = pygame.mask.from_surface(img)
 		if obj["graphicObject"].keys().__contains__("flipX"):
 			for state in obj["graphicObject"]["animations"].keys():
 				i=0
@@ -324,7 +272,10 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 			GameEngine.addActor(Pushable(**obj))
 		else:
 			GameEngine.addActor(GameObject(**obj))
+	end = time.time()
+	errors.debug("Took "+str(end-start)+" seconds to create objects.")
 
+	start = time.time()
 	for npc in NPCs:
 		if "AnimeXML" in npc:
 			errors.debug("Adding sNPC: "+npc["Id"])
@@ -344,9 +295,104 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 			temp = NPC(**npc)
 			GameEngine.addNPC(temp)
 			GraphicEngine.addObject(temp.getGraphicObject())
+	end = time.time()
+	errors.debug("Took "+str(end-start)+" seconds to create NPCs.")
 
 	filer.close()
+	totalEnd = time.time()
+	errors.info("Took "+str(totalEnd-totalStart)+" seconds to load level.")
 
+## Loads a gameObject
+#
+#  @param temp A dictionary containing the object data extracted from the levelData.
+#  @param levelData A list of strings representing the level data the object will
+#      be loaded from.
+#  @param i The line that the object starts on.
+#
+#  @returns int How many lines this object took in the levelData.
+def loadGameObject(temp,levelData,i):
+	temp["graphicObject"] = {}
+	n=1
+	while levelData[i+n]!="</GameObject>":
+		key = levelData[i+n][1:levelData[i+n].find(">")]
+		if key == "Mask":
+			n+=1
+			temp["mask"] = {}
+			while levelData[i+n]!="</Mask>":
+				state = levelData[i+n][7:levelData[i+n].find(">")]
+				temp["mask"][state] = json.loads(levelData[i+n][levelData[i+n].find(">")+1:levelData[i+n].rfind("<")])
+				n+=1
+			n+=1
+		elif key == "GraphicObject":
+			if "animations" not in temp["graphicObject"]:
+				temp["graphicObject"]["animations"] = {}
+			n+=1
+			while levelData[i+n]!="</GraphicObject>":
+				if levelData[i+n].startswith("<State"):
+					state = levelData[i+n][7:levelData[i+n].find(">")]
+					temp["graphicObject"]["animations"][state] = [None,None,None,None]
+					n+=1
+					while levelData[i+n]!="</State>":
+						#Retrieve Direction
+						dire = int(levelData[i+n][11:levelData[i+n].find(">")])
+						xml = levelData[i+n][levelData[i+n].find(">")+1:levelData[i+n].rfind("<")]
+						if dire == 0:
+							temp["graphicObject"]["animations"][state][dire] = loadAnimation(xml,state+"N")
+						elif dire == 1:
+							temp["graphicObject"]["animations"][state][dire] = loadAnimation(xml,state+"E")
+						elif dire == 2:
+							temp["graphicObject"]["animations"][state][dire] = loadAnimation(xml,state+"S")
+						elif dire == 3:
+							temp["graphicObject"]["animations"][state][dire] = loadAnimation(xml,state+"W")
+						n+=1
+					n+=1
+				else:
+					key = levelData[i+n][levelData[i+n].find("<")+1:levelData[i+n].find(">")]
+					value = levelData[i+n][levelData[i+n].find(">")+1:levelData[i+n].rfind("<")]
+					temp["graphicObject"][key] = json.loads(value)
+					n+=1
+			n+=1
+		else:
+			value = levelData[i+n][levelData[i+n].find(">")+1:levelData[i+n].find("<",levelData[i+n].find(">"))]
+			temp[key[0].lower()+key[1:]]=json.loads(value)
+			n+=1
+	return n
+
+## Loads a NPC
+#
+#  @param temp A dictionary containing the object data extracted from the levelData.
+#  @param levelData A list of strings representing the level data the object will
+#      be loaded from.
+#  @param i The line that the object starts on.
+#
+#  @returns int How many lines this object took in the levelData.
+def loadNPC(temp,levelData,i):
+	n=1
+	while levelData[i+n]!="</NPC>":
+		key = levelData[i+n][1:levelData[i+n].find(">")]
+		value = levelData[i+n][levelData[i+n].find(">")+1:levelData[i+n].find("<",levelData[i+n].find(">"))]
+		if key == "Dialog":
+			if value != "null":
+				dialog=open(config.AssetPath+value,"r")
+				lines=dialog.readlines()
+				dialog=""
+				for line in lines:
+					dialog+=line.rstrip("\n")
+				dialog.replace("\t","")
+				temp["Dialog"]=json.loads(dialog)
+			else:
+				temp["Dialog"]=None
+		elif key == "AnimeXML":
+			temp["AnimeXML"]=value
+		elif key == "Icon":
+			if value=="null":
+				temp["Icon"]=None
+			else:
+				temp["Icon"]=value
+		else:
+			temp[key]=json.loads(value)
+		n+=1
+	return n
 
 def loadDialog(data):
 	if data==None:

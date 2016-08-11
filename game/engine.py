@@ -5,7 +5,6 @@ import random
 
 import config
 import errors
-from mask import maskFromSurface
 from items.factory import ItemFactory
 from quests import loadQuest
 
@@ -68,7 +67,7 @@ class GameEngine(object):
 		if self.physics:
 			if mask != None:
 				try:
-					self.boundaries = maskFromSurface(mask)
+					self.boundaries = pygame.mask.from_surface(mask)
 				except pygame.error:
 					self.boundaries = None
 			else:
