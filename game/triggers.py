@@ -402,4 +402,22 @@ class QuestCompleteTrigger(Trigger):
 		else:
 			return True
 
+class DialogTrigger(Trigger):
+	def __init__(self,Type,Area,Id,Dialog,AutoReset=False,Active=True):
+		Trigger.__init__(self,Type,Area,Id,"Dialog",AutoReset,Active)
+		self.dialog = Dialog
+
+	## Returns the dialog this trigger gives the player.
+	def getDialog(self):
+		return self.dialog
+
+	## Activates this trigger.
+	def trigger(self):
+		if self.triggerCheck():
+			self.triggered = True
+			errors.debug(self.getID()+" triggered.")
+			return False
+		else:
+			return True
+
 #class Effect(object):

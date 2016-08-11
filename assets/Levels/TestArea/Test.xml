@@ -33,8 +33,9 @@
 		<Id>"Lever2Dialog"<Id>
 		<Type>"Action"</Type>
 		<Area>[150,10,20,20]</Area>
+		<AutoReset>true</AutoReset>
 		<Effect>"Dialog"</Effect>
-			<Dialog>{"Text":"Nothing happened...","Options":[],"Links":[null]}</Dialog>
+			<Dialog>{"Text":["Nothing happened..."],"Options":[],"Links":[null]}</Dialog>
 	</Trigger>
 	<Trigger>
 		<Id>"Lever1Flip"</Id>

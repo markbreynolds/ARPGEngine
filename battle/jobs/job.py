@@ -53,6 +53,12 @@ class Job(object):
 	def getStatChange(self):
 		return {"HP":0,"MP":0,"Atk":0,"Def":0,"Spd":0,"Vit":0,"Mag":0,"Res":0,"Con":0,"Mnd":0}
 
+	## Returns how the character's stats are affected by their skills.
+	#
+	#  Should be overriden by subclass.
+	def getSkillStats(self):
+		return {"Hp":0,"Mp":0,"Atk":0,"Def":0,"Spd":0,"Vit":0,"Mag":0,"Res":0,"Con":0,"Mnd":0}
+
 ## Warrior job
 class Warrior(Job):
 
@@ -60,7 +66,9 @@ class Warrior(Job):
 	#
 	#  @param What level warrior the character is.
 	def __init__(self,level):
-		Job.__init__(self,"Warrior",[PowerThrust(),WaveSlash(),HpUp(),DefUp()],Icons.warriorSmall,level)
+		self.HpUp = HpUp()
+		self.DefUp = DefUp()
+		Job.__init__(self,"Warrior",[PowerThrust(),WaveSlash(),self.HpUp,self.DefUp],Icons.warriorSmall,level)
 
 	## Returns the starting stats for this job.
 	#
@@ -73,11 +81,15 @@ class Warrior(Job):
 	#
 	#  Available stat points per level: 5
 	def getStatChange(self):
-		if self.level%5==0:
+		if (self.level+1)%5==0:
 			return {"HP":1,"MP":1,"Atk":1,"Def":1,"Spd":1,"Vit":0,"Mag":0,"Res":0,"Con":0,"Mnd":0}
-		elif self.level%2==0:
+		elif (self.level+1)%2==0:
 			return {"HP":2,"MP":1,"Atk":1,"Def":0,"Spd":0,"Vit":1,"Mag":0,"Res":0,"Con":0,"Mnd":0}
 		return {"HP":2,"MP":0,"Atk":1,"Def":1,"Spd":0,"Vit":1,"Mag":0,"Res":0,"Con":0,"Mnd":0}
+
+	## Returns how the character's stats are affected by their skills.
+	def getSkillStats(self):
+		return {"Hp":self.HpUp.getStats()["Hp"],"Mp":0,"Atk":0,"Def":self.DefUp.getStats()["Def"],"Spd":0,"Vit":0,"Mag":0,"Res":0,"Con":0,"Mnd":0}
 
 ## Archer job
 class Archer(Job):
@@ -86,7 +98,8 @@ class Archer(Job):
 	#
 	#  @param level Whata level archer the character is.
 	def __init__(self,level):
-		Job.__init__(self,"Archer",[SpdUp()],Icons.archerSmall,level)
+		self.SpdUp = SpdUp()
+		Job.__init__(self,"Archer",[self.SpdUp],Icons.archerSmall,level)
 
 	## Returns the stating stats for this job.
 	#
@@ -99,8 +112,12 @@ class Archer(Job):
 	#
 	#  Available stat points per level: 5
 	def getStatChange(self):
-		if self.level%5==0:
+		if (self.level+1)%5==0:
 			return {"HP":2,"MP":1,"Atk":0,"Def":1,"Spd":0,"Vit":1,"Mag":0,"Res":0,"Con":0,"Mnd":0}
-		elif self.level%2==0:
+		elif (self.level+1)%2==0:
 			return {"HP":2,"MP":0,"Atk":1,"Def":0,"Spd":1,"Vit":1,"Mag":0,"Res":0,"Con":0,"Mnd":0}
 		return {"HP":1,"MP":1,"Atk":1,"Def":0,"Spd":2,"Vit":0,"Mag":0,"Res":0,"Con":0,"Mnd":0}
+
+	## Returns how the character's stats are affected by their skills.
+	def getSkillStats(self):
+		return {"Hp":0,"Mp":0,"Atk":0,"Def":0,"Spd":self.SpdUp.getStats()["Spd"],"Vit":0,"Mag":0,"Res":0,"Con":0,"Mnd":0}

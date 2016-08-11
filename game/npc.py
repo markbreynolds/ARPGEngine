@@ -21,6 +21,31 @@ from graphics.battle import BattleGraphicObject
 #
 # @note Branches require a link other than None.
 class Dialog(object):
+
+	## Constructor
+	#
+	#   @param Text A list containing text where each item reperesents a line.
+	#      Line wrap occurs automatically.
+	#   @param Options A list containing options for the player to choose from.
+	#   @param Links A list containing references to other Dialog objects in the
+	#      conversation. The first item in the @c Options list refers to the first
+	#      item in the @c Links list, etc.
+	#   @param Actions A list containing strings describing actions to take if a
+	#      player chooses certain options. The first item in @c Options list
+	#      refers to the first item in the @c Actions list. Actions include:
+	#        + Buy
+	#        + Sell
+	#        + Sleep
+	#        + Trigger
+	#        + Quest
+	#        + Branch
+	#   @param Branches A list containing references to other Dialog objects to
+	#      be used if the player selects certain options. The first item in the
+	#      @c Options list refers to the first item in the @c Branches list.
+	#   @param PreAction An action to be performed before the dialog is shown.
+	#      Can be any of the actions that can be used in the @c Actions list.
+	#   @param PreBranch A reference to the dialog to shown if the preaction
+	#      calls for a branch.
 	def __init__(self,Text,Options,Links,Actions=None,Branches=None,PreAction=None,PreBranch=None):
 		self.text=Text
 		self.options=Options
@@ -36,24 +61,31 @@ class Dialog(object):
 		self.preAction = PreAction
 		self.preBranch = PreBranch
 
+	## Returns a list containing the text for this dialog.
 	def getText(self):
 		return self.text
 
+	## Returns a list containing the options for this dialog.
 	def getOptions(self):
 		return self.options
 
+	## Returns a list containing the links for this dialog.
 	def getLinks(self):
 		return self.links
 
+	## Returns a list containing the actions for this dialog.
 	def getActions(self):
 		return self.actions
 
+	## Returns the preaction for this dialog.
 	def getPreAction(self):
 		return self.preAction
 
+	## Return a list containing the branches for this dialog.
 	def getBranches(self):
 		return self.branches
 
+	## returns the prebranch for this dialog.
 	def getPreBranch(self):
 		return self.preBranch
 

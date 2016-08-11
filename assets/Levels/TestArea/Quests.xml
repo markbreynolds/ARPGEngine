@@ -44,6 +44,10 @@
 	</Objective>
 	<Objective Inspect>
 		<Name>"Inspect the well."</Name>
-		<Description>["Inspect the well to look for","clues about the monster sighting"]</Description>
+		<Description>["Inspect the well to look for","clues about the monster","sighting."]</Description>
+	</Objective>
+	<Objective Venture>
+		<Name>"Venture into the well."</Name>
+		<Description>["Venture deeper in to the well","to look for clues about","the monster sightings."]</Description>
 	</Objective>
 </Quest>

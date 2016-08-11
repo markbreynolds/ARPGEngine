@@ -24,6 +24,8 @@ class Enemy(BattleObject):
 		self.baseExp = baseExp
 		self.baseGold = baseGold
 		self.statOffsets = {"HpM":0,"MpM":0,"Atk":0,"Def":0,"Spd":0,"Vit":0,"Mag":0,"Res":0,"Con":0,"Mnd":0}
+		self.statSkillOffsets = {"Hp":0,"Mp":0,"Atk":0,"Def":0,"Spd":0,"Vit":0,"Mag":0,"Res":0,"Con":0,"Mnd":0}
+		self.statBuffOffsets = {"Hp":0,"Mp":0,"Atk":0,"Def":0,"Spd":0,"Vit":0,"Mag":0,"Res":0,"Con":0,"Mnd":0}
 
 		self.weaponType = "Combo"
 

@@ -212,6 +212,8 @@ class BattleObject(object):
 		self.Mnd=Mnd	#Mind
 
 		self.statOffsets = {"HpM":0,"MpM":0,"Atk":0,"Def":0,"Spd":0,"Vit":0,"Mag":0,"Res":0,"Con":0,"Mnd":0}
+		self.statSkillOffsets = {"Hp":0,"Mp":0,"Atk":0,"Def":0,"Spd":0,"Vit":0,"Mag":0,"Res":0,"Con":0,"Mnd":0}
+		self.statBuffOffsets = {"Hp":0,"Mp":0,"Atk":0,"Def":0,"Spd":0,"Vit":0,"Mag":0,"Res":0,"Con":0,"Mnd":0}
 
 		self.time=0.0
 		self.state="Idle"
@@ -314,35 +316,35 @@ class BattleObject(object):
 
 	## Returns this actor's attack power.
 	def getAtk(self):
-		return self.Atk+self.statOffsets["Atk"]
+		return self.Atk+self.statOffsets["Atk"]+self.statSkillOffsets["Atk"]
 
 	## Returns this actor's defense.
 	def getDef(self):
-		return self.Def+self.statOffsets["Def"]
+		return self.Def+self.statOffsets["Def"]+self.statSkillOffsets["Def"]
 
 	## Returns this actor's speed.
 	def getSpd(self):
-		return self.Spd+self.statOffsets["Spd"]
+		return self.Spd+self.statOffsets["Spd"]+self.statSkillOffsets["Spd"]
 
 	## Returns this actor's vitality.
 	def getVit(self):
-		return self.Vit+self.statOffsets["Vit"]
+		return self.Vit+self.statOffsets["Vit"]+self.statSkillOffsets["Vit"]
 
 	## Returns this actor's magic strength.
 	def getMag(self):
-		return self.Mag+self.statOffsets["Mag"]
+		return self.Mag+self.statOffsets["Mag"]+self.statSkillOffsets["Mag"]
 
 	## Returns this actor's magic resistance.
 	def getRes(self):
-		return self.Res+self.statOffsets["Res"]
+		return self.Res+self.statOffsets["Res"]+self.statSkillOffsets["Res"]
 
 	## Returns this actor's concentration.
 	def getCon(self):
-		return self.Con+self.statOffsets["Con"]
+		return self.Con+self.statOffsets["Con"]+self.statSkillOffsets["Con"]
 
 	## Returns this actor's mind.
 	def getMnd(self):
-		return self.Mnd+self.statOffsets["Mnd"]
+		return self.Mnd+self.statOffsets["Mnd"]+self.statSkillOffsets["Mnd"]
 
 	## Returns this actor's natural attack power.
 	def getAtkN(self):
@@ -378,11 +380,11 @@ class BattleObject(object):
 
 	## Returns this actor's maximum health.
 	def getHPM(self):
-		return self.HpM+self.statOffsets["HpM"]
+		return self.HpM+self.statOffsets["HpM"]+self.statSkillOffsets["Hp"]
 
 	## Returns this actor's maximum health formatted prettily as a string.
 	def getHPMS(self):
-		HpM=self.HpM+self.statOffsets["HpM"]
+		HpM=self.HpM+self.statOffsets["HpM"]+self.statSkillOffsets["Hp"]
 		if HpM > 9999:
 			return str(HpM/1000)+"K"
 		return str(HpM)
@@ -399,11 +401,11 @@ class BattleObject(object):
 
 	## Returns this actor's maximum mana power.
 	def getMPM(self):
-		return self.MpM+self.statOffsets["MpM"]
+		return self.MpM+self.statOffsets["MpM"]+self.statSkillOffsets["Mp"]
 
 	## Returns this actor's maximum mana power formatted prettily as a string.
 	def getMPMS(self):
-		MpM=self.MpM+self.statOffsets["MpM"]
+		MpM=self.MpM+self.statOffsets["MpM"]+self.statSkillOffsets["Mp"]
 		if MpM > 9999:
 			return str(MpM/1000)+"K"
 		return str(MpM)
@@ -567,6 +569,7 @@ class BattleObject(object):
 		self.Res += Res
 		self.Con += Con
 		self.Mnd += Mnd
+		self.statSkillOffsets = self.job.getSkillStats()
 
 	## Updates the currently equipped weapon.
 	def updateWeapon(self,weapon,animations):

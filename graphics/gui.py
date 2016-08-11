@@ -985,7 +985,6 @@ class InvenMenu(Menu):
 			elif self.menu==2:	#In Character Sheet
 				if self.pos[1]==1:
 					if self.sel.getBattleObject().getExp() >= self.sel.getBattleObject().getExpNext():
-						self.sel.levelUp()
 						self.menu=4
 				elif self.pos[1]>=9:
 					self.menu=5
@@ -1000,8 +999,10 @@ class InvenMenu(Menu):
 						self.menu = 6
 					else:
 						self.menu = 2
+						self.sel.levelUp()
 				else:
 					self.menu = 2
+					self.sel.levelUp()
 			elif self.menu==5:	#Skill Assign
 				if self.subPos == 0:
 					skill = None
@@ -1022,6 +1023,7 @@ class InvenMenu(Menu):
 				self.menu = 2
 			elif self.menu==6:	#Level up skill
 				self.sel.getJob().getUnlockedSkills()[self.subPos].levelUp()
+				self.sel.levelUp()
 				self.menu = 2
 		if reset:
 			self.subPos=0

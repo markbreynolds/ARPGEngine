@@ -58,12 +58,11 @@
 #      - <b>Dialog</b>
 #      - <b>Actions/Dialog Sync</b>
 #    -# <b>Triggers</b>
-#      - <b>Dialog Trigger</b>
+#      - Dialog Trigger - Done
 #      - <b>Cutscene Trigger</b>
-#      - <b>QuestStateChange Trigger</b>
 #    -# <b>Skills</b>
 #      - Melee Skills - Done
-#      - <b>Stat Skills</b>
+#      - Stat Skills - Done
 #      - <b>Buff Skills</b>
 #      - <b>Warrior Skills (5)</b>
 #      - <b>Archer Skills (5)</b>
@@ -99,7 +98,12 @@
 #      - <b>Add Options</b>
 #      - <b>Quiting Warning</b>
 #    -# <b>Saving</b>
+#    -# <b>Notifications</b>
+#      - <b>Quest Notifications</b>
+#      - <b>Item Get Notifications</b>
+#      - >b>Party Change Notifications?</b>
 #    -# <b>Triggers</b>
+#      - <b>QuestStateChange Trigger?</b>
 #      - <b>Trigger Effect Classes</b>
 #    -# <b>Unit Tests</b>
 #      - <b>InputEngine?</b>
@@ -313,7 +317,7 @@ while menu:
 
 #loadNewArea("Levels/TestArea/TestVillage.xml","VillageMain");Player.getGameObject().setPos([400,550])
 #loadNewArea("Levels/TestArea/TestVillage.xml","VillageInn");Player.getGameObject().setPos([100,100])
-loadNewArea("Levels/TestArea/Test.xml","Test4");Player.getGameObject().setPos([100,100])
+loadNewArea("Levels/TestArea/Test.xml","Test5");Player.getGameObject().setPos([100,100])
 graphicsEngine.setPlayer(Player.getGraphicObject())
 gameEngine.setPlayer(Player.getGameObject())
 

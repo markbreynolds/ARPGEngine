@@ -388,7 +388,7 @@ class Player(object):
 		return animations
 
 	def getSkillLevelUp(self):
-		if self.battleObject.level%2 == 0:
+		if (self.battleObject.level+1)%2 == 0:
 			return True
 		return False
 
@@ -501,8 +501,8 @@ class Player(object):
 
 	## Levels up this character and changes their stats.
 	def levelUp(self):
-		self.job.level+=1
 		self.battleObject.levelUp(**self.job.getStatChange())
+		self.job.level+=1
 
 	## Returns this class's job
 	def getJob(self):

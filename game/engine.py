@@ -164,15 +164,16 @@ class GameEngine(object):
 				quest = self.player.getParent().getQuests()[action[1]+":"+action[2]]
 				quest.completeObjective(action[3])
 				if quest.getCompleted():
-					for reward in quest.getRewards():
-						key,val = reward.split(" ",1)
-						if key == "Gold":
-							self.player.getParent().getInventory().addGold(int(val))
-						elif key == "Exp":
-							self.player.getParent().getBattleObject().addExp(int(val))
-						elif key == "Item":
-							item = ItemFactory.createItem(val.split(" "))
-							self.player.getParent().getInventory().addItem(item)
+					if reward != None:
+						for reward in quest.getRewards():
+							key,val = reward.split(" ",1)
+							if key == "Gold":
+								self.player.getParent().getInventory().addGold(int(val))
+							elif key == "Exp":
+								self.player.getParent().getBattleObject().addExp(int(val))
+							elif key == "Item":
+								item = ItemFactory.createItem(val.split(" "))
+								self.player.getParent().getInventory().addItem(item)
 					errors.info("Completed quest: "+action[2])
 				else:
 					errors.debug("Completed "+action[3]+" in "+action[2])
@@ -222,6 +223,10 @@ class GameEngine(object):
 					elif trigger.getEffect() == "Quest Complete":
 						if not trigger.trigger():
 							self.questAction(["Complete",trigger.getQuestXML(),trigger.getQuest(),trigger.getObjective()])
+					elif trigger.getEffect() == "Dialog":
+						if not trigger.trigger():
+							self.player.setTalking(DialogDummy(trigger.getDialog()))
+
 					else:
 						trigger.trigger(interactor,self.actors)
 		if interactor.getID()=="Player":
@@ -559,3 +564,33 @@ class Pushable(GameObject):
 class Container(GameObject):
 	def __init__(self,pos,mask,area,spd,graphicObject,id,contains=[],state="Idle",rememberState=True):
 		GameObject.__init__(self,pos,mask,spd,graphicObject,id,state,rememberState)
+
+## A placeholder that allows the DialogTrigger to have someone for the Player to
+#  "talk to".
+class DialogDummy(object):
+
+	## Constructor
+	#
+	#  @param dialog The dialog to show when talking.
+	#  @param name The name to show when talking.
+	#  @param icon The icon to show when talking.
+	def __init__(self,dialog,name=None,icon=None):
+		self.dialog = dialog
+		self.name = name
+		self.icon = icon
+
+	## Returns the DIalog object for this class.
+	def getDialog(self):
+		return self.dialog
+
+	## Returns the name for this class.
+	def getName(self):
+		return self.name
+
+	## Returns the icon for this class.
+	def getIcon(self):
+		return self.icon
+
+	def setTalking(self,talking):
+		if talking == False:
+			del self
