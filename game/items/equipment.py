@@ -63,7 +63,8 @@ class Weapon(Equipment):
 	#  @param amount How many of this weapon the player has.
 	#  @param offset At what offset to draw the weapon in battle.
 	#  @param projectile A dictionary that provides arguements for a Projectile that will be launched when this weapon is used. If does not launch a projectile set to @c None.
-	def __init__(self,name,sprite,stats,atkBox,knockback,hands,style,animationPath,value,recoveryTime=.25,reqs={},amount=1,offset=[0,0],projectile=None):
+	#  @param skills A list of the skills this weapon can perform. The weapon must have animations for all of these skills.
+	def __init__(self,name,sprite,stats,atkBox,knockback,hands,style,animationPath,value,recoveryTime=.25,reqs={},amount=1,offset=[0,0],projectile=None,skills=[]):
 		Equipment.__init__(self,name,sprite,"Arms",stats,value,reqs,amount)
 		self.style = style
 		self.atkBox = atkBox
@@ -73,6 +74,7 @@ class Weapon(Equipment):
 		self.recoveryTime = recoveryTime
 		self.offset = offset
 		self.projectile=projectile
+		self.skills=set(skills)
 
 	## Returns the hitRange for this weapon.
 	def getAtkBox(self):
@@ -106,6 +108,10 @@ class Weapon(Equipment):
 	def getProjectile(self):
 		return self.projectile
 
+	## Returns a set containing the skills this weapon
+	def getSkills(self):
+		return self.skills
+
 ## One Handed Sword Parent Class
 #
 #  One handed swords should subclass this class.
@@ -117,7 +123,7 @@ class OHSword(Weapon):
 	def __init__(self,name,sprite,stats,atkBox,knockback,animationPath,value,recoveryTime=.25,reqs={},amount=1,offset=[0,-7]):
 		#Style:				Name,Chain,reactionTime,frameOrder,frameDelay
 		style = ComboWeaponStyle("OHSword",3,.20,[["Attack1.png","Attack2.png","Attack3.png"],["Attack4.png","Attack5.png","Attack6.png"],["Attack1.png","Attack2.png","Attack3.png"]],[[.05,.15,.25],[.05,.15,.25],[.05,.15,.25]])
-		Weapon.__init__(self,name,sprite,stats,atkBox,knockback,1,style,animationPath,value,recoveryTime,reqs,amount,offset)
+		Weapon.__init__(self,name,sprite,stats,atkBox,knockback,1,style,animationPath,value,recoveryTime,reqs,amount,offset,skills=["Thrust"])
 
 ## Bow Parent Class
 #

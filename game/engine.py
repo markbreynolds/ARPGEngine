@@ -62,11 +62,13 @@ class GameEngine(object):
 
 	## Sets the boundaries for this level.
 	#
-	#  @param mask The path to the image that describes the boundaries of this level.
+	#  @param mask The 1-bit image that describes the boundaries of this level.
 	def setMask(self,mask):
 		if self.physics:
 			if mask != None:
 				try:
+					#self.boundaries = pygame.mask.from_threshold(mask,[255,255,255],(127,127,127,127))
+					mask.set_colorkey((0,0,0))
 					self.boundaries = pygame.mask.from_surface(mask)
 				except pygame.error:
 					self.boundaries = None

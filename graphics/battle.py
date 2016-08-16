@@ -375,7 +375,7 @@ class BattleGraphicObject(object):
 		return BattleGraphicObject(self.animations,self.getPos(),self.spd,self.direction,self.state,self.weapon)
 
 	## Generates the weapons animation data.
-	def genWeaponAnim(self,skills=[]):
+	def genWeaponAnim(self,skills=set()):
 		if self.weapon != None:
 			self.weaponAnim = {}
 			self.weaponAnim["Idle"] = [Animation(None,None,"IdleW"),loadAnimation(self.weapon.getAnimationPath(),"Idle")]
@@ -423,7 +423,7 @@ class BattleGraphicObject(object):
 				i+=1
 
 			#Skills:
-			for skill in skills:
+			for skill in iter(skills):
 				print skill
 				self.weaponAnim[skill] = [Animation(None,None,skill+"W"),loadAnimation(self.weapon.getAnimationPath(),skill)]
 				temp = self.weaponAnim[skill][1].getFrames()
@@ -521,7 +521,7 @@ class BattleGraphicObject(object):
 	def getSpd(self):
 		return self.spd
 
-	def setWeapon(self,weapon,skills=[]):
+	def setWeapon(self,weapon,skills=set()):
 		self.weapon=weapon
 		self.genWeaponAnim(skills)
 		if self.weapon != None:

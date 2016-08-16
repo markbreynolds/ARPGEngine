@@ -55,5 +55,6 @@
 		<State Idle>
 			<Direction 0>Objects/Scenery/FloorDrain.xml</Direction>
 		</State>
+		<layer>-1</Layer>
 	</GraphicObject>
 </GameObject>

@@ -599,12 +599,12 @@ class BattleObject(object):
 			for item in delay:
 				self.weaponDelay.append(sum(item))
 
-		skills=[]
+		skills=set()
 		if self.isPlayer():
 			if self.job.getName() == "Warrior":
-				skills=["Thrust"]
+				skills=set(["Thrust"])
 
-		self.graphicObject.setWeapon(weapon,skills)
+		self.graphicObject.setWeapon(weapon,skills.intersection(weapon.getSkills()))
 		self.graphicObject.updateAnimations(animations)
 
 	## Code for AI calls

@@ -77,6 +77,7 @@
 #      - <b>Chests</b>
 #      - <b>Puzzles</b>
 #      - <b>Cutscene</b>
+#      - <b>Mini Boss</b>
 #      - <b>Boss</b>
 #    -# <b>Documentation</b>
 #      - <b>package documentation for Game Object, Pushables, etc.</b>
@@ -316,8 +317,8 @@ while menu:
 
 
 #loadNewArea("Levels/TestArea/TestVillage.xml","VillageMain");Player.getGameObject().setPos([400,550])
-#loadNewArea("Levels/TestArea/TestVillage.xml","VillageInn");Player.getGameObject().setPos([100,100])
-loadNewArea("Levels/TestArea/Test.xml","Test5");Player.getGameObject().setPos([100,100])
+loadNewArea("Levels/TestArea/TestVillage.xml","VillageInn");Player.getGameObject().setPos([100,100])
+#loadNewArea("Levels/TestArea/Test.xml","Test5");Player.getGameObject().setPos([100,100])
 graphicsEngine.setPlayer(Player.getGraphicObject())
 gameEngine.setPlayer(Player.getGameObject())
 

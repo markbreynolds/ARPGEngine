@@ -351,31 +351,32 @@ class Player(object):
 
 		if self.getJob().getName()=="Warrior" and style != "Unarmed":
 			#Thrust
-			animations["Thrust"] = [Animation(None,None,"ThrustW"),Animation(None,None,"ThrustE")]
-			frameDelay = [.1,.20,.40]
+			if "Thrust" in weapon.getSkills():
+				animations["Thrust"] = [Animation(None,None,"ThrustW"),Animation(None,None,"ThrustE")]
+				frameDelay = [.1,.20,.40]
 
-			for i in range(1,4):
-				temp = pygame.surface.Surface((52,70),flags=SRCALPHA)
+				for i in range(1,4):
+					temp = pygame.surface.Surface((52,70),flags=SRCALPHA)
 
-				body = pygame.image.load(config.AssetPath+"Player/Battle/"+styleName+"/Body/Type"+str(self.clothingType)+"/Thrust"+str(i)+".png").convert_alpha()
-				hair = pygame.image.load(config.AssetPath+"Player/Battle/"+styleName+"/Hair/Type"+str(self.hairType)+"/Thrust"+str(i)+".png").convert_alpha()
-				hair.fill(self.hairColor,special_flags=BLEND_MULT)
-				shirt= pygame.image.load(config.AssetPath+"Player/Battle/"+styleName+"/Shirt/Type"+str(self.clothingType)+"/Thrust"+str(i)+".png").convert_alpha()
-				shirt.fill(self.clothingColor,special_flags=BLEND_MULT)
+					body = pygame.image.load(config.AssetPath+"Player/Battle/"+styleName+"/Body/Type"+str(self.clothingType)+"/Thrust"+str(i)+".png").convert_alpha()
+					hair = pygame.image.load(config.AssetPath+"Player/Battle/"+styleName+"/Hair/Type"+str(self.hairType)+"/Thrust"+str(i)+".png").convert_alpha()
+					hair.fill(self.hairColor,special_flags=BLEND_MULT)
+					shirt= pygame.image.load(config.AssetPath+"Player/Battle/"+styleName+"/Shirt/Type"+str(self.clothingType)+"/Thrust"+str(i)+".png").convert_alpha()
+					shirt.fill(self.clothingColor,special_flags=BLEND_MULT)
 
-				temp.blit(shirt,(0,0))
-				temp.blit(body,(0,0))
-				temp.blit(hair,(0,0))
-				animations["Thrust"][1].addFrame(AnimationFrame(temp,frameDelay[i-1],None,i))
+					temp.blit(shirt,(0,0))
+					temp.blit(body,(0,0))
+					temp.blit(hair,(0,0))
+					animations["Thrust"][1].addFrame(AnimationFrame(temp,frameDelay[i-1],None,i))
 
-			temp = animations["Thrust"][1].getFrames()
-			i=0
-			for frame in temp:
-				animations["Thrust"][0].addFrame(AnimationFrame(pygame.transform.flip(frame.getImage(),True,False),frame.getDelay(),None,i))
-				i+=1
+				temp = animations["Thrust"][1].getFrames()
+				i=0
+				for frame in temp:
+					animations["Thrust"][0].addFrame(AnimationFrame(pygame.transform.flip(frame.getImage(),True,False),frame.getDelay(),None,i))
+					i+=1
 
-			animations["Thrust"][0].setNextAnimation(animations["Idle"][0])
-			animations["Thrust"][1].setNextAnimation(animations["Idle"][1])
+				animations["Thrust"][0].setNextAnimation(animations["Idle"][0])
+				animations["Thrust"][1].setNextAnimation(animations["Idle"][1])
 
 		##And linking...
 		if style == "Unarmed" or style.getType() == "Combo":

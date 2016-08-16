@@ -43,7 +43,7 @@ Difficulty = 1
 # DEBUG = 10
 # NOTSET = 0
 #
-LogVerbosity = 30
+LogVerbosity = 20
 
 ## The size of the actual window.
 ScreenSize = [640,480]

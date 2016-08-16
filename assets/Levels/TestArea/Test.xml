@@ -400,9 +400,6 @@
 	<GameObject Objects/Scenery.xml FloorDrain>
 		<Pos>[160,120]</Pos>
 		<Id>"Drain"</Id>
-		<GraphicObject>
-			<layer>-1</Layer>
-		</GraphicObject>
 	</GameObject>
 	<Trigger>
 		<Id>"toLastRoom"</Id>

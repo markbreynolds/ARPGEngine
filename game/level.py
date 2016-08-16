@@ -9,7 +9,7 @@ import time
 import pygame
 
 #from graphics import GraphicObject,Animation,AnimationFrame,loadAnimation
-#from game import GameObject,Pushable,maskFromSurface
+#from game import GameObject,Pushable
 from game.engine import GameObject, Pushable
 from graphics.animation import Animation, AnimationFrame, loadAnimation
 from graphics.overworld import GraphicObject
@@ -236,6 +236,8 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 		for state in obj["mask"].keys():
 			if obj["mask"][state] != None:
 				img = pygame.image.load(config.AssetPath+str(obj["mask"][state]))
+				#obj["mask"][state] = pygame.mask.from_threshold(img,[255,255,255],(127,127,127,127))
+				img.set_colorkey((0,0,0))
 				obj["mask"][state] = pygame.mask.from_surface(img)
 		if obj["graphicObject"].keys().__contains__("flipX"):
 			for state in obj["graphicObject"]["animations"].keys():
