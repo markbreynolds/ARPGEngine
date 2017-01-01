@@ -58,8 +58,11 @@ docs/_build/
 # PyBuilder
 target/
 
-#Ipython Notebook
+# Ipython Notebook
 .ipynb_checkpoints
 
-#Geany Projects
+# Geany Projects
 *.geany
+
+# Doxygen Documentation
+docs/html/

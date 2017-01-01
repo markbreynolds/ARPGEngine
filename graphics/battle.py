@@ -484,6 +484,8 @@ class BattleGraphicObject(object):
 
 	## Sets the direction this object is facing.
 	def setDirection(self,direction):
+		if self.direction==direction:
+			return
 		self.direction=direction
 		#f = self.currentAnimation.getFrame()
 		self.currentAnimation.reset()

@@ -89,8 +89,13 @@ class Dialog(object):
 	def getPreBranch(self):
 		return self.preBranch
 
-
+## Object for representing Non-Player Characters
 class NPC(player.Player):
+
+	## Constructor.
+	#
+	#  @param Dialog A dialog object representing the conversation this character has.
+	#  @param Wander Whether or not the NPC should walk around randomly.
 	def __init__(self,Name,Id,Pos,Dialog,ClothingType,ClothingColor,HairType,HairColor,Icon=None,Wander=True,Shop=None,State="Idle",Direction=0):
 		self.name=Name
 		self.ID = Id
@@ -128,6 +133,13 @@ class NPC(player.Player):
 		self.graphicObject = GraphicObject(self.constructAnimations({"Idle":[Animation(None,None,"IdleN"),Animation(None,None,"IdleE"),Animation(None,None,"IdleS"),Animation(None,None,"IdleW")],"Run":[Animation(None,None,"RunN"),Animation(None,None,"RunE"),Animation(None,None,"RunS"),Animation(None,None,"RunW")]},ClothingType,ClothingColor,HairType,HairColor),[0.1,0.25],State,Direction)
 		self.gameObject = GameObject([Pos[0],Pos[1]],{"Idle":mask},30,self.graphicObject,Id)
 
+	## Creates animations for this NPC.
+	#
+	#  @param animations A dictionary containing a skeleton for the animations.
+	#  @param ClothingType A number representing which clothing type should be used.
+	#  @param ClothingColor A number representing which color should be used for clothing. @see player.Colors
+	#  @param HairType A number representing which hear type should be used.
+	#  @param HairColor A number representing which color should be used for hair. @see player.Colors
 	def constructAnimations(self,animations,ClothingType,ClothingColor,HairType,HairColor):
 		for dire in ["W","S","N"]:
 			if dire == "W":
@@ -162,18 +174,29 @@ class NPC(player.Player):
 		animations["Idle"][3].addFrame(AnimationFrame(animations["Run"][3].getSprite(),.1,None,0))
 		return animations
 
+	## Returns the items this NPC is selling.
+	#
+	# @returns A list containing Items or None.
 	def getShop(self):
 		return self.shop
 
+	## Returns this NPC's dialog icon.
+	#
+	# @returns A pygame.Surface or None.
 	def getIcon(self):
 		return self.icon
 
+	## Returns this NPC's dialog.
+	#
+	# @returns A Dialog or None.
 	def getDialog(self):
 		return self.dialog
 
+	## Sets who this NPC is talking to
 	def setTalking(self,Talking):
 		self.talking=Talking
 
+	## Makes this NPC look at Target.
 	def lookAt(self,Target):
 		if abs(Target.getY()-self.gameObject.getY())>abs(Target.getX()-self.gameObject.getX()):
 			if Target.getY()>self.gameObject.getY():
@@ -186,6 +209,10 @@ class NPC(player.Player):
 			else:
 				self.setDirection(3)
 
+	## Updates this NPC.
+	#
+	#  @param tick How much time has passed since update was last called, in seconds.
+	#  @param moveCheck A function that checks if a move is legal.
 	def update(self,tick,moveCheck):
 		if self.wander and self.talking==False:
 			if self.wanderCount <=0:
@@ -245,7 +272,7 @@ class BattleNPC(player.Player):
 		animations = self.constructBattleAnimations(False)
 		hitbox = [pygame.rect.Rect([16,7,28,61]),pygame.rect.Rect([7,8,28,60])]
 		self.battleGraphicObject = BattleGraphicObject(animations,[10,145],20,weapon=self.getInventory().getArm1())
-		self.battleObject = BattleObject(self.battleGraphicObject,hitbox,10,self.name,self.getInventory().getArm1(),level=1,exp=15,**self.job.getStartStats())
+		self.battleObject = BattleObject(self.battleGraphicObject,hitbox,10,self.name,self.getInventory().getArm1(),level=1,exp=15,job=self.job,**self.job.getStartStats())
 
 	## Returns if this is the player.
 	def isPlayer(self):
@@ -256,6 +283,11 @@ class BattleNPC(player.Player):
 #  Like an NPC, but rather than looking like a regular character,
 #  their animations are loaded from a file.
 class sNPC(NPC):
+
+	## Constructor.
+	#
+	#  @param Dialog A dialog object representing the conversation this character has.
+	#  @param Wander Whether or not the NPC should walk around randomly.
 	def __init__(self,Name,Id,Pos,Dialog,AnimeXML,Icon=None,Wander=True,Shop=None,State="Idle",Direction=0):
 		self.name=Name
 		self.ID = Id
@@ -282,10 +314,14 @@ class sNPC(NPC):
 		self.graphicObject = GraphicObject(animations,[0.1,0.25],State,Direction)
 		self.gameObject = GameObject([Pos[0],Pos[1]],{"Idle":mask},30,self.graphicObject,Id)
 
+## Inventory container for battle NPCs.
 class Inventory(object):
+
+	## Constructor.
 	def __init__(self):
 		self.head=None
-		self.arm1=None
+		#self.arm1=None
+		self.arm1=ItemFactory.createItem("IronShortSword")
 		self.arm2=None
 		self.body=None
 		self.legs=None
@@ -315,6 +351,7 @@ class Inventory(object):
 	def getBoot(self):
 		return self.boot
 
+	## Equips an item.
 	def equip(self,item):
 		if item.getSlot()=="Head":
 			if self.head==None:
@@ -357,6 +394,7 @@ class Inventory(object):
 				self.boot=item
 				self.boot.equip()
 
+	## Unequips an item.
 	def unequip(self,item):
 		if item.getSlot()=="Head":
 			if self.head==None:

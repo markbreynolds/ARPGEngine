@@ -3,6 +3,9 @@
 #
 #  This module contains the code related to the core and other module integration.
 #
+#  Please note that these goals are exactly that. They may or may not ever actually
+#  be implemented.
+#
 ## Goals: V 0.1.0a
 #
 #    -# GUI - Done
@@ -53,42 +56,49 @@
 #      - All new code must be documented as it is written.
 #
 ## Goals: V 0.3.0a
-#    -# <b>Cutscenes</b>
-#      - <b>Actions</b>
-#      - <b>Dialog</b>
-#      - <b>Actions/Dialog Sync</b>
-#    -# <b>Triggers</b>
+#    -# Triggers - Done
 #      - Dialog Trigger - Done
-#      - <b>Cutscene Trigger</b>
 #    -# <b>Skills</b>
 #      - Melee Skills - Done
 #      - Stat Skills - Done
-#      - <b>Buff Skills</b>
+#      - Buff Skills - Done
 #      - <b>Warrior Skills (5)</b>
-#      - <b>Archer Skills (5)</b>
-#    -# <b>Battle</b>
+#    -# Battle - Done
 #      - Bow Weapon Style - Done
-#      - <b>Staff Weapon Style</b>
+#    -# <b>Enemies</b>
+#      - <b>Redo Slime Animations</b>
 #    -# <b>Items</b>
-#      - <b>Swords</b>
-#      - <b>Bows</b>
-#      - <b>Staffs</b>
+#      - <b>Swords (3)</b>
+#    -# <b>Documentation</b>
+#      - package documentation for Game Object, Pushables, etc. - Done
+#      - package documentation for NPC - Done
+#      - All new code must be documented as it is written.
+#
+## Goals: Future
+#    -# <b>GUI</b>
+#      - <b>Minimap</b>
+#      - <b>World Map</b>
+#    -# <b>Battle</b>
+#      - <b>Physics</b>
+#      - <b>Staff Weapon Style</b>
+#      - <b>Block Attacks</b>
+#      - <b>Dodge Attacks</b>
+#    -# <b>Enemies</b>
+#      - <b>Skeleton</b>
+#      - <b>Bat</b>
 #    -# <b>A Dungeon</b>
 #      - <b>Chests</b>
 #      - <b>Puzzles</b>
 #      - <b>Cutscene</b>
 #      - <b>Mini Boss</b>
 #      - <b>Boss</b>
-#    -# <b>Documentation</b>
-#      - <b>package documentation for Game Object, Pushables, etc.</b>
-#      - <b>package documentation for NPC</b>
-#      - All new code must be documented as it is written.
-#
-## Goals: Future
-#    -# <b>Battle</b>
-#      - <b>Physics</b>
+#    -# <b>Items</b>
+#      - <b>Bows</b>
+#      - <b>Staffs</b>
 #    -# <b>Skills</b>
+#      - <b>Archer Skills (5)</b>
 #      - <b>Passive Skills</b>
+#      - <b>Targeted Skills</b>
 #      - <b>Mage Skills (5)</b>
 #    -# <b>Compositor</b>
 #      - <b>VFX</b>
@@ -99,13 +109,18 @@
 #      - <b>Add Options</b>
 #      - <b>Quiting Warning</b>
 #    -# <b>Saving</b>
+#    -# <b>Triggers</b>
+#      - <b>Cutscene Trigger</b>
+#      - <b>QuestStateChange Trigger?</b>
+#      - <b>Trigger Effect Classes</b>
+#    -# <b>Cutscenes</b>
+#      - <b>Actions</b>
+#      - <b>Dialog</b>
+#      - <b>Actions/Dialog Sync</b>
 #    -# <b>Notifications</b>
 #      - <b>Quest Notifications</b>
 #      - <b>Item Get Notifications</b>
 #      - >b>Party Change Notifications?</b>
-#    -# <b>Triggers</b>
-#      - <b>QuestStateChange Trigger?</b>
-#      - <b>Trigger Effect Classes</b>
 #    -# <b>Unit Tests</b>
 #      - <b>InputEngine?</b>
 #      - <b>GameEngine</b>
@@ -317,8 +332,8 @@ while menu:
 
 
 #loadNewArea("Levels/TestArea/TestVillage.xml","VillageMain");Player.getGameObject().setPos([400,550])
-loadNewArea("Levels/TestArea/TestVillage.xml","VillageInn");Player.getGameObject().setPos([100,100])
-#loadNewArea("Levels/TestArea/Test.xml","Test5");Player.getGameObject().setPos([100,100])
+#loadNewArea("Levels/TestArea/TestVillage.xml","VillageInn");Player.getGameObject().setPos([100,100])
+loadNewArea("Levels/TestArea/Test.xml","Test1");Player.getGameObject().setPos([100,100])
 graphicsEngine.setPlayer(Player.getGraphicObject())
 gameEngine.setPlayer(Player.getGameObject())
 
@@ -339,6 +354,7 @@ Player.party.append(npc.BattleNPC("Jeorge",Warrior(1),1,(255,0,0),1,(255,127,0))
 #Player.party[1].getBattleObject().HpM = 1000
 #Player.party[0].getBattleObject().ai = enemies.WandererAI(20,100)
 #Player.party[1].getBattleObject().ai = enemies.WandererAI(20,100)
+Player.party[0].getInventory().equip(ItemFactory.createItem("IronShortSword"))
 
 PLAYING=True
 BATTLING = False
@@ -358,7 +374,7 @@ while PLAYING:
 					if PlayerB.getGraphicObject().currentAnimation.getNextAnimation() != None:
 						errors.info(PlayerB.getGraphicObject().currentAnimation.getName()+", "+PlayerB.getGraphicObject().currentAnimation.getNextAnimation().getName())
 					else:
-						errors.info(PlayerB.getGraphicObject().currentAnimation.getName()+", "+PlayerB.getGraphicObject().currentAnimation.getNextAnimation())
+						errors.info(PlayerB.getGraphicObject().currentAnimation.getName()+", None") #+PlayerB.getGraphicObject().currentAnimation.getNextAnimation())
 				elif event[0].startswith("S1"):
 					if Player.getSkill(event[0])!=None:
 						PlayerB.useSkill(Player.getSkill(event[0]))
@@ -385,7 +401,7 @@ while PLAYING:
 				PlayerB.setState("Idle")
 
 		#battleEngine.getGraphicsEngine().setDebugInfo(str(PlayerB.graphicObject.state)+":"+str(PlayerB.graphicObject.getFrame()))
-		battleEngine.getGraphicsEngine().setDebugInfo(PlayerB.state+":"+str(PlayerB.isAttacking()))
+		battleEngine.getGraphicsEngine().setDebugInfo("BufDef:"+str(PlayerB.statBuffOffsets["Def"]))
 
 		if battleEngine.update(tick):
 			BATTLING = False

@@ -145,7 +145,7 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 		try:
 			GraphicEngine.setBackground(pygame.image.load(config.AssetPath+BG).convert())
 		except pygame.error:
-			errors.error("Unable to load level background.")
+			errors.error("Unable to load level background. (Line: "+str(i)+")")
 	end = time.time()
 	errors.debug("Took "+str(end-start)+" seconds to load background.")
 
@@ -156,7 +156,7 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 		try:
 			GameEngine.setMask(pygame.image.load(config.AssetPath+Mask).convert())
 		except pygame.error:
-			errors.error("Unable to load level mask.")
+			errors.error("Unable to load level mask. (Line: "+str(i)+")")
 	end = time.time()
 	errors.debug("Took "+str(end-start)+" seconds to load mask.")
 	if Enemies != None and len(Enemies)>0:
@@ -304,7 +304,7 @@ def loadXML(xmlPath,level,GameEngine,GraphicEngine):
 	totalEnd = time.time()
 	errors.info("Took "+str(totalEnd-totalStart)+" seconds to load level.")
 
-## Loads a gameObject
+## Converts XML data to a list of arguments to create a GameObject
 #
 #  @param temp A dictionary containing the object data extracted from the levelData.
 #  @param levelData A list of strings representing the level data the object will
@@ -360,7 +360,7 @@ def loadGameObject(temp,levelData,i):
 			n+=1
 	return n
 
-## Loads a NPC
+## Converts XML data to a list of arguments to create a NPC
 #
 #  @param temp A dictionary containing the object data extracted from the levelData.
 #  @param levelData A list of strings representing the level data the object will

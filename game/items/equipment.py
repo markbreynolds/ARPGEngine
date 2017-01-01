@@ -140,6 +140,16 @@ class Bow(Weapon):
 
 #One Handed Swords:
 
+##Iron Long Sword (Should this be two handed?)
+class IronLongSword(OHSword):
+
+	## Constructor
+	#
+	#  @param amount Amount of the item in this stack/inventory.
+	def __init__(self):
+		hitbox = [pygame.rect.Rect([-2,0,31,67]),pygame.rect.Rect([24,0,31,67])]
+		OHSword.__init__(self,"Iron Long Sword",pygame.image.load(config.AssetPath+"Icons/Items/Weapons/IronShortSword.png"),{"Atk":10},hitbox,5,"Battle/Arms/Swords/IronLongSword/IronLongSword.xml",1000,reqs={"Class":["Warrior"]})
+
 ##Iron Short Sword
 class IronShortSword(OHSword):
 

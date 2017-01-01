@@ -1,5 +1,5 @@
 from graphics.gui import Icons
-from skill import PowerThrust,WaveSlash, HpUp, DefUp
+from skill import PowerThrust, WaveSlash, Block, HpUp, DefUp
 from skill import SpdUp
 ## Base class for all jobs.
 class Job(object):
@@ -53,11 +53,12 @@ class Job(object):
 	def getStatChange(self):
 		return {"HP":0,"MP":0,"Atk":0,"Def":0,"Spd":0,"Vit":0,"Mag":0,"Res":0,"Con":0,"Mnd":0}
 
-	## Returns how the character's stats are affected by their skills.
+	## Returns how the character's stats are affected by their skills. Each stat
+	#  is associated with a multiplier.
 	#
 	#  Should be overriden by subclass.
 	def getSkillStats(self):
-		return {"Hp":0,"Mp":0,"Atk":0,"Def":0,"Spd":0,"Vit":0,"Mag":0,"Res":0,"Con":0,"Mnd":0}
+		return {"Hp":1,"Mp":1,"Atk":1,"Def":1,"Spd":1,"Vit":1,"Mag":1,"Res":1,"Con":1,"Mnd":1}
 
 ## Warrior job
 class Warrior(Job):
@@ -68,7 +69,7 @@ class Warrior(Job):
 	def __init__(self,level):
 		self.HpUp = HpUp()
 		self.DefUp = DefUp()
-		Job.__init__(self,"Warrior",[PowerThrust(),WaveSlash(),self.HpUp,self.DefUp],Icons.warriorSmall,level)
+		Job.__init__(self,"Warrior",[PowerThrust(),WaveSlash(),Block(),self.HpUp,self.DefUp],Icons.warriorSmall,level)
 
 	## Returns the starting stats for this job.
 	#
@@ -89,7 +90,7 @@ class Warrior(Job):
 
 	## Returns how the character's stats are affected by their skills.
 	def getSkillStats(self):
-		return {"Hp":self.HpUp.getStats()["Hp"],"Mp":0,"Atk":0,"Def":self.DefUp.getStats()["Def"],"Spd":0,"Vit":0,"Mag":0,"Res":0,"Con":0,"Mnd":0}
+		return {"Hp":self.HpUp.getStats()["Hp"],"Mp":1,"Atk":1,"Def":self.DefUp.getStats()["Def"],"Spd":1,"Vit":1,"Mag":1,"Res":1,"Con":1,"Mnd":1}
 
 ## Archer job
 class Archer(Job):
@@ -120,4 +121,4 @@ class Archer(Job):
 
 	## Returns how the character's stats are affected by their skills.
 	def getSkillStats(self):
-		return {"Hp":0,"Mp":0,"Atk":0,"Def":0,"Spd":self.SpdUp.getStats()["Spd"],"Vit":0,"Mag":0,"Res":0,"Con":0,"Mnd":0}
+		return {"Hp":1,"Mp":1,"Atk":1,"Def":1,"Spd":self.SpdUp.getStats()["Spd"],"Vit":1,"Mag":1,"Res":1,"Con":1,"Mnd":1}

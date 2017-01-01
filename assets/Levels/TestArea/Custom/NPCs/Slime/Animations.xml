@@ -1,0 +1,55 @@
+<Animation IdleN>
+	<delay>.25</delay>
+	<Frame>
+		<image>Levels/TestArea/Custom/NPCs/Slime/Idle1.png</image>
+	</Frame>
+</Animation>
+
+<Animation IdleE>
+	<delay>.25</delay>
+	<Frame>
+		<image>Levels/TestArea/Custom/NPCs/Slime/Idle1.png</image>
+	</Frame>
+</Animation>
+
+<Animation IdleS>
+	<delay>.25</delay>
+	<Frame>
+		<image>Levels/TestArea/Custom/NPCs/Slime/Idle1.png</image>
+	</Frame>
+</Animation>
+
+<Animation IdleW>
+	<delay>.25</delay>
+	<Frame>
+		<image>Levels/TestArea/Custom/NPCs/Slime/Idle1.png</image>
+	</Frame>
+</Animation>
+
+<Animation RunN>
+	<delay>.25</delay>
+	<Frame>
+		<image>Levels/TestArea/Custom/NPCs/Slime/Idle1.png</image>
+	</Frame>
+</Animation>
+
+<Animation RunE>
+	<delay>.25</delay>
+	<Frame>
+		<image>Levels/TestArea/Custom/NPCs/Slime/Idle1.png</image>
+	</Frame>
+</Animation>
+
+<Animation RunS>
+	<delay>.25</delay>
+	<Frame>
+		<image>Levels/TestArea/Custom/NPCs/Slime/Idle1.png</image>
+	</Frame>
+</Animation>
+
+<Animation RunW>
+	<delay>.25</delay>
+	<Frame>
+		<image>Levels/TestArea/Custom/NPCs/Slime/Idle1.png</image>
+	</Frame>
+</Animation>

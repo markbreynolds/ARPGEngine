@@ -166,6 +166,7 @@ class BattleObject(object):
 	#  @param Res How resistant this character is to magic. (Resistance)
 	#  @param Con How easily this character's spells can be broken (stopped mid cast). (Concentration)
 	#  @param Mnd How strong this character's mind is. (Mind)
+	#  @param job This character's class.
 	def __init__(self,graphicObject,hitBox,pos,name,weapon,level=0,exp=0,HP=1,MP=1,Atk=0,Def=0,Spd=20,Vit=0,Mag=0,Res=0,Con=0,Mnd=0,job=None):
 		self.graphicObject=graphicObject
 		self.hitBox = hitBox
@@ -212,8 +213,9 @@ class BattleObject(object):
 		self.Mnd=Mnd	#Mind
 
 		self.statOffsets = {"HpM":0,"MpM":0,"Atk":0,"Def":0,"Spd":0,"Vit":0,"Mag":0,"Res":0,"Con":0,"Mnd":0}
-		self.statSkillOffsets = {"Hp":0,"Mp":0,"Atk":0,"Def":0,"Spd":0,"Vit":0,"Mag":0,"Res":0,"Con":0,"Mnd":0}
-		self.statBuffOffsets = {"Hp":0,"Mp":0,"Atk":0,"Def":0,"Spd":0,"Vit":0,"Mag":0,"Res":0,"Con":0,"Mnd":0}
+		self.statSkillOffsets = {"Hp":1,"Mp":1,"Atk":1,"Def":1,"Spd":1,"Vit":1,"Mag":1,"Res":1,"Con":1,"Mnd":1}
+		self.statBuffOffsets = {"Hp":1,"Mp":1,"Atk":1,"Def":1,"Spd":1,"Vit":1,"Mag":1,"Res":1,"Con":1,"Mnd":1}
+		self.buffs = []
 
 		self.time=0.0
 		self.state="Idle"
@@ -275,6 +277,10 @@ class BattleObject(object):
 				self.skillDmgMult = skill.getDmgMult()
 				self.skillHitBox = skill.getHitBox()[self.getDirection()]
 				self.attacking = True
+			elif skill.getType()=="Buff":
+				for stat in skill.getStats().keys():
+					self.statBuffOffsets[stat] *= skill.getStats()[stat]
+				self.buffs.append([skill.getStats(),skill.getDuration()])
 
 			self.state = "Skill"
 			self.Mp-=skill.getCost()
@@ -316,35 +322,35 @@ class BattleObject(object):
 
 	## Returns this actor's attack power.
 	def getAtk(self):
-		return self.Atk+self.statOffsets["Atk"]+self.statSkillOffsets["Atk"]
+		return int(round((self.Atk+self.statOffsets["Atk"])*self.statSkillOffsets["Atk"]*self.statBuffOffsets["Atk"]))
 
 	## Returns this actor's defense.
 	def getDef(self):
-		return self.Def+self.statOffsets["Def"]+self.statSkillOffsets["Def"]
+		return int(round((self.Def+self.statOffsets["Def"])*self.statSkillOffsets["Def"]*self.statBuffOffsets["Def"]))
 
 	## Returns this actor's speed.
 	def getSpd(self):
-		return self.Spd+self.statOffsets["Spd"]+self.statSkillOffsets["Spd"]
+		return int(round((self.Spd+self.statOffsets["Spd"])*self.statSkillOffsets["Spd"]*self.statBuffOffsets["Spd"]))
 
 	## Returns this actor's vitality.
 	def getVit(self):
-		return self.Vit+self.statOffsets["Vit"]+self.statSkillOffsets["Vit"]
+		return int(round((self.Vit+self.statOffsets["Vit"])*self.statSkillOffsets["Vit"]*self.statBuffOffsets["Vit"]))
 
 	## Returns this actor's magic strength.
 	def getMag(self):
-		return self.Mag+self.statOffsets["Mag"]+self.statSkillOffsets["Mag"]
+		return int(round((self.Mag+self.statOffsets["Mag"])*self.statSkillOffsets["Mag"]*self.statBuffOffsets["Mag"]))
 
 	## Returns this actor's magic resistance.
 	def getRes(self):
-		return self.Res+self.statOffsets["Res"]+self.statSkillOffsets["Res"]
+		return int(round((self.Res+self.statOffsets["Res"])*self.statSkillOffsets["Res"]*self.statBuffOffsets["Res"]))
 
 	## Returns this actor's concentration.
 	def getCon(self):
-		return self.Con+self.statOffsets["Con"]+self.statSkillOffsets["Con"]
+		return int(round((self.Con+self.statOffsets["Con"])*self.statSkillOffsets["Con"]*self.statBuffOffsets["Con"]))
 
 	## Returns this actor's mind.
 	def getMnd(self):
-		return self.Mnd+self.statOffsets["Mnd"]+self.statSkillOffsets["Mnd"]
+		return int(round((self.Mnd+self.statOffsets["Mnd"])*self.statSkillOffsets["Mnd"]*self.statBuffOffsets["Mnd"]))
 
 	## Returns this actor's natural attack power.
 	def getAtkN(self):
@@ -380,11 +386,11 @@ class BattleObject(object):
 
 	## Returns this actor's maximum health.
 	def getHPM(self):
-		return self.HpM+self.statOffsets["HpM"]+self.statSkillOffsets["Hp"]
+		return int(round((self.HpM+self.statOffsets["HpM"])*self.statSkillOffsets["Hp"]*self.statBuffOffsets["Hp"]))
 
 	## Returns this actor's maximum health formatted prettily as a string.
 	def getHPMS(self):
-		HpM=self.HpM+self.statOffsets["HpM"]+self.statSkillOffsets["Hp"]
+		HpM=int(round((self.HpM+self.statOffsets["HpM"])*self.statSkillOffsets["Hp"]*self.statBuffOffsets["Hp"]))
 		if HpM > 9999:
 			return str(HpM/1000)+"K"
 		return str(HpM)
@@ -401,11 +407,11 @@ class BattleObject(object):
 
 	## Returns this actor's maximum mana power.
 	def getMPM(self):
-		return self.MpM+self.statOffsets["MpM"]+self.statSkillOffsets["Mp"]
+		return int(round(self.MpM+self.statOffsets["MpM"]*self.statSkillOffsets["Mp"]*self.statBuffOffsets["Mp"]))
 
 	## Returns this actor's maximum mana power formatted prettily as a string.
 	def getMPMS(self):
-		MpM=self.MpM+self.statOffsets["MpM"]+self.statSkillOffsets["Mp"]
+		MpM=int(round(self.MpM+self.statOffsets["MpM"]*self.statSkillOffsets["Mp"]*self.statBuffOffsets["Mp"]))
 		if MpM > 9999:
 			return str(MpM/1000)+"K"
 		return str(MpM)
@@ -555,12 +561,12 @@ class BattleObject(object):
 
 	## Levels up this actor.
 	def levelUp(self,HP=0,MP=0,Atk=0,Def=0,Spd=0,Vit=0,Mag=0,Res=0,Con=0,Mnd=0):
+		health = float(self.Hp)/self.getHPM()
+		magic  = float(self.Mp)/self.getMPM()
 		self.exp -= self.getExpNext()
 		self.level += 1;
 		self.HpM += HP
-		self.Hp  += HP
 		self.MpM += MP
-		self.Mp  += MP
 		self.Atk += Atk
 		self.Def += Def
 		self.Spd += Spd
@@ -569,7 +575,12 @@ class BattleObject(object):
 		self.Res += Res
 		self.Con += Con
 		self.Mnd += Mnd
+		#return int(round((self.Def+self.statOffsets["Def"])*self.statSkillOffsets["Def"]*self.statBuffOffsets["Def"]))
+		#print str(self.Def)+", "+str(self.statOffsets["Def"])+", "+str(s)
 		self.statSkillOffsets = self.job.getSkillStats()
+
+		self.Hp = int(round(self.getHPM() * health))
+		self.Mp = int(round(self.getMPM() * health))
 
 	## Updates the currently equipped weapon.
 	def updateWeapon(self,weapon,animations):
@@ -604,7 +615,10 @@ class BattleObject(object):
 			if self.job.getName() == "Warrior":
 				skills=set(["Thrust"])
 
-		self.graphicObject.setWeapon(weapon,skills.intersection(weapon.getSkills()))
+		if weapon!=None:
+			self.graphicObject.setWeapon(weapon,skills.intersection(weapon.getSkills()))
+		else:
+			self.graphicObject.setWeapon(weapon,())
 		self.graphicObject.updateAnimations(animations)
 
 	## Code for AI calls
@@ -649,6 +663,16 @@ class BattleObject(object):
 			if self.time<=0:
 				self.setAttacking(False)
 				self.setState("Idle")
+
+		for buff in self.buffs:
+			if buff[1] <= 0:
+				for stat in buff[0].keys():
+					self.statBuffOffsets[stat] /= buff[0][stat]
+				self.buffs.remove(buff)
+
+			else:
+				buff[1] -= tick
+
 		self.x+=self.velX*tick
 		self.graphicObject.setX(int(self.x))
 		if abs(self.velX) >= 1:

@@ -1,0 +1,26 @@
+<Animation IdleW>
+	<delay>.25</delay>
+	<Frame>
+		<image>Battle/Enemies/Gelatinous/SlimeNew/Idle1.png</image>
+	</Frame>
+</Animation>
+
+<Animation RunW>
+	<delay>.1</delay>
+	<Frame>
+		<image>Battle/Enemies/Gelatinous/SlimeNew/Idle1.png</image>
+		<delay>.2</delay>
+	</Frame>
+	<Frame>
+		<image>Battle/Enemies/Gelatinous/SlimeNew/Walk2-1.png</image>
+	</Frame>
+	<Frame>
+		<image>Battle/Enemies/Gelatinous/SlimeNew/Walk3.png</image>
+	</Frame>
+	<Frame>
+		<image>Battle/Enemies/Gelatinous/SlimeNew/Walk4-1.png</image>
+	</Frame>
+	<Frame>
+		<image>Battle/Enemies/Gelatinous/SlimeNew/Walk5.png</image>
+	</Frame>
+</Animation>

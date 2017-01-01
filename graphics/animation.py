@@ -173,8 +173,12 @@ class Animation(object):
 #
 #  @param xmlPath Path to xml file containing animation data.
 #  @param animation Name of animation to load from file.
-def loadAnimation(xmlPath,animation):
-	filer = open(config.AssetPath+xmlPath,"r")
+#  @param absolutePath If the path is complete or based on the asset directory in config.py.
+def loadAnimation(xmlPath,animation,absolutePath=False):
+	if absolutePath:
+		filer = open(xmlPath,"r")
+	else:
+		filer = open(config.AssetPath+xmlPath,"r")
 	lines = filer.readlines()
 
 	started=False

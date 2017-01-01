@@ -380,6 +380,17 @@ class GameEngine(object):
 
 ## A container which contains information for game objects.
 class GameObject(object):
+
+	## Constructor.
+	#
+	#  @param pos The starting position of this object.
+	#  @param mask The collision mask for this object.
+	#  @param spd How fast this object should move in pixels per second.
+	#  @param graphicObject A reference to a GraphicObject that represents this object.
+	#  @param id The unique identifer for this object.
+	#  @param state The initial state this object should be in.
+	#  @param rememberState Whether or not this object should remember its state in between level loads.
+	#  @param parent If this object represents the player, this should be set to the Player object.
 	def __init__(self,pos,mask,spd,graphicObject,id,state="Idle",rememberState=True,parent=None):
 		self.x=pos[0]
 		self.y=pos[1]
@@ -402,105 +413,138 @@ class GameObject(object):
 		self.pushing = None
 		self.pushDir = [False,False]
 
+	## Returns this object's x position.
 	def getX(self):
 		return int(self.x)
 
+	## Returns this object's y position.
 	def getY(self):
 		return int(self.y)
 
+	## Returns the width of this object.
 	def getWidth(self):
 		return self.graphicObject.getWidth()
 
+	## Returns the height of this object.
 	def getHeight(self):
 		return self.graphicObject.getHeight()
 
+	## Returns this object's position.
 	def getPos(self):
 		return [int(self.x),int(self.y)]
 
+	## Returns the mask of this object for it's current state.
 	def getMask(self):
 		return self.mask[self.state]
 
+	## Returns the velocity of this object in pixels per second.
 	def getVelocity(self):
 		return self.velocity
 
+	## Returns the current action of this object.
 	def getState(self):
 		return self.state
 
+	## Sets the current action for this object.
 	def setState(self,state):
 		self.state=state
 		self.graphicObject.setState(state)
 
+	## Sets the parent of this object.
 	def getParent(self):
 		return self.parent
 
+	## Sets who this object is talking to.
 	def setTalking(self,Talking):
 		if self.parent != None:
 			self.parent.setTalking(Talking)
 
+	## Gets who this object is talking to.
 	def getTalking(self):
 		if self.parent != None:
 			return self.parent.getTalking()
 		else:
 			return False
 
+	## Sets whether or not this object is shopping.
 	def setShopping(self,Shopping):
 		if self.parent != None:
 			self.parent.setShopping(Shopping)
 
+	## Gets whether or not this object is shopping.
 	def getShopping(self):
 		if self.parent != None:
 			return self.parent.getShopping()
 		else:
 			return False
 
+	## Sets this object's velocity in pixels per second.
 	def setVelocity(self,vel):
 		self.velocity=vel
 
+	## Sets this object's x position.
 	def setX(self,x):
 		self.x=x
 		self.graphicObject.setPos([self.x,self.y])
 
+	## Sets this object's y position.
 	def setY(self,y):
 		self.y=y
 		self.graphicObject.setPos([self.x,self.y])
 
+	## Sets this object's position.
 	def setPos(self,pos):
 		self.x=pos[0]
 		self.y=pos[1]
 		self.graphicObject.setPos(pos)
 
-	def setDirection(self,direction):	#as vector
+	## Sets what direction this object is facing.
+	def setDirection(self,direction):	#as vector (What?)
 		self.direction=direction
 
+	## Returns the center of this object's current sprite.
 	def getCenter(self):
 		return [self.x+(self.graphicObject.getSprite().get_width()/2),self.y+(self.graphicObject.getSprite().get_height()/2)]
 
+	## Returns if this object is currently moving.
 	def getMoving(self):
 		return self.moving
 
+	## Returns the distance between two objects.
 	def getDistance(self,target):
 		return math.sqrt((self.getCenter()[1]-target.getCenter()[1])**2+(self.getCenter()[0]-target.getCenter()[0])**2)
 
+	## Returns this object's unique identifer.
 	def getID(self):
 		return self.ID
 
+	## Returns whether this object can be pushed.
 	def isPushable(self):
 		return False
 
+	## Sets whether this object is being pushed.
 	def setPushing(self,pushing):
 		self.pushing = pushing
 
+	## Returns whether this object is being pushed.
 	def getPushing(self):
 		return self.pushing
 
+	## Sets what direction this object is being pushed.
 	def setPushDir(self,dire):
 		self.pushDir=dire
 
+	## Sets whether this object is moving and in what direction.
 	def setMoving(self,moving,direction=None):
 		self.moving=moving
 		if direction!=None:
 			self.direction=direction
 
+	## Updates this object.
+	#
+	#  @param tick How much time has passed since the last time this function was
+	#     called in seconds.
+	#  @param moveCheck The function that should be called to check if a move is legal.
 	def update(self,tick,moveCheck):
 		self.velocity=[0,0]
 		if self.moving:		#Caps Velocity at Speed
@@ -532,16 +576,25 @@ class GameObject(object):
 			self.y+=self.velocity[1]*tick
 		self.graphicObject.setPos([int(self.x),int(self.y)])
 
+## A container for game objects that can be pushed by other objects.
 class Pushable(GameObject):
+
+	##Constructor
+	#
+	# @param area The area this object can be pushed within.
+	#
+	# @see GameObject
 	def __init__(self,pos,mask,area,spd,graphicObject,id,state="Idle",rememberState=True):
 		GameObject.__init__(self,pos,mask,spd,graphicObject,id,state,rememberState)
 		self.area=area
 		self.pushable=True
 		self.pushed=False
 
+	## Returns if this object can be pushed.
 	def isPushable(self):
 		return self.pushable
 
+	## Pushes this object.
 	def push(self,dire,moveCheck):
 		if self.pushed:
 			if self.x+dire[0]+self.graphicObject.getWidth()>=self.area.right and dire[0]>0:
@@ -559,10 +612,18 @@ class Pushable(GameObject):
 				self.y+=dire[1]
 		return True
 
+	## Toggles if this object is being pushed.
 	def togglePushed(self):
 		self.pushed = not self.pushed
 
+## An object that holds items
 class Container(GameObject):
+
+	## Constructor
+	#
+	#  @param contains A list of items this object contains.
+	#
+	#  @see GameObject
 	def __init__(self,pos,mask,area,spd,graphicObject,id,contains=[],state="Idle",rememberState=True):
 		GameObject.__init__(self,pos,mask,spd,graphicObject,id,state,rememberState)
 
@@ -592,6 +653,7 @@ class DialogDummy(object):
 	def getIcon(self):
 		return self.icon
 
+	## Sets if this conversation is still happening.
 	def setTalking(self,talking):
 		if talking == False:
 			del self

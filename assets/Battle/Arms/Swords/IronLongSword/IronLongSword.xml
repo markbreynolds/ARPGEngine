@@ -1,0 +1,91 @@
+<Animation Idle>
+	<delay>.5</delay>
+	<Frame>
+		<image>Battle/Arms/Swords/IronLongSword/Idle1.png</image>
+	</Frame>
+</Animation>
+
+<Animation Walk>
+	<delay>.17</delay>
+	<Frame>
+		<image>Battle/Arms/Swords/IronLongSword/Walk1.png</image>
+	</Frame>
+	<Frame>
+		<image>Battle/Arms/Swords/IronLongSword/Walk2.png</image>
+	</Frame>
+	<Frame>
+		<image>Battle/Arms/Swords/IronLongSword/Walk3.png</image>
+	</Frame>
+	<Frame>
+		<image>Battle/Arms/Swords/IronLongSword/Walk4.png</image>
+	</Frame>
+</Animation>
+
+<Animation Attack1>
+	<Frame>
+		<delay>.05</delay>
+		<image>Battle/Arms/Swords/IronLongSword/Attack1.png</image>
+	</Frame>
+	<Frame>
+		<delay>.15</delay>
+		<image>Battle/Arms/Swords/IronLongSword/Attack2.png</image>
+	</Frame>
+	<Frame>
+		<delay>.25</delay>
+		<image>Battle/Arms/Swords/IronLongSword/Attack3.png</image>
+	</Frame>
+</Animation>
+
+<Animation Attack2>
+	<Frame>
+		<delay>.05</delay>
+		<image>Battle/Arms/Swords/IronLongSword/Attack4.png</image>
+	</Frame>
+	<Frame>
+		<delay>.15</delay>
+		<image>Battle/Arms/Swords/IronLongSword/Attack5.png</image>
+	</Frame>
+	<Frame>
+		<delay>.25</delay>
+		<image>Battle/Arms/Swords/IronLongSword/Attack6.png</image>
+	</Frame>
+</Animation>
+
+<Animation Attack3>
+	<Frame>
+		<delay>.05</delay>
+		<image>Battle/Arms/Swords/IronLongSword/Attack1.png</image>
+	</Frame>
+	<Frame>
+		<delay>.15</delay>
+		<image>Battle/Arms/Swords/IronLongSword/Attack2.png</image>
+	</Frame>
+	<Frame>
+		<delay>.25</delay>
+		<image>Battle/Arms/Swords/IronLongSword/Attack3.png</image>
+	</Frame>
+</Animation>
+
+<Animation Thrust>
+	<Frame>
+		<delay>.10</delay>
+		<image>Battle/Arms/Swords/IronLongSword/Thrust1.png</image>
+	</Frame>
+	<Frame>
+		<delay>.20</delay>
+		<image>Battle/Arms/Swords/IronLongSword/Thrust2.png</image>
+		<offset>[-4,0]</offset>
+	</Frame>
+	<Frame>
+		<delay>.40</delay>
+		<image>Battle/Arms/Swords/IronLongSword/Thrust3.png</image>
+		<offset>[-4,0]</offset>
+	</Frame>
+</Animation>
+
+<Animation Death>
+	<Frame>
+		<delay>.5</delay>
+		<image>Battle/Arms/Swords/IronLongSword/Attack6.png</image>
+	</Frame>
+</Animation>

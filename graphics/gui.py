@@ -2000,6 +2000,7 @@ class InvenMenu(Menu):
 
 			x = self.winX+7
 			y = 101
+			#print len(self.sel.getJob().getUnlockedSkills())
 			for n in range(max(self.subPos-4,0),min(max(6,self.subPos+2),len(self.sel.getJob().getUnlockedSkills()))):
 				skill = self.sel.getJob().getUnlockedSkills()[n]
 				if self.subPos == n:

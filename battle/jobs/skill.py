@@ -101,18 +101,42 @@ class StatSkill(Skill):
 
 	## Constructor
 	#
-	#  @param stats A list of stat changes
+	#  @param stats A list of stat multipliers
 	def __init__(self,name,stats,reqs={},unlocked=True):
 		Skill.__init__(self,name,reqs,unlocked)
 		self.stats = stats
 
-	## Returns a list of stat changes this skill provides
+	## Returns a list of stat multipliers this skill provides
 	def getStats(self):
 		return self.stats
 
 	## Returns the type of skill this is.
 	def getType(self):
 		return "Stat"
+
+## The base class for temporary stat boost skills.
+class BuffSkill(ActiveSkill):
+
+	## Constructor
+	#
+	#  @param stats A list of stat multipliers.
+	#  @param duration How long the stat changes last.
+	def __init__(self,name,state,cost,cooldown,stats,duration,reqs={},unlocked=True):
+		ActiveSkill.__init__(self,name,state,cost,cooldown,reqs,unlocked)
+		self.stats = stats
+		self.duration = duration
+
+	## Returns a list of stat multipliers this skill provides
+	def getStats(self):
+		return self.stats
+
+	## Returns how long this skill's stat boosts last for.
+	def getDuration(self):
+		return self.duration
+
+	## Returns the type of skill this is.
+	def getType(self):
+		return "Buff"
 
 ## The base class for short range damage skills.
 class MeleeSkill(ActiveSkill):
@@ -232,17 +256,44 @@ class PowerThrust(MeleeSkill):
 	def getDmgMult(self):
 		return 1.0+self.level*self.dmg
 
+## Block Skill
+#  Warrior level 1 skill.
+class Block(BuffSkill):
+
+	## Constructor
+	def __init__(self):
+		BuffSkill.__init__(self,"Block","Idle",0,.4,{"Def":1},.4)
+
+	## See Skill.getInfo().
+	def getInfo(self):
+		return "Raises Def by "+str(self.stats["Def"])+"x for "+str(self.duration)+"secs"
+
+	## See Skill.getDescription().
+	def getDescription(self):
+		return ["Raises Defense for a short","period of time."]
+
+	## See Skill.getChanges().
+	def getChanges(self):
+		return ["Raises Def by "+str(self.stats["Def"]+.25)+"x (+.25x Def)","Lasts "+str(self.duration+.1)+" seconds (+.1 seconds)"]
+
+	## See Skill.levelUp().
+	def levelUp(self):
+		self.level+=1
+		self.stats["Def"]+=.25
+		self.duration += .1
+		self.cooldown += .1
+
 ## HP+ Skill
 #  Warrior level 1 skill.
 class HpUp(StatSkill):
 
 	## Constructor
 	def __init__(self):
-		StatSkill.__init__(self,"Hp+",{"Hp":0})
+		StatSkill.__init__(self,"Hp+",{"Hp":1.0})
 
 	## See Skill.getInfo().
 	def getInfo(self):
-		return "Raises max HP by "+str(2*self.level)
+		return "Raises max HP by "+str(self.stats["Hp"])+"x"
 
 	## See Skill.getDescription().
 	def getDescription(self):
@@ -250,12 +301,12 @@ class HpUp(StatSkill):
 
 	## See Skill.getChanges().
 	def getChanges(self):
-		return ["Raises max HP by "+str(2*(self.level+1))+" (+2 HP)"]
+		return ["Raises max HP by "+str(self.stats["Hp"]+.2)+"x (+.2x HP)"]
 
 	## See Skill.levelUp().
 	def levelUp(self):
 		self.level+=1
-		self.stats["Hp"]+=2
+		self.stats["Hp"]+=.2
 
 ## Def+ Skill
 #  Warrior level 1 skill.
@@ -263,11 +314,12 @@ class DefUp(StatSkill):
 
 	## Constructor
 	def __init__(self):
-		StatSkill.__init__(self,"Def+",{"Def":0})
+		StatSkill.__init__(self,"Def+",{"Def":1})
+		#StatSkill.__init__(self,"Def+",{"Def":1},unlocked=False)	# Why was this locked??
 
 	## See Skill.getInfo().
 	def getInfo(self):
-		return "Raises Def by "+str(1*self.level)
+		return "Raises Def by "+str(1+.1*self.level)+"x"
 
 	## See Skill.getDescription().
 	def getDescription(self):
@@ -275,12 +327,12 @@ class DefUp(StatSkill):
 
 	## See Skill.getChanges().
 	def getChanges(self):
-		return ["Raises Defense by "+str(1*(self.level+1))+" (+1 Def)"]
+		return ["Raises Defense by "+str(1+.1*(self.level+1))+"x (+.1x Def)"]
 
 	## See Skill.levelUp().
 	def levelUp(self):
 		self.level+=1
-		self.stats["Def"]+=1
+		self.stats["Def"]+=.1
 
 ## Spd+ Skill
 #  Archer level 1 skill.
@@ -288,11 +340,11 @@ class SpdUp(StatSkill):
 
 	## Constructor
 	def __init__(self):
-		StatSkill.__init__(self,"Spd+",{"Spd":0})
+		StatSkill.__init__(self,"Spd+",{"Spd":1})
 
 	## See Skill.getInfo().
 	def getInfo(self):
-		return "Raises Spd by "+str(2*self.level)
+		return "Raises Spd by "+str(1+.25*self.level)+"x"
 
 	## See Skill.getDescription().
 	def getDescription(self):
@@ -300,9 +352,9 @@ class SpdUp(StatSkill):
 
 	## See Skill.getChanges().
 	def getChanges(self):
-		return ["Raises Speed by "+str(2*(self.level+1))+" (+2 Spd)"]
+		return ["Raises Speed by "+str(1+.25*(self.level+1))+"x (+.25 Spd)"]
 
 	## See Skill.levelUp().
 	def levelUp(self):
 		self.level+=1
-		self.stats["Spd"]+=2
+		self.stats["Spd"]+=.25

@@ -1,0 +1,39 @@
+# Test Cutscene
+
+## Sets the background.
+#
+#  Syntax: bg path/to/bg.png
+bg Backgrounds/Overworld/TestArea/Test5.png
+
+## Adds an NPC to the cutscene.
+#
+#  Syntax: add NPC name id pos direction path/to/anime.xml path/to/icon.png
+add NPC Slime Slime1 [100,100] 0 Levels/TestArea/Custom/NPCs/Slime/Animations.xml None
+
+## Adds an object to the cutscene.
+#
+#  Syntax: add object name id pos direction path/to/object.xml
+add object FloorDrain Drain [160,120] 0 Levels/TestArea/Objects/Scenery.xml
+
+## Waits before proceeding.
+#
+#  Syntax: wait seconds
+wait 2
+
+## Sets an object's velocity.
+#
+#  Syntax: set id vel velocity
+set Slime1 vel [0,50]
+
+wait 2
+set Slime1 vel [0,0]
+
+## Starts dialog.
+#
+#  Syntax: dialog talkerID path/to/dialog.JSON
+dialog Slime1 Levels/TestArea/Cutscenes/Test.JSON
+
+## Wait until dialog is finished.
+#
+#  Syntax: wait dialog
+wait dialog

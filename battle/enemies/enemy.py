@@ -24,8 +24,9 @@ class Enemy(BattleObject):
 		self.baseExp = baseExp
 		self.baseGold = baseGold
 		self.statOffsets = {"HpM":0,"MpM":0,"Atk":0,"Def":0,"Spd":0,"Vit":0,"Mag":0,"Res":0,"Con":0,"Mnd":0}
-		self.statSkillOffsets = {"Hp":0,"Mp":0,"Atk":0,"Def":0,"Spd":0,"Vit":0,"Mag":0,"Res":0,"Con":0,"Mnd":0}
-		self.statBuffOffsets = {"Hp":0,"Mp":0,"Atk":0,"Def":0,"Spd":0,"Vit":0,"Mag":0,"Res":0,"Con":0,"Mnd":0}
+		self.statSkillOffsets = {"Hp":1,"Mp":1,"Atk":1,"Def":1,"Spd":1,"Vit":1,"Mag":1,"Res":1,"Con":1,"Mnd":1}
+		self.statBuffOffsets = {"Hp":1,"Mp":1,"Atk":1,"Def":1,"Spd":1,"Vit":1,"Mag":1,"Res":1,"Con":1,"Mnd":1}
+		self.buffs = []
 
 		self.weaponType = "Combo"
 
@@ -66,7 +67,7 @@ class Slime(Enemy):
 		self.ai = FeebleAI(55,150)
 
 		animations = self.genAnim()
-		self.graphicObject = BattleGraphicObject(animations,[pos,150],2*level,weapon=None,state="Idle")
+		self.graphicObject = BattleGraphicObject(animations,[pos,170],2*level,weapon=None,state="Idle")
 
 		self.genStats()
 
@@ -122,10 +123,13 @@ class Slime(Enemy):
 		animations["Idle"][1].addFrame(AnimationFrame(temp,.5,None,0))
 
 		#Run:
-		for i in range(1,7):
+		for i in range(1,6):
 			temp = pygame.image.load(config.AssetPath+"Battle/Enemies/Gelatinous/Slime/Walk"+str(i)+".png").convert_alpha()
 			temp.fill(self.color,special_flags=BLEND_MULT)
-			animations["Run"][1].addFrame(AnimationFrame(temp,.17,None,i-1))
+			animations["Run"][1].addFrame(AnimationFrame(temp,.1,None,i-1))
+		temp = pygame.image.load(config.AssetPath+"Battle/Enemies/Gelatinous/Slime/Walk6.png").convert_alpha()
+		temp.fill(self.color,special_flags=BLEND_MULT)
+		animations["Run"][1].addFrame(AnimationFrame(temp,.2,None,i-1))
 
 		#Attack:
 		for i in range(1,3):

@@ -60,7 +60,7 @@ class Player(object):
 		self.state = 0
 		self.direction = 0
 
-		items = [["EmptyPotion",3],["HealthPotion",5],["StrangePotion",20],["LeatherTunic","Purple"],["IronChestplate"],["WoodenShortSword"],["Test1"],["Test2"],["Test3"],["Test4"],["Test5"],["Test6"],["GreenSlimeball",5],["WoodenShortBow"]]
+		items = [["EmptyPotion",3],["HealthPotion",5],["StrangePotion",20],["LeatherTunic","Purple"],["IronChestplate"],["IronLongSword"],["WoodenShortSword"],["Test1"],["Test2"],["Test3"],["Test4"],["Test5"],["Test6"],["GreenSlimeball",5],["WoodenShortBow"]]
 		inven = []
 		for item in items:
 			inven.append(ItemFactory.createItem(*item))
@@ -95,7 +95,7 @@ class Player(object):
 		animations = self.constructBattleAnimations(preview)
 		hitbox = [pygame.rect.Rect([16,7,28,61]),pygame.rect.Rect([7,8,28,60])]
 		self.battleGraphicObject = BattleGraphicObject(animations,[10,145],20,weapon=self.getInventory().getArm1())
-		self.battleObject = BattleObject(self.battleGraphicObject,hitbox,10,self.name,self.getInventory().getArm1(),level=1,exp=15,job=self.job,**self.job.getStartStats())
+		self.battleObject = BattleObject(self.battleGraphicObject,hitbox,10,self.name,self.getInventory().getArm1(),level=1,exp=150,job=self.job,**self.job.getStartStats())
 
 	## Constructs the overworld animations for this character.
 	#
@@ -509,13 +509,16 @@ class Player(object):
 	def getJob(self):
 		return self.job
 
-	## Makes this character equip an item and adjusted their stats.
+	## Makes this character equip an item and adjusts their stats.
 	def equip(self,item):
-		self.inventory.equip(item)
+		prev = self.inventory.equip(item)
 		for stat in item.getStats():
 			self.battleObject.statOffsets[stat]+=item.getStats()[stat]
+		if prev != None:
+			for stat in prev.getStats():
+				self.battleObject.statOffsets[stat]-=prev.getStats()[stat]
 
-	## Makes this character unequip an item and adjusted their stats.
+	## Makes this character unequip an item and adjusts their stats.
 	def unequip(self,item):
 		self.inventory.unequip(item)
 		for stat in item.getStats():
@@ -625,12 +628,16 @@ class Inventory(object):
 	## Equips an item in the appropiate equipment slot.
 	#
 	#  @param item An Equipment object.
+	#
+	#  @returns Returns what was previously equipped if anything.
 	def equip(self,item):
+		prev = None
 		if item.getSlot()=="Head":
 			if self.head==None:
 				self.head=item
 				self.head.equip()
 			else:
+				prev = self.head
 				self.head.equip()
 				self.head=item
 				self.head.equip()
@@ -639,6 +646,7 @@ class Inventory(object):
 				self.arm1=item
 				self.arm1.equip()
 			else:
+				prev = self.arm1
 				self.arm1.equip()
 				self.arm1=item
 				self.arm1.equip()
@@ -647,6 +655,7 @@ class Inventory(object):
 				self.body=item
 				self.body.equip()
 			else:
+				prev = self.body
 				self.body.equip()
 				self.body=item
 				self.body.equip()
@@ -655,6 +664,7 @@ class Inventory(object):
 				self.legs=item
 				self.legs.equip()
 			else:
+				prev = self.legs
 				self.legs.equip()
 				self.legs=item
 				self.legs.equip()
@@ -663,9 +673,11 @@ class Inventory(object):
 				self.boot=item
 				self.boot.equip()
 			else:
+				prev = self.boot
 				self.boot.equip()
 				self.boot=item
 				self.boot.equip()
+		return prev
 
 	## Moves an item in the inventory.
 	#
