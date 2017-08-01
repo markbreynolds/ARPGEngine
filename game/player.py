@@ -377,6 +377,33 @@ class Player(object):
 
 				animations["Thrust"][0].setNextAnimation(animations["Idle"][0])
 				animations["Thrust"][1].setNextAnimation(animations["Idle"][1])
+			#Upper Cut
+			if "UpperCut" in weapon.getSkills():
+				animations["UpperCut"] = [Animation(None,None,"UpperCutW"),Animation(None,None,"UpperCutE")]
+				frameDelay = [.05,.05,.15,.25]
+
+				for i in range(1,5):
+					temp = pygame.surface.Surface((52,70),flags=SRCALPHA)
+
+					body = pygame.image.load(config.AssetPath+"Player/Battle/"+styleName+"/Body/Type"+str(self.clothingType)+"/UpperCut"+str(i)+".png").convert_alpha()
+					hair = pygame.image.load(config.AssetPath+"Player/Battle/"+styleName+"/Hair/Type"+str(self.hairType)+"/UpperCut"+str(i)+".png").convert_alpha()
+					hair.fill(self.hairColor,special_flags=BLEND_MULT)
+					shirt= pygame.image.load(config.AssetPath+"Player/Battle/"+styleName+"/Shirt/Type"+str(self.clothingType)+"/UpperCut"+str(i)+".png").convert_alpha()
+					shirt.fill(self.clothingColor,special_flags=BLEND_MULT)
+
+					temp.blit(shirt,(0,0))
+					temp.blit(body,(0,0))
+					temp.blit(hair,(0,0))
+					animations["UpperCut"][1].addFrame(AnimationFrame(temp,frameDelay[i-1],None,i))
+
+				temp = animations["UpperCut"][1].getFrames()
+				i=0
+				for frame in temp:
+					animations["UpperCut"][0].addFrame(AnimationFrame(pygame.transform.flip(frame.getImage(),True,False),frame.getDelay(),None,i))
+					i+=1
+
+				animations["UpperCut"][0].setNextAnimation(animations["Idle"][0])
+				animations["UpperCut"][1].setNextAnimation(animations["Idle"][1])
 
 		##And linking...
 		if style == "Unarmed" or style.getType() == "Combo":

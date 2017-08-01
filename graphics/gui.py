@@ -399,6 +399,7 @@ class MainMenu(Menu):
 			screen.blit(titleFont.render("Exit",False,config.ColorSel),(120,172))
 		else:
 			screen.blit(titleFont.render("Exit",False,config.ColorFont),(120,172))
+		screen.blit(font.render("V"+config.VersionString,False,config.ColorFont),(285,230))
 
 	## Draws the single player menu on the screen.
 	#

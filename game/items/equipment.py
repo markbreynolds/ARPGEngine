@@ -123,7 +123,7 @@ class OHSword(Weapon):
 	def __init__(self,name,sprite,stats,atkBox,knockback,animationPath,value,recoveryTime=.25,reqs={},amount=1,offset=[0,-7]):
 		#Style:				Name,Chain,reactionTime,frameOrder,frameDelay
 		style = ComboWeaponStyle("OHSword",3,.20,[["Attack1.png","Attack2.png","Attack3.png"],["Attack4.png","Attack5.png","Attack6.png"],["Attack1.png","Attack2.png","Attack3.png"]],[[.05,.15,.25],[.05,.15,.25],[.05,.15,.25]])
-		Weapon.__init__(self,name,sprite,stats,atkBox,knockback,1,style,animationPath,value,recoveryTime,reqs,amount,offset,skills=["Thrust"])
+		Weapon.__init__(self,name,sprite,stats,atkBox,knockback,1,style,animationPath,value,recoveryTime,reqs,amount,offset,skills=["Thrust","UpperCut"])
 
 ## Bow Parent Class
 #

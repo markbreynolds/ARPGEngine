@@ -25,10 +25,12 @@
 	<Frame>
 		<delay>.05</delay>
 		<image>Battle/Arms/Swords/IronLongSword/Attack1.png</image>
+		<offset>[-5,-2]</offset>
 	</Frame>
 	<Frame>
 		<delay>.15</delay>
 		<image>Battle/Arms/Swords/IronLongSword/Attack2.png</image>
+		<offset>[0,-2]</offset>
 	</Frame>
 	<Frame>
 		<delay>.25</delay>
@@ -40,10 +42,12 @@
 	<Frame>
 		<delay>.05</delay>
 		<image>Battle/Arms/Swords/IronLongSword/Attack4.png</image>
+		<offset>[-4,0]</offset>
 	</Frame>
 	<Frame>
 		<delay>.15</delay>
 		<image>Battle/Arms/Swords/IronLongSword/Attack5.png</image>
+		<offset>[0,-2]</offset>
 	</Frame>
 	<Frame>
 		<delay>.25</delay>
@@ -55,10 +59,12 @@
 	<Frame>
 		<delay>.05</delay>
 		<image>Battle/Arms/Swords/IronLongSword/Attack1.png</image>
+		<offset>[-5,-2]</offset>
 	</Frame>
 	<Frame>
 		<delay>.15</delay>
 		<image>Battle/Arms/Swords/IronLongSword/Attack2.png</image>
+		<offset>[0,-2]</offset>
 	</Frame>
 	<Frame>
 		<delay>.25</delay>
@@ -80,6 +86,27 @@
 		<delay>.40</delay>
 		<image>Battle/Arms/Swords/IronLongSword/Thrust3.png</image>
 		<offset>[-4,0]</offset>
+	</Frame>
+</Animation>
+
+<Animation UpperCut>
+	<Frame>
+		<delay>.05</delay>
+		<image>Battle/Arms/Swords/IronLongSword/UpperCut1.png</image>
+	</Frame>
+	<Frame>
+		<delay>.05</delay>
+		<image>Battle/Arms/Swords/IronLongSword/UpperCut2.png</image>
+	</Frame>
+	<Frame>
+		<delay>.15</delay>
+		<offset>[0,-2]</offset>
+		<image>Battle/Arms/Swords/IronLongSword/UpperCut3.png</image>
+	</Frame>
+	<Frame>
+		<delay>.25</delay>
+		<offset>[0,-6]</offset>
+		<image>Battle/Arms/Swords/IronLongSword/UpperCut4.png</image>
 	</Frame>
 </Animation>
 

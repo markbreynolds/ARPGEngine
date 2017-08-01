@@ -52,3 +52,5 @@ ScreenSize = [640,480]
 #
 #  See ScaledScreen for more information.
 Smoothing = 0
+
+VersionString = "0.3.0a"

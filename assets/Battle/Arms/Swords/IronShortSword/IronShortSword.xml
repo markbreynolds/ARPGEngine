@@ -66,6 +66,43 @@
 	</Frame>
 </Animation>
 
+<Animation Thrust>
+	<Frame>
+		<delay>.10</delay>
+		<image>Battle/Arms/Swords/IronShortSword/Thrust1.png</image>
+	</Frame>
+	<Frame>
+		<delay>.20</delay>
+		<image>Battle/Arms/Swords/IronShortSword/Thrust2.png</image>
+		<offset>[-4,0]</offset>
+	</Frame>
+	<Frame>
+		<delay>.40</delay>
+		<image>Battle/Arms/Swords/IronShortSword/Thrust3.png</image>
+		<offset>[-4,0]</offset>
+	</Frame>
+</Animation>
+
+<Animation UpperCut>
+	<Frame>
+		<delay>.05</delay>
+		<image>Battle/Arms/Swords/IronShortSword/UpperCut1.png</image>
+	</Frame>
+	<Frame>
+		<delay>.05</delay>
+		<image>Battle/Arms/Swords/IronShortSword/UpperCut2.png</image>
+	</Frame>
+	<Frame>
+		<delay>.15</delay>
+		<image>Battle/Arms/Swords/IronShortSword/UpperCut3.png</image>
+	</Frame>
+	<Frame>
+		<delay>.25</delay>
+		<image>Battle/Arms/Swords/IronShortSword/UpperCut4.png</image>
+		<offset>[0,5]</offset>
+	</Frame>
+</Animation>
+
 <Animation Death>
 	<Frame>
 		<delay>.5</delay>

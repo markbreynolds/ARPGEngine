@@ -132,10 +132,13 @@ class Slime(Enemy):
 		animations["Run"][1].addFrame(AnimationFrame(temp,.2,None,i-1))
 
 		#Attack:
-		for i in range(1,3):
+		for i in range(1,7):
 			temp = pygame.image.load(config.AssetPath+"Battle/Enemies/Gelatinous/Slime/Attack"+str(i)+".png").convert_alpha()
 			temp.fill(self.color,special_flags=BLEND_MULT)
-			animations["Attack"][1].addFrame(AnimationFrame(temp,.17,None,i-1))
+			delay=.1
+			if i==5:
+				delay=.2
+			animations["Attack"][1].addFrame(AnimationFrame(temp,delay,None,i-1))
 
 		#Death:
 		for i in range(1,7):

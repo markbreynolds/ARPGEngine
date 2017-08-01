@@ -232,7 +232,8 @@ class BattleObject(object):
 		self.projectile = None
 		self.skillDmgMult = 1
 
-		self.abilities=[]
+		#self.skills=[]
+		self.skills=job.getSkills()
 		self.job=job
 		self.ai = None
 
@@ -260,32 +261,33 @@ class BattleObject(object):
 
 	## Uses a skill
 	def useSkill(self,skill):
-		if skill.isActiveSkill() and self.getMP()>=skill.getCost() and (self.getState()=="Idle" or self.getState()=="Run"):
-			if skill.getType()=="Projectile":
-				proj = skill.getProjectile()
-				proj.setPos([self.getGraphicObject().getX(),self.getGraphicObject().getY()])
-				if skill.getDmgType() == "Physical":
-					proj.setDamage(skill.getDmgMult()*self.getAtk())
-				proj.setDirection(self.getDirection())
-				proj.resetDist()
-				proj.setParent(self)
-				self.projectile = proj
-			elif skill.getType()=="Melee":
-				self.velX, self.velY = skill.getVel()
-				if self.getDirection()==0:
-					self.velX=-self.velX
-				self.skillDmgMult = skill.getDmgMult()
-				self.skillHitBox = skill.getHitBox()[self.getDirection()]
-				self.attacking = True
-			elif skill.getType()=="Buff":
-				for stat in skill.getStats().keys():
-					self.statBuffOffsets[stat] *= skill.getStats()[stat]
-				self.buffs.append([skill.getStats(),skill.getDuration()])
+		if skill in self.skills:
+			if skill.isActiveSkill() and self.getMP()>=skill.getCost() and (self.getState()=="Idle" or self.getState()=="Run"):
+				if skill.getType()=="Projectile":
+					proj = skill.getProjectile()
+					proj.setPos([self.getGraphicObject().getX(),self.getGraphicObject().getY()])
+					if skill.getDmgType() == "Physical":
+						proj.setDamage(skill.getDmgMult()*self.getAtk())
+					proj.setDirection(self.getDirection())
+					proj.resetDist()
+					proj.setParent(self)
+					self.projectile = proj
+				elif skill.getType()=="Melee":
+					self.velX, self.velY += skill.getVel()
+					if self.getDirection()==0:
+						self.velX=-self.velX
+					self.skillDmgMult = skill.getDmgMult()
+					self.skillHitBox = skill.getHitBox()[self.getDirection()]
+					self.attacking = True
+				elif skill.getType()=="Buff":
+					for stat in skill.getStats().keys():
+						self.statBuffOffsets[stat] *= skill.getStats()[stat]
+					self.buffs.append([skill.getStats(),skill.getDuration()])
 
-			self.state = "Skill"
-			self.Mp-=skill.getCost()
-			self.getGraphicObject().setState(skill.getState())
-			self.setTime(skill.getCooldown())
+				self.state = "Skill"
+				self.Mp-=skill.getCost()
+				self.getGraphicObject().setState(skill.getState())
+				self.setTime(skill.getCooldown())
 
 	## Sets whether or not this actor is attacking
 	def setAttacking(self,val):
@@ -598,6 +600,7 @@ class BattleObject(object):
 				self.weaponPreStages = weapon.getStyle().getPreStages()
 				self.weaponStages = weapon.getStyle().getStages()
 			self.weaponProj = weapon.getProjectile()
+			self.abilities = set(self.job.getSkills()).intersection(weapon.getSkills())
 		else:
 			delay = [[.15,.25],[.15,.15,.25],[.15,.25]]
 			self.weaponReaction = .20
@@ -605,6 +608,7 @@ class BattleObject(object):
 			self.weaponRecovery = .25
 			self.weaponType = "Combo"
 			self.atkBox = [pygame.rect.Rect([4,7,25,61]),pygame.rect.Rect([23,7,25,60])]
+			self.abilities = []
 		if self.weaponType == "Combo":
 			self.weaponDelay = []
 			for item in delay:
@@ -613,7 +617,7 @@ class BattleObject(object):
 		skills=set()
 		if self.isPlayer():
 			if self.job.getName() == "Warrior":
-				skills=set(["Thrust"])
+				skills=set(["Thrust","UpperCut"])
 
 		if weapon!=None:
 			self.graphicObject.setWeapon(weapon,skills.intersection(weapon.getSkills()))
@@ -679,6 +683,13 @@ class BattleObject(object):
 			self.velX += 100*tick*(-abs(self.velX)/self.velX)
 		else:
 			self.velX = 0
+		self.y+=self.velY*tick
+		self.graphicObject.setY(int(self.y))
+		if self.y >= 3 or self.velY>0:
+			self.velY -= 450*tick
+		else:
+			self.velY = 0.0;
+			self.y = 0
 
 ## An object that shoots out of an actor and deals damage.
 class Projectile(object):

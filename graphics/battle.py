@@ -471,7 +471,8 @@ class BattleGraphicObject(object):
 
 	## Sets the y component of position.
 	def setY(self,y):
-		self.y=y
+		# Floor = 215?
+		self.y=215-self.getSprite().get_height()-y;
 
 	## Sets the current state of this object.
 	def setState(self,state):
@@ -555,7 +556,7 @@ class BattleGraphicObject(object):
 		else:
 			if self.direction == 0:
 				screen.blit(self.getSprite(),[self.x-self.currentAnimation.getOffset()[0]+offsetX,self.y+self.currentAnimation.getOffset()[1]+offsetY])
-				screen.blit(self.weaponAnimCurr.getSprite(),[self.x+(self.weaponAnimCurr.getOffset()[0])+offsetX-self.weapon.getOffset()[0],self.y+self.weaponAnimCurr.getOffset()[1]+offsetY+self.weapon.getOffset()[1]])
+				screen.blit(self.weaponAnimCurr.getSprite(),[self.x+(-self.weaponAnimCurr.getOffset()[0])+offsetX-self.weapon.getOffset()[0],self.y+self.weaponAnimCurr.getOffset()[1]+offsetY+self.weapon.getOffset()[1]])
 			else:
 				screen.blit(self.getSprite(),[self.x+self.currentAnimation.getOffset()[0]+offsetX,self.y+self.currentAnimation.getOffset()[1]+offsetY])
 				screen.blit(self.weaponAnimCurr.getSprite(),[self.x+self.weaponAnimCurr.getOffset()[0]+offsetX+self.weapon.getOffset()[0],self.y+self.weaponAnimCurr.getOffset()[1]+offsetY+self.weapon.getOffset()[1]])

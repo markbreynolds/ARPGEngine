@@ -6,7 +6,7 @@
 #  Please note that these goals are exactly that. They may or may not ever actually
 #  be implemented.
 #
-## Goals: V 0.1.0a
+## Goals: V 0.1.0a - Done
 #
 #    -# GUI - Done
 #      - Inventory Tab - Done
@@ -55,60 +55,113 @@
 #      - package documentation for Player - Done
 #      - All new code must be documented as it is written.
 #
-## Goals: V 0.3.0a
+## Goals: V 0.3.0a - Done
 #    -# Triggers - Done
 #      - Dialog Trigger - Done
 #    -# <b>Skills</b>
 #      - Melee Skills - Done
 #      - Stat Skills - Done
 #      - Buff Skills - Done
-#      - <b>Warrior Skills (5)</b>
+#      - Warrior Skills (5) - Done
 #    -# Battle - Done
 #      - Bow Weapon Style - Done
-#    -# <b>Enemies</b>
-#      - <b>Redo Slime Animations</b>
-#    -# <b>Items</b>
-#      - <b>Swords (3)</b>
-#    -# <b>Documentation</b>
+#    -# Enemies - Done
+#      - Redo Slime Animations - Done
+#    -# Items - Done
+#      - Swords (3) - Done
+#    -# <b>GUI</b>
+#      - Version Number on Title Screen - Done
+#    -# Documentation - Done
 #      - package documentation for Game Object, Pushables, etc. - Done
 #      - package documentation for NPC - Done
 #      - All new code must be documented as it is written.
 #
-## Goals: Future
-#    -# <b>GUI</b>
-#      - <b>Minimap</b>
-#      - <b>World Map</b>
+## Goals: V 0.4.0a
 #    -# <b>Battle</b>
 #      - <b>Physics</b>
 #      - <b>Staff Weapon Style</b>
-#      - <b>Block Attacks</b>
-#      - <b>Dodge Attacks</b>
+#    -# <b>Skills</b>
+#      - <b>Archer Skills (5)</b>
+#    -# <b>Items</b>
+#      - <b>Bows (3)</b>
+#    -# <b>Enemies</b>
+#      - <b>Bat</b>
+#      - <b>Abilities</b>
+#      - <b>Slime Ability<b>
+#    -# <b>Documentation</b>
+#      - <b>package documentation for Items</b>
+#      - <b>package documentation for Level</b>
+#      - All new code must be documented as it is written.
+#
+## Goals: V 0.5.0a
+#    -# <b>Skills</b>
+#      - <b>Passive Skills</b>
+#      - <b>Targeted Skills</b>
+#      - <b>Mage Skills (5)</b>
+#    -# <b>Items</b>
+#      - <b>Staffs (3)</b>
 #    -# <b>Enemies</b>
 #      - <b>Skeleton</b>
-#      - <b>Bat</b>
+#    -# <b>Sound</b>
+#      - <b>Support background music</b>
+#      - <b>Title BGM</b>
+#      - <b>Village BGM</b>
+#      - <b>Dungeon BGM</b>
+#    -# <b>Saving</b>
+#    -# <b>GUI</b>
+#      - <b>Add Options</b>
+#      - <b>Quiting Warning</b>
+#      - <b>World Map</b>
+#    -# <b>Documentation</b>
+#      - <b>package documentation for GUI</b>
+#      - All new code must be documented as it is written.
+#
+## Goals: V1.0.0a
+#    -# <b>Enemies</b>
+#      - <b>Skeleton Archer</b>
+#      - <b>Bat Ability</b>
+#      - <b>Skeleton Ability</b>
+#    -# <b>Sound</b>
+#      - <b>Support SFX</b>
+#      - <b>Walking sounds</b>
+#      - <b>Weapon sounds</b>
+#      - <b>Monster sounds</b>
+#    -# <b>Loading Save Files</b>
+#
+## Goals: Future
+### Multiplayer Update:
+#    -# <b>Overworld</b>
+#      - <b>Network Objects</b>
+#    -# <b>Battles</b>
+#      - <b>Network Objects</b>
+#    -# <b>Multiplayer</b>
+#      - <b>In-Game Hosting</b>
+#      - <b>Dedicated Server</b>
+### Crafting Update:
+#    -# <b>Overworld</b>
+#      - <b>Harvestable Items</b>
+#      - <b>Object Appearance Chance</b>
+#    -# <b>GUI</b>
+#      - <b>Crafting Menu</b>
+#      - <b>Harvesting Dialog</b>
+#    -# <b>Items</b>
+#      - <b>Runtime Defined Items</b>
+### Battle Update:
+#    -# <b>Battle</b>
+#      - <b>Block Attacks</b>
+#      - <b>Dodge Attacks</b>
+#      - <b>Jumping</b>
+#      - <b>Aerial Attacks</b>
+### Dungeon Update:
+#    -# <b>GUI</b>
+#      - <b>Minimap</b>
 #    -# <b>A Dungeon</b>
 #      - <b>Chests</b>
 #      - <b>Puzzles</b>
 #      - <b>Cutscene</b>
 #      - <b>Mini Boss</b>
 #      - <b>Boss</b>
-#    -# <b>Items</b>
-#      - <b>Bows</b>
-#      - <b>Staffs</b>
-#    -# <b>Skills</b>
-#      - <b>Archer Skills (5)</b>
-#      - <b>Passive Skills</b>
-#      - <b>Targeted Skills</b>
-#      - <b>Mage Skills (5)</b>
-#    -# <b>Compositor</b>
-#      - <b>VFX</b>
-#      - <b>Filter</b>
-#    -# <b>Level</b>
-#      - <b>Improve load times</b>
-#    -# <b>GUI</b>
-#      - <b>Add Options</b>
-#      - <b>Quiting Warning</b>
-#    -# <b>Saving</b>
+### Cutscene Update:
 #    -# <b>Triggers</b>
 #      - <b>Cutscene Trigger</b>
 #      - <b>QuestStateChange Trigger?</b>
@@ -117,10 +170,25 @@
 #      - <b>Actions</b>
 #      - <b>Dialog</b>
 #      - <b>Actions/Dialog Sync</b>
+### Tools Update:
+#    -# <b>Animation Editor</b<
+#      - <b>View Animations</b>
+#      - <b>Change Animation Parameters</b>
+#      - <b>Basic Sprite Editing</b>
+#    -# <b>Dialog Editor</b>
+#    -# <b>Level Editor</b>
+#    -# <b>Cutscene Editor</b>
+### Misc Update:
+#    -# <b>Compositor</b>
+#      - <b>VFX</b>
+#      - <b>Filter</b>
+#    -# <b>Level</b>
+#      - <b>Improve load times</b>
 #    -# <b>Notifications</b>
 #      - <b>Quest Notifications</b>
 #      - <b>Item Get Notifications</b>
 #      - >b>Party Change Notifications?</b>
+### Test Update:
 #    -# <b>Unit Tests</b>
 #      - <b>InputEngine?</b>
 #      - <b>GameEngine</b>
@@ -129,11 +197,6 @@
 #      - <b>Level</b>
 #      - <b>GraphicsEngine?</b>
 #      - <b>BattleGraphicsEngine?</b>
-#    -# <b>Documentation</b>
-#      - <b>package documentation for GUI</b>
-#      - <b>package documentation for Items</b>
-#      - <b>package documentation for Level</b>
-#      - All new code must be documented as it is written.
 #
 
 import random

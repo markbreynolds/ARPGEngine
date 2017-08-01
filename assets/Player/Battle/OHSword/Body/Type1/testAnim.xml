@@ -1,0 +1,13 @@
+<Animation Upper>
+	<delay>.125</delay>
+	<Frame>
+		<image>Player/Battle/OHSword/Body/Type1/Upper1.png</image>
+	</Frame>
+	<Frame>
+		<image>Player/Battle/OHSword/Body/Type1/Upper2.png</image>
+	</Frame>
+	<Frame>
+		<image>Player/Battle/OHSword/Body/Type1/Upper3.png</image>
+		<delay>.5</delay>
+	</Frame>
+</Animation>

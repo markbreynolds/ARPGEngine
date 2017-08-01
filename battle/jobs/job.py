@@ -1,5 +1,5 @@
 from graphics.gui import Icons
-from skill import PowerThrust, WaveSlash, Block, HpUp, DefUp
+from warriorSkill import PowerThrust, WaveSlash, UpperCut, HpUp, DefUp
 from skill import SpdUp
 ## Base class for all jobs.
 class Job(object):
@@ -69,7 +69,7 @@ class Warrior(Job):
 	def __init__(self,level):
 		self.HpUp = HpUp()
 		self.DefUp = DefUp()
-		Job.__init__(self,"Warrior",[PowerThrust(),WaveSlash(),Block(),self.HpUp,self.DefUp],Icons.warriorSmall,level)
+		Job.__init__(self,"Warrior",[PowerThrust(),WaveSlash(),UpperCut(),self.HpUp,self.DefUp],Icons.warriorSmall,level)
 
 	## Returns the starting stats for this job.
 	#
